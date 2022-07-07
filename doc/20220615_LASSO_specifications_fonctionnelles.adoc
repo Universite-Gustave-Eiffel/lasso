@@ -1,0 +1,292 @@
+= Démonstrateur LASSO
+
+Le projet a pour but de développer et déployer un démonstrateur permettant d'explorer des modèles acoustiques de paysage sonore en ville.
+
+Dimensionnement :
+
+- 4-5 jeux de données voire une dizaine
+- périmètre : ~5km² représenté 
+
+== Objectifs
+
+Les objectifs principaux du démonstrateur
+
+- valoriser les jeux de données produits
+- valoriser les prochains jeux de données de paysages sonores
+- participer à la communauté scientifique autour des paysages sonores
+- rendre visible et compréhensible l'approche paysage sonore aux utilisateurs de cartes de bruits
+
+== Scénario utilisateurs
+
+=== Collectivité
+
+*Motivation* :
+
+- obligation plan de prévention de bruit tous les 5 ans
+- politiques publiques
+
+*Usage* : s'inspire pour commanditer des études de paysage sonore (plutôt carte de bruit) sur leur territoire
+
+*Problème* : leur territoire ne sera pas cartographié sans une étude spécifique
+
+*Opportunité* : leur proposer d'utiliser le démonstrateur sur leur territoire une fois l'étude réalisée pour partager/discuter les résultats avec leurs administrés
+
+=== Bureaux d'Étude
+
+*Motivation* :répondre appel d'offre de plan de bruit en proposant une approche paysage sonore
+
+*Usage*:
+
+- se former à la cartographie de paysage sonore
+- comprendre comment faire une cartographie d'un paysage sonore
+- utiliser le démonstrateur pour convaincre de l'intérêt de cette approche
+
+=== Riverains individuel / collectif
+
+*Exemple*: collectif ras le scout'
+
+*Motivation* : trouver un outil pour mobiliser autour d'un débat
+
+*Usage* :
+
+- argument dans un débat public
+- vérification d'un futur achat/location immobilier
+- prévoir un parcours en ville privilégiant un environnement sonore particulier
+
+*Problème* : les problèmes ponctuels des riverains risquent d'être masqué par la modélisation qui prends plus le point de vue du passant dans son environnement que ceux des habitants dans leur logement.
+
+=== Financeurs
+
+Importants de penser à :
+
+- ajouter les logos au niveau de l'application et au niveau du jeu de données
+- lister les jeux de données
+- lister la bibliographie
+
+=== Collègues chercheurs
+
+*Motivations*:
+
+- montrer des résultats de recherche
+- identification des équipes de recherche
+
+*Usage* : 
+
+- télécharger des jeux de données
+- être compatible avec la norme ISO
+- contribuer à une communauté autour du paysage sonore
+- traduire l'interface (transiflex)
+
+
+== Modèle de données
+
+=== Liste des projets
+
+- nom du dossier
+- ordre
+
+=== Projet
+
+Le projet est l'unité de base qui regroupe un ensemble cohérent de données sur un même territoire.
+Un projet ne contient qu'un seul périmètre d'exploration géolocalisé qui se situe le plus souvent à l'échelle d'un quartier d'une métropole (arrondissement parisien).
+
+paramètre d'un projet:
+
+- nom
+- description / logos / méthodologie (à définir)
+- calques
+- cartographie:
+    * flux fond de carte sous les valeurs
+    * flux bâti
+    * flux labels
+    * flux fond de carte de la couche sans valeur
+- sémiotique: liste des logos à utiliser pour les variables
+
+=== Calques de données
+
+Les données à représenter sont des variables quantitatives géolocalisées provenant de mesures ou de modélisation.
+Les données sont rassemblées par type en différents calques.
+
+Pour chaque calque, on décrit :
+
+- échelle : polaire ou bipolaire (domaine en général)
+- origine : mesurée ou modélisée
+- nature des valeurs : perception ou acoustique
+- type de la variable (2 niveaux) : 
+
+    * acoustique:
+
+        + intensité
+        + voix
+        + trafic
+        + oiseaux
+        + ...
+
+    * émotion:
+
+        + agrément
+        + eventfull
+        + ...
+
+- unité des valeurs : 
+
+    * texte précisant l'unité ?
+    * enum : db ou temps de présence
+- résolution spatiale: rayon de la maille (est ce nécessaire ?)
+- description méthodo
+- résolution temporel:
+
+    * résolution horaire : si non précisé on s'attend à des données régulières toutes les heures. Sinon il faut préciser le vocabulaire de plages horaires à utiliser en précisant pour chaque identifiant d'intervale utilisé comme marqueur d'heure dans le data-set, la plage horaire correspondante et le label à utiliser.
+    * résolution journalière : si non précisé on s'attend à des données régulières tous les jours en anglais. Sinon il faut précier le vocabulaire de plages de jours à utiliser comme pour les heures 
+
+```json 
+{
+    "matin": {
+        "label": {
+           "fr":"matin",
+           "en": "morning"
+        }, 
+        "hours": [8,12]
+    },
+    "midi": {...}
+}
+```
+
+```json 
+{
+    "week": {
+        "label": {
+           "fr":"semaine",
+           "en": "working week"
+        }, 
+        "days": ["monday", "tuesday", "wednesday", "thursday","friday"] ,
+        "displayPosition": 0
+    },
+    "weekEnd": {...}
+}
+```
+
+
+Au delà de cette configuration les calques contiennent une liste de points de données.
+Chaque point comporte :
+- les coordonnées géospatiales du point
+- une liste de valeurs indexées sur deux niveaux par marqueur de jour (soit [monday-sunday] soit une des clefs des plages de jours) puis par marqueur de l'heure (soit 0-23 soit une des clefs des plages horaires)
+
+== Parcours utilisateurs
+
+=== Découvrir les projets
+
+Découverte des projets disponible sous la forme d'une liste avec vignette (auto-générée).
+Une option permettant de géolocaliser les projets sur un fond de carte pourrait être intéressante bien que secondaire.
+Des filtres sur les projets pourrait être intéressants mais dans un second temps quand/si il y aura beaucoup de projets.
+
+=== Explorer un projet
+
+- Encart présentation du projet : titre, menu about données...
+- choix entre cartographie simple ou double cartographie
+
+=== Cartographie
+
+- liste et sélection d'une seule couche
+- indicateur + sélecteur temporel (basé sur la configuration de la couche)
+- légende
+- outils/paramètre :
+    * afficher le fond de carte
+    * transparence de la couche valeur
+    * afficher les labels
+    * afficher le bâti
+    * méthode d'agrégation/représentation
+    * recentrer la carte sur la sélection
+- couches en allant de bas en haut : 
+    * fond de carte minimal/neutre (optionnel)
+    * représentation des valeurs
+    * labels des voies (optionnel)
+    * bâti (optionnel)
+- sélection de points de données au click
+- profil sonore du point sélectionné
+    * iconographie des trois sources
+    * radar émotionnelle
+- frise temporelle du point sélectionné:
+    * résolution temporelle en fonction du paramétrage de la couche
+    * sélecteur la période de la semaine
+    * évolution sur 24h des valeurs de la couche sur le point sélectionné
+    * sélecteur de l'heure au click sur l'un des pas de temps (sélection du pas de temps par ailleurs en haut)
+    * play/stop animation temporelle : variation des valeurs de temps en continue et déplacement du curseur temps
+    * que représenter si aucun point n'est sélectionné? frise vide avec message "sélectionner un point"?
+
+Question: 
+- quelle est le temps sélectionné par défaut ?
+- faut il sélectionner un point par défaut ?
+
+=== Double cartographie
+
+Deux modules de cartographie côte à côte synchronisé.
+Ratio de taille paramétrable : taille relative modifiable ?
+
+Pour la frise temporelle, il faudra tester différentes options :
+
+- pas de frise en double cartographie
+- une frise par carte
+
+Mode synchronisation miroir :
+
+- deux curseurs : un sur chaque carte
+- synchronisation exacte de la position vue (miroir)
+
+Mode synchronisation continuité :
+
+- un seul curseur
+- synchronisation de la position avec l'offset des centres des modules de cartographie pour que la limite soit le même lieu sur les deux cartes
+
+pour exemple : remonterletemps.ign.fr
+
+=== Exploration sonore
+
+Pour chaque source, on utilise une banque de plusieurs sons.
+Pour un point donné sur la carte, on discrétise le niveau des 3 sources + le niveau sonore en 7 classes de valeurs.
+On pré-génère un fichier son mixant les sons des sources en utilisant les 3 poids relatifs par classe et en appliquant un niveau reprenant le niveau global sur la carte. La normalisation du niveau global implique de connaître le mixage. On pourrait mixer en live dans le navigateur des boucles de 30s.
+
+A redéfinir en détail
+
+=== Parcours dans la ville
+
+choisir un point de départ et un point d'arrivé
+calculer un parcours piéton qui optimise un paysage sonore particulier
+représenter le parcours et un encart qui 
+quels sont les paramètres d'option à proposer à l'utilisateur ?
+uniquement piéton ?
+
+
+== Architecture
+
+Pour définir l'architecture il faut estimer la taille maximum d'une couche de données.
+
+=== Serveur
+
+==== index des projets
+
+simple index des projets à publier
+commande pour valider/publier un projet
+
+==== Fichiers projet
+
+- un projet = un dossier 
+- fichier de métadonnées du projet + calques (yml ?)
+- fichiers Geojson des calques
+
+> Modification des fichiers par SSH/FTP à définir
+
+==== Agrégation côté serveur
+
+A t-on besoin d'une agrégation côté serveur des données ?
+Si oui faut il un geoserver ? un ES ?
+Si oui il faut un script d'import des projets.
+
+=== Client
+
+Application React + leaflet ?
+Peut on faire les agrégations de points (isocontour, hexagonal) côté client ?
+
+=== Licence du code
+
+EUPL
