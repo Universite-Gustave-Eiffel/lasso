@@ -205,7 +205,7 @@ Des filtres sur les projets pourrait être intéressants mais dans un second tem
 - sélection de points de données au click
 - profil sonore du point sélectionné
     * iconographie des trois sources
-    * radar émotionnelle
+    * radar émotionnelle CF https://github.com/MitchellAcoustics/Soundscapy/blob/main/examples/HowToAnalyseAndRepresentSoundscapes.ipynb
 - frise temporelle du point sélectionné:
     * résolution temporelle en fonction du paramétrage de la couche
     * sélecteur la période de la semaine
