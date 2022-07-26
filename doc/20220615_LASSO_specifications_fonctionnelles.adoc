@@ -187,6 +187,9 @@ Des filtres sur les projets pourrait être intéressants mais dans un second tem
 
 === Cartographie
 
+image:./cartography_principles.png[schéma interface cartographie]
+
+
 - liste et sélection d'une seule couche
 - indicateur + sélecteur temporel (basé sur la configuration de la couche)
 - légende
@@ -215,12 +218,14 @@ Des filtres sur les projets pourrait être intéressants mais dans un second tem
     * que représenter si aucun point n'est sélectionné? frise vide avec message "sélectionner un point"?
 
 Question: 
+
 - quelle est le temps sélectionné par défaut ?
 - faut il sélectionner un point par défaut ?
 
 === Double cartographie
 
 Deux modules de cartographie côte à côte synchronisé.
+
 Ratio de taille paramétrable : taille relative modifiable ?
 
 Pour la frise temporelle, il faudra tester différentes options :
