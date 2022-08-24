@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "https://ouestware.github.io/lasso/static/css/main.604bedf0.css",
-    "main.js": "https://ouestware.github.io/lasso/static/js/main.3eebfdb7.js",
-    "static/js/415.b085e915.chunk.js": "https://ouestware.github.io/lasso/static/js/415.b085e915.chunk.js",
-    "index.html": "https://ouestware.github.io/lasso/index.html",
-    "main.604bedf0.css.map": "https://ouestware.github.io/lasso/static/css/main.604bedf0.css.map",
-    "main.3eebfdb7.js.map": "https://ouestware.github.io/lasso/static/js/main.3eebfdb7.js.map",
-    "415.b085e915.chunk.js.map": "https://ouestware.github.io/lasso/static/js/415.b085e915.chunk.js.map"
+    "main.css": "/lasso/static/css/main.604bedf0.css",
+    "main.js": "/lasso/static/js/main.a37ff5be.js",
+    "static/js/415.b085e915.chunk.js": "/lasso/static/js/415.b085e915.chunk.js",
+    "index.html": "/lasso/index.html",
+    "main.604bedf0.css.map": "/lasso/static/css/main.604bedf0.css.map",
+    "main.a37ff5be.js.map": "/lasso/static/js/main.a37ff5be.js.map",
+    "415.b085e915.chunk.js.map": "/lasso/static/js/415.b085e915.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.604bedf0.css",
-    "static/js/main.3eebfdb7.js"
+    "static/js/main.a37ff5be.js"
   ]
 }
