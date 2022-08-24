@@ -17,7 +17,7 @@ jobs:
       - name: Build
         run: |
           cd packages/client
-          PUBLIC_URL="https://ouestware.github.io/lasso" npm run build
+          PUBLIC_URL="/lasso" npm run build
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.2.5
