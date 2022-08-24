@@ -1,12 +1,12 @@
 {
   "name": "@lasso/root",
   "version": "1.0.0",
-  "description": "lasso",
-  "homepage": "https://github.com/ouestware/LASSO",
-  "bugs": "https://github.com/ouestware/LASSO/issues",
+  "description": "Project LASSO",
+  "homepage": "https://github.com/ouestware/lasso",
+  "bugs": "https://github.com/ouestware/lasso/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ouestware/LASSO.git"
+    "url": "https://github.com/ouestware/lasso.git"
   },
   "workspaces": [
     "packages/*"
