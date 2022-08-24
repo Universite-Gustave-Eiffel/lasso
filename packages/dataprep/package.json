@@ -1,0 +1,21 @@
+{
+  "name": "reticular-dataprep",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "devDependencies": {
+    "@types/papaparse": "^5.3.2"
+  },
+  "dependencies": {
+    "papaparse": "^5.3.2"
+  },
+  "scripts": {
+    "clean": "rimraf lib/",
+    "lint": "esw --ext .ts ./src",
+    "compile": "tsc -b",
+    "build": "npm run clean && npm run lint && npm run compile",
+    "start": "concurrently -n lint,compile,exec \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"npm run exec -- --watch\"",
+    "exec": "ts-node ./src/index.ts"
+  }
+}

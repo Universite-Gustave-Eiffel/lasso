@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compileOnSave": false,
+  "include": ["src"],
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "esModuleInterop": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "module": "esnext",
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "rootDir": "src",
+    "outDir": "build"
+  }
+}
