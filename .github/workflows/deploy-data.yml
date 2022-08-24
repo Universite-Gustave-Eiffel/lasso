@@ -1,0 +1,30 @@
+name: deploy-data
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/dataprep/**"
+      - "data/**"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Dataprep install
+        run: |
+          npm install
+
+      - name: Generate data
+        run: |
+          cd packges/dataprep
+          npm run exec
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: packages/client/public/data # The folder the action should deploy.
+          target-folder: data
