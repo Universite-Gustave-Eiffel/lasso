@@ -5,8 +5,6 @@ services:
       context: ./project
       dockerfile: ./Dockerfile
     restart: ${RESTART_POLICY}
-    depends_on:
-      - neo4j
     ports:
       - ${HOST_HTTP_PORT}:80
     volumes:
@@ -22,3 +20,5 @@ services:
       - ${PROJECT_PATH}/tsconfig.json:/project/tsconfig.json
     environment:
       - MODE=${MODE}
+      - DATAPREP_IMPORT_FOLDER=${DATAPREP_IMPORT_FOLDER}
+      - DATAPREP_EXPORT_FOLDER=${DATAPREP_EXPORT_FOLDER}

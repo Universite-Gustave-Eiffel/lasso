@@ -1,6 +1,6 @@
 {
-  "name": "reticular-dataprep",
-  "version": "0.1.0",
+  "name": "@lasso/dataprep",
+  "version": "1.0.0",
   "private": true,
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -14,8 +14,8 @@
     "clean": "rimraf lib/",
     "lint": "esw --ext .ts ./src",
     "compile": "tsc -b",
+    "exec": "ts-node ./src/index.ts",
     "build": "npm run clean && npm run lint && npm run compile",
-    "start": "concurrently -n lint,compile,exec \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"npm run exec -- --watch\"",
-    "exec": "ts-node ./src/index.ts"
+    "start": "concurrently -n lint,compile,exec \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"npm run exec -- --watch\""
   }
 }

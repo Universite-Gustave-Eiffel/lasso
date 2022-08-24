@@ -8,8 +8,7 @@ else
 fi
 echo "(i) Npm version is $(npm -v)"
 echo "(i) Node version is $(node -v)"
-
-source .env
+env
 
 echo
 echo " ~"
@@ -35,8 +34,6 @@ if [ "$MODE" = "dev" ]; then
   npm run start
 
 else
-  source .env.production
-
   echo
   echo " ~"
   echo " ~ Building project"
@@ -46,10 +43,15 @@ else
 
   echo
   echo " ~"
+  echo " ~ Data prep"
+  echo " ~"
+  echo
+  npm run exec --workspace=@lasso/dataprep
+
+  echo
+  echo " ~"
   echo " ~ Run nginx"
   echo " ~"
   echo
   nginx -g 'daemon off;'
 fi
-
-set +o allexport

@@ -21,5 +21,4 @@ jobs:
       - run: npm install -g npm@next-8
       - run: npm install
       - run: npm run build
-      - run: npm run init
       - run: npm test
