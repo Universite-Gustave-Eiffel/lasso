@@ -14,8 +14,9 @@
     "clean": "rimraf lib/",
     "lint": "esw --ext .ts ./src",
     "compile": "tsc -b",
-    "exec": "ts-node ./src/index.ts",
+    "test": "mocha --recursive --fail-zero 'false' --require ts-node/register 'test/**/*.ts' ",
     "build": "npm run clean && npm run lint && npm run compile",
-    "start": "concurrently -n lint,compile,exec \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"npm run exec -- --watch\""
+    "start": "concurrently -n lint,compile,exec \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"npm run exec -- --watch\"",
+    "exec": "ts-node ./src/index.ts"
   }
 }
