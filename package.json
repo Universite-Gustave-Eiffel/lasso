@@ -18,7 +18,7 @@
     "dataprep": "npm run exec --workspace=@lasso/dataprep",
     "build": "npm run clean && npm run lint && npm run compile && npm run build --workspaces --if-present",
     "start": "concurrently -n lint,compile,dataprep,client \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"npm run start --workspace=@lasso/dataprep\" \"npm run start --workspace=@lasso/client\"",
-    "test": "npm run test"
+    "test": "npm run test --workspaces --if-present"
   },
   "devDependencies": {
     "@types/assert": "^1.5.6",
