@@ -5,7 +5,7 @@ export const Header: FC = () => {
   return (
     <header className="sticky-top border-bottom">
       <div className="py-1 px-3 d-flex flex-column flex-md-row align-items-center">
-        <Link to="/" title="Home" className="navbar-brand">
+        <Link to={process.env.PUBLIC_URL} title="Home" className="navbar-brand">
           Lasso
         </Link>
 

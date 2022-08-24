@@ -9,7 +9,7 @@ import { NotFoundPage } from "../views/NotFoundPage";
 export const Routing: FC = () => {
   const portalTarget = useRef<HTMLDivElement>(null);
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <AppContextProvider init={{ portalTarget: portalTarget.current }}>
         <Routes>
           {/* Content pages */}
