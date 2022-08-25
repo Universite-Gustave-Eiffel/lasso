@@ -5,5 +5,4 @@ tsconfig.tsbuildinfo
 .nyc_output
 coverage
 *.swp
-!.gitkeep
-data/*
+packages/client/public/data

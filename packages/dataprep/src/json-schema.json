@@ -1,0 +1,267 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "ExportProject": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Project<string>"
+                },
+                {
+                    "properties": {
+                        "pages": {
+                            "properties": {
+                                "bibliography": {
+                                    "type": "string"
+                                },
+                                "project": {
+                                    "type": "string"
+                                },
+                                "sponsors": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "project"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "pages"
+                    ],
+                    "type": "object"
+                }
+            ]
+        },
+        "G": {
+            "type": "object"
+        },
+        "G_1": {
+            "type": "object"
+        },
+        "G_2": {
+            "type": "object"
+        },
+        "ImportProject": {
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "layers": {
+                    "items": {
+                        "$ref": "#/definitions/ProjectLayer<string>"
+                    },
+                    "type": "array"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "layers",
+                "name"
+            ],
+            "type": "object"
+        },
+        "Project": {
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "layers": {
+                    "items": {
+                        "$ref": "#/definitions/ProjectLayer<G>_1"
+                    },
+                    "type": "array"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "layers",
+                "name"
+            ],
+            "type": "object"
+        },
+        "Project<G>_1": {
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "layers": {
+                    "items": {
+                        "$ref": "#/definitions/ProjectLayer<G>_2"
+                    },
+                    "type": "array"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "layers",
+                "name"
+            ],
+            "type": "object"
+        },
+        "Project<string>": {
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "layers": {
+                    "items": {
+                        "$ref": "#/definitions/ProjectLayer<string>"
+                    },
+                    "type": "array"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "layers",
+                "name"
+            ],
+            "type": "object"
+        },
+        "ProjectFull": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/Project<G>_1"
+                },
+                {
+                    "properties": {
+                        "pages": {
+                            "properties": {
+                                "bibliography": {
+                                    "type": "string"
+                                },
+                                "project": {
+                                    "type": "string"
+                                },
+                                "sponsors": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "project"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "pages"
+                    ],
+                    "type": "object"
+                }
+            ]
+        },
+        "ProjectLayer": {
+            "properties": {
+                "geojson": {
+                    "$ref": "#/definitions/G"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "geojson",
+                "id",
+                "name"
+            ],
+            "type": "object"
+        },
+        "ProjectLayer<G>_1": {
+            "properties": {
+                "geojson": {
+                    "$ref": "#/definitions/G_1"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "geojson",
+                "id",
+                "name"
+            ],
+            "type": "object"
+        },
+        "ProjectLayer<G>_2": {
+            "properties": {
+                "geojson": {
+                    "$ref": "#/definitions/G_2"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "geojson",
+                "id",
+                "name"
+            ],
+            "type": "object"
+        },
+        "ProjectLayer<string>": {
+            "properties": {
+                "geojson": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "geojson",
+                "id",
+                "name"
+            ],
+            "type": "object"
+        }
+    }
+}
+
