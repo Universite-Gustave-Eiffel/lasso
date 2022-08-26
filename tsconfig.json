@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "files": [],
-  "references": [{ "path": "packages/client" }, { "path": "packages/dataprep" }],
+  "references": [{ "path": "packages/dataprep" }, { "path": "packages/client" }],
   "watchOptions": {
     "excludeDirectories": ["**/node_modules"]
   }
