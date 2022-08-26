@@ -19,7 +19,7 @@ jobs:
 
       - name: Generate data
         run: |
-          cd packges/dataprep
+          cd packages/dataprep
           npm run exec
 
       - name: Deploy 🚀
