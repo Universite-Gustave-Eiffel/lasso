@@ -1,5 +1,10 @@
 name: deploy-data
+
 on:
+  workflow_run:
+    workflows: [CI-TEST]
+    types: [completed]
+    branches: [main]
   push:
     branches:
       - main
