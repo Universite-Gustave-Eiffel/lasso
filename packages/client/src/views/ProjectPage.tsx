@@ -1,22 +1,26 @@
 import { FC } from "react";
+import { useParams } from "react-router-dom";
 
-import { ProjectCard } from "../components/project/ProjectCard";
-import { useAppContext } from "../hooks/useAppContext";
-import { Layout } from "./layout/index";
+import { useProject } from "../hooks/useProject";
+import { ProjectMaps } from "../components/project/ProjectMaps";
+import { NotFoundPage } from "./NotFoundPage";
+import { Layout } from "./layout";
 
 export const ProjectPage: FC = () => {
-  const [{ projects }] = useAppContext();
+  const { id } = useParams<"id">();
+  const project = useProject(id || "");
+
   return (
-    <Layout heading={"Welcome"}>
-      <div className="col-12 ">
-        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 pb-4 justify-content-center">
-          {projects.map((project) => (
-            <div className="col" key={project.id}>
-              <ProjectCard project={project} />
-            </div>
-          ))}
-        </div>
-      </div>
-    </Layout>
+    <>
+      {project ? (
+        <Layout heading={project.name}>
+          <div className="col-12 ">
+            <ProjectMaps project={project} mode="side-by-side" />
+          </div>
+        </Layout>
+      ) : (
+        <NotFoundPage />
+      )}
+    </>
   );
 };

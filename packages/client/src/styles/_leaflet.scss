@@ -1,0 +1,9 @@
+@import "~leaflet/dist/leaflet.css";
+
+.leaflet-container {
+  display: flex;
+  min-height: 100%;
+  width: 100%;
+  background-color: transparent;
+  min-height: 500px;
+}

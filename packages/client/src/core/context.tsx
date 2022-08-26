@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Project } from "@lasso/dataprep";
 import { NotificationState } from "./notifications";
 import { ModalRequest } from "./modals";
-import { useProjectList } from "../hooks/api/useProjectList";
+import { useProjectList } from "../hooks/useProjectList";
 import { Loader } from "../components/Loader";
 
 /**

@@ -19,7 +19,7 @@ export interface ProjectCardProps {
    */
   style?: CSSProperties;
   /**
-   * The corpus to display
+   * The project to display
    */
   project: Project;
 }

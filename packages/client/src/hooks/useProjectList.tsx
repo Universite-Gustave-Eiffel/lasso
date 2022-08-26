@@ -1,5 +1,5 @@
 import { Project } from "@lasso/dataprep";
-import { config } from "../../config";
+import { config } from "../config";
 import { useHttpGet } from "./useHttpGet";
 
 export const useProjectList = () => {
