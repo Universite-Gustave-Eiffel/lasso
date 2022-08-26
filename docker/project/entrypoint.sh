@@ -9,6 +9,7 @@ fi
 echo "(i) Npm version is $(npm -v)"
 echo "(i) Node version is $(node -v)"
 env
+chmod -R 777 /var/www/public
 
 echo
 echo " ~"

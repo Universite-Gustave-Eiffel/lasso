@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, PropsWithChildren } from "react";
 
 import { Notifications } from "../../core/notifications";
 import { Modals } from "../../core/modals";
@@ -12,12 +12,7 @@ interface LayoutProps {
   heading?: string | JSX.Element;
   headingTools?: JSX.Element;
 }
-export const Layout: FC<LayoutProps> = ({
-  heading,
-  headingTools,
-  loading,
-  children,
-}) => {
+export const Layout: FC<PropsWithChildren<LayoutProps>> = ({ heading, headingTools, loading, children }) => {
   return (
     <div id="app-root">
       <Header />

@@ -1,26 +1,28 @@
-import { FC, createContext, useState, useEffect } from "react";
+import { FC, PropsWithChildren, createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
+import { Project } from "@lasso/dataprep";
 import { NotificationState } from "./notifications";
 import { ModalRequest } from "./modals";
+import { useProjectList } from "../hooks/api/useProjectList";
+import { Loader } from "../components/Loader";
 
 /**
  * Type definition of the context
  */
 export interface AppContextType {
-  portalTarget: HTMLDivElement | null;
   notifications: Array<NotificationState>;
   modal?: ModalRequest<any, any>;
+  projects: Array<Project>;
 }
 
 const initialContext: AppContextType = {
-  portalTarget: null,
   notifications: [],
   modal: undefined,
+  projects: [],
 };
 
-export type AppContextSetter = (
-  value: AppContextType | ((prev: AppContextType) => AppContextType)
-) => void;
+export type AppContextSetter = (value: AppContextType | ((prev: AppContextType) => AppContextType)) => void;
 
 /**
  * Application context.
@@ -33,24 +35,26 @@ export const AppContext = createContext<{
 /**
  * Application context provider.
  */
-export const AppContextProvider: FC<{
-  init: Partial<Omit<AppContextType, "server">>;
-}> = ({ init, children }) => {
-  const [context, setContext] = useState<AppContextType>({
-    ...initialContext,
-    ...init,
-  });
+export const AppContextProvider: FC<PropsWithChildren> = ({ children }) => {
+  const navigate = useNavigate();
+  const { loading, error, data } = useProjectList();
+
+  const [context, setContext] = useState<AppContextType>(initialContext);
 
   useEffect(() => {
-    setContext({
-      ...initialContext,
-      ...init,
-    });
-  }, [init]);
+    setContext((prev) => ({
+      ...prev,
+      projects: data ? data : [],
+    }));
+  }, [data]);
+
+  useEffect(() => {
+    if (error) navigate("/error");
+  }, [error, navigate]);
 
   return (
     <AppContext.Provider value={{ context, setContext }}>
-      <>{children}</>
+      <>{loading ? <Loader /> : children}</>
     </AppContext.Provider>
   );
 };

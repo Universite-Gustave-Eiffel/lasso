@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react";
+import React, { FC, PropsWithChildren, useCallback } from "react";
 import cx from "classnames";
 import { BsQuestionCircleFill } from "react-icons/bs";
 
@@ -66,12 +66,12 @@ export const Modal: FC<Props> = ({
   );
 };
 
-export const ConfirmModal: FC<{
+export const ConfirmModal: FC<PropsWithChildren<{
   title?: string;
   onConfirm: () => void;
   onCancel: () => void;
   loading?: boolean;
-}> = ({ title, onConfirm, onCancel, loading, children }) => {
+}>> = ({ title, onConfirm, onCancel, loading, children }) => {
   return (
     <Modal
       title={

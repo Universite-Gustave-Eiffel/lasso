@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, PropsWithChildren, useState } from "react";
 import cx from "classnames";
 import {
   BsFillCheckCircleFill,
@@ -25,7 +25,7 @@ interface AlertProps {
   type: "success" | "info" | "warning" | "error";
 }
 
-export const Alert: FC<AlertProps> = ({ type, children }) => {
+export const Alert: FC<PropsWithChildren<AlertProps>> = ({ type, children }) => {
   const [close, setClose] = useState<boolean>(false);
 
   if (close) return null;

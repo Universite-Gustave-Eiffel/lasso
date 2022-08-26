@@ -4,7 +4,7 @@ import { ProjectCard } from "../components/project/ProjectCard";
 import { useAppContext } from "../hooks/useAppContext";
 import { Layout } from "./layout/index";
 
-export const HomePage: FC = () => {
+export const ProjectPage: FC = () => {
   const [{ projects }] = useAppContext();
   return (
     <Layout heading={"Welcome"}>

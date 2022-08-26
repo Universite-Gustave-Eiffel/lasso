@@ -13,5 +13,6 @@
     "jsx": "react-jsx",
     "rootDir": "src",
     "outDir": "build"
-  }
+  },
+  "references": [{ "path": "../dataprep" }]
 }

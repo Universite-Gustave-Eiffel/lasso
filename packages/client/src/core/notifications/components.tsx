@@ -17,7 +17,7 @@ export const Notifications: FC = () => {
   const [{ notifications }, setContext] = useAppContext();
 
   const close = useCallback(
-    (id) => setContext((prev) => ({ ...prev, notifications: prev.notifications.filter((e) => e.id !== id) })),
+    (id: number) => setContext((prev) => ({ ...prev, notifications: prev.notifications.filter((e) => e.id !== id) })),
     [setContext],
   );
 
