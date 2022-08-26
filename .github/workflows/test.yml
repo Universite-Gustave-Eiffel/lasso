@@ -12,6 +12,8 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
+    env:
+      CI: false
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -19,7 +21,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install -g npm@next-8
-      - run: export CI=false
       - run: npm install
       - run: npm run build
       - run: npm test
