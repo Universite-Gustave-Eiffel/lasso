@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install -g npm@next-8
+      - run: export CI=false
       - run: npm install
       - run: npm run build
       - run: npm test
