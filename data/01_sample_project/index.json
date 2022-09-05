@@ -5,24 +5,54 @@
   "image": "logo.jpeg",
   "layers": [
     {
+      "id": "osm",
+      "layer": "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+    },
+    {
+      "id": "stamen-toner",
+      "layer": "http://tile.stamen.com/toner/{z}/{x}/{y}.png"
+    },
+    {
+      "id": "culture",
+      "layer": "./layers/culture.geo.json"
+    },
+    {
+      "id": "enseignement",
+      "layer": "./layers/enseignement.geo.json"
+    },
+    {
+      "id": "equipub",
+      "layer": "./layers/equipub.geo.json"
+    },
+    {
+      "id": "mobilite",
+      "layer": "./layers/mobilite.geo.json"
+    }
+  ],
+  "maps": [
+    {
       "id": "culture",
       "name": "Lieux culturels",
-      "geojson": "./layers/culture.geo.json"
+      "layersId": ["osm", "culture"],
+      "attribution": "OSM & Villes de Nantes"
     },
     {
       "id": "enseignement",
       "name": "Etablissement éducatifs",
-      "geojson": "./layers/enseignement.geo.json"
+      "layersId": ["osm", "enseignement"],
+      "attribution": "OSM & Villes de Nantes"
     },
     {
       "id": "equipub",
       "name": "Equipement publics",
-      "geojson": "./layers/equipub.geo.json"
+      "layersId": ["osm", "equipub"],
+      "attribution": "OSM & Villes de Nantes"
     },
     {
       "id": "mobilite",
       "name": "Mobilité",
-      "geojson": "./layers/mobilite.geo.json"
+      "layersId": ["stamen-toner", "mobilite"],
+      "attribution": "OSM & Villes de Nantes"
     }
   ]
 }

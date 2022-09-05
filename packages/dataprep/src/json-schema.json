@@ -7,33 +7,55 @@
         "G_1": {
             "type": "object"
         },
-        "G_2": {
-            "type": "object"
-        },
         "IProject": {
             "properties": {
                 "description": {
+                    "description": "A short description of the project in text only.\nWill be used for the project's card.",
                     "type": "string"
                 },
                 "id": {
+                    "description": "Unique identifier of the project acroos all projects.",
                     "type": "string"
                 },
                 "image": {
+                    "description": "Image of the project that will be used to create the project card.\nIt's a relative path to the image.",
                     "type": "string"
                 },
                 "layers": {
+                    "description": "List of layer that can be used on maps\nA layer can be a tiles URL or a path to a geojson",
                     "items": {
-                        "$ref": "#/definitions/IProjectLayer<G>_1"
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "layer": {
+                                "$ref": "#/definitions/G"
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "layer"
+                        ],
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "maps": {
+                    "description": "Maps list of the project.",
+                    "items": {
+                        "$ref": "#/definitions/IProjectMap"
                     },
                     "type": "array"
                 },
                 "name": {
+                    "description": "Name of the project.",
                     "type": "string"
                 }
             },
             "required": [
                 "id",
                 "layers",
+                "maps",
                 "name"
             ],
             "type": "object"
@@ -41,27 +63,52 @@
         "IProject<G>_1": {
             "properties": {
                 "description": {
+                    "description": "A short description of the project in text only.\nWill be used for the project's card.",
                     "type": "string"
                 },
                 "id": {
+                    "description": "Unique identifier of the project acroos all projects.",
                     "type": "string"
                 },
                 "image": {
+                    "description": "Image of the project that will be used to create the project card.\nIt's a relative path to the image.",
                     "type": "string"
                 },
                 "layers": {
+                    "description": "List of layer that can be used on maps\nA layer can be a tiles URL or a path to a geojson",
                     "items": {
-                        "$ref": "#/definitions/IProjectLayer<G>_2"
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "layer": {
+                                "$ref": "#/definitions/G_1"
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "layer"
+                        ],
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "maps": {
+                    "description": "Maps list of the project.",
+                    "items": {
+                        "$ref": "#/definitions/IProjectMap"
                     },
                     "type": "array"
                 },
                 "name": {
+                    "description": "Name of the project.",
                     "type": "string"
                 }
             },
             "required": [
                 "id",
                 "layers",
+                "maps",
                 "name"
             ],
             "type": "object"
@@ -69,27 +116,52 @@
         "IProject<string>": {
             "properties": {
                 "description": {
+                    "description": "A short description of the project in text only.\nWill be used for the project's card.",
                     "type": "string"
                 },
                 "id": {
+                    "description": "Unique identifier of the project acroos all projects.",
                     "type": "string"
                 },
                 "image": {
+                    "description": "Image of the project that will be used to create the project card.\nIt's a relative path to the image.",
                     "type": "string"
                 },
                 "layers": {
+                    "description": "List of layer that can be used on maps\nA layer can be a tiles URL or a path to a geojson",
                     "items": {
-                        "$ref": "#/definitions/IProjectLayer<string>"
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "layer": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "layer"
+                        ],
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "maps": {
+                    "description": "Maps list of the project.",
+                    "items": {
+                        "$ref": "#/definitions/IProjectMap"
                     },
                     "type": "array"
                 },
                 "name": {
+                    "description": "Name of the project.",
                     "type": "string"
                 }
             },
             "required": [
                 "id",
                 "layers",
+                "maps",
                 "name"
             ],
             "type": "object"
@@ -97,27 +169,50 @@
         "IProject<unknown>": {
             "properties": {
                 "description": {
+                    "description": "A short description of the project in text only.\nWill be used for the project's card.",
                     "type": "string"
                 },
                 "id": {
+                    "description": "Unique identifier of the project acroos all projects.",
                     "type": "string"
                 },
                 "image": {
+                    "description": "Image of the project that will be used to create the project card.\nIt's a relative path to the image.",
                     "type": "string"
                 },
                 "layers": {
+                    "description": "List of layer that can be used on maps\nA layer can be a tiles URL or a path to a geojson",
                     "items": {
-                        "$ref": "#/definitions/IProjectLayer<unknown>"
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "layer": {}
+                        },
+                        "required": [
+                            "id",
+                            "layer"
+                        ],
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "maps": {
+                    "description": "Maps list of the project.",
+                    "items": {
+                        "$ref": "#/definitions/IProjectMap"
                     },
                     "type": "array"
                 },
                 "name": {
+                    "description": "Name of the project.",
                     "type": "string"
                 }
             },
             "required": [
                 "id",
                 "layers",
+                "maps",
                 "name"
             ],
             "type": "object"
@@ -154,95 +249,27 @@
                 }
             ]
         },
-        "IProjectLayer": {
+        "IProjectMap": {
             "properties": {
-                "geojson": {
-                    "$ref": "#/definitions/G"
-                },
                 "id": {
+                    "description": "Unique identifier of the map across the project.\nWill be used in the URL.",
                     "type": "string"
                 },
+                "layersId": {
+                    "description": "List of ordered layers IDS for the map",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
                 "name": {
+                    "description": "Name of the map",
                     "type": "string"
                 }
             },
             "required": [
-                "geojson",
                 "id",
-                "name"
-            ],
-            "type": "object"
-        },
-        "IProjectLayer<G>_1": {
-            "properties": {
-                "geojson": {
-                    "$ref": "#/definitions/G_1"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "geojson",
-                "id",
-                "name"
-            ],
-            "type": "object"
-        },
-        "IProjectLayer<G>_2": {
-            "properties": {
-                "geojson": {
-                    "$ref": "#/definitions/G_2"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "geojson",
-                "id",
-                "name"
-            ],
-            "type": "object"
-        },
-        "IProjectLayer<string>": {
-            "properties": {
-                "geojson": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "geojson",
-                "id",
-                "name"
-            ],
-            "type": "object"
-        },
-        "IProjectLayer<unknown>": {
-            "properties": {
-                "geojson": {},
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "geojson",
-                "id",
+                "layersId",
                 "name"
             ],
             "type": "object"
@@ -250,27 +277,52 @@
         "ImportProject": {
             "properties": {
                 "description": {
+                    "description": "A short description of the project in text only.\nWill be used for the project's card.",
                     "type": "string"
                 },
                 "id": {
+                    "description": "Unique identifier of the project acroos all projects.",
                     "type": "string"
                 },
                 "image": {
+                    "description": "Image of the project that will be used to create the project card.\nIt's a relative path to the image.",
                     "type": "string"
                 },
                 "layers": {
+                    "description": "List of layer that can be used on maps\nA layer can be a tiles URL or a path to a geojson",
                     "items": {
-                        "$ref": "#/definitions/IProjectLayer<string>"
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "layer": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "id",
+                            "layer"
+                        ],
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "maps": {
+                    "description": "Maps list of the project.",
+                    "items": {
+                        "$ref": "#/definitions/IProjectMap"
                     },
                     "type": "array"
                 },
                 "name": {
+                    "description": "Name of the project.",
                     "type": "string"
                 }
             },
             "required": [
                 "id",
                 "layers",
+                "maps",
                 "name"
             ],
             "type": "object"

@@ -1,14 +1,56 @@
-interface IProjectLayer<G> {
+interface IProjectMap {
+  /**
+   * Unique identifier of the map across the project.
+   * Will be used in the URL.
+   */
   id: string;
+  /**
+   * Name of the map
+   */
   name: string;
-  geojson: G;
+  /**
+   * List of ordered layers IDS for the map
+   */
+  layersId: Array<string>;
+  /**
+   * Attribution for the map
+   */
+  attribution: string;
 }
+
 interface IProject<G> {
+  /**
+   * Unique identifier of the project acroos all projects.
+   */
   id: string;
+  /**
+   * Name of the project.
+   */
   name: string;
+  /**
+   * A short description of the project in text only.
+   * Will be used for the project's card.
+   */
   description?: string;
+  /**
+   * Image of the project that will be used to create the project card.
+   * It's a relative path to the image.
+   */
   image?: string;
-  layers: Array<IProjectLayer<G>>;
+  /**
+   * BBOX of the project  (minX, minY, maxX, maxY)
+   */
+  bbox?: [[number, number], [number, number]];
+  /**
+   * List of layer that can be used on maps
+   * A layer can be a tiles URL or a path to a geojson
+   */
+  layers: Array<{ id: string; layer: G }>;
+
+  /**
+   * Maps list of the project.
+   */
+  maps: Array<IProjectMap>;
 }
 
 type IProjectFull<G> = IProject<G> & {
@@ -20,5 +62,5 @@ type IProjectFull<G> = IProject<G> & {
 };
 
 export type ImportProject = IProject<string>;
-export type InternalProject = IProjectFull<unknown>;
-export type Project = IProjectFull<string>;
+export type InternalProject = IProjectFull<string | unknown>;
+export type Project = IProjectFull<string> & { bbox: [[number, number], [number, number]] };

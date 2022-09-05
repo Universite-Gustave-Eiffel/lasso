@@ -1,17 +1,14 @@
-import { FC } from "react";
+import { FC, PropsWithChildren } from "react";
 import { Map } from "leaflet";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { MapContainer } from "react-leaflet";
 
 interface PrimaryMapProps {
   setMap?: (map: Map) => void;
 }
-export const PrimaryMap: FC<PrimaryMapProps> = ({ setMap }) => {
+export const PrimaryMap: FC<PropsWithChildren<PrimaryMapProps>> = ({ setMap, children }) => {
   return (
-    <MapContainer inertia={false} center={[0, 0]} zoom={13} ref={setMap}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+    <MapContainer inertia={false} ref={setMap}>
+      {children}
     </MapContainer>
   );
 };

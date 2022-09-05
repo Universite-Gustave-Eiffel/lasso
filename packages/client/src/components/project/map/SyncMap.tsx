@@ -1,12 +1,18 @@
-import { FC, useEffect, useState, useMemo, useCallback } from "react";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { FC, PropsWithChildren, useEffect, useState, useMemo, useCallback } from "react";
+import { MapContainer } from "react-leaflet";
 import { Map } from "leaflet";
 
 interface SyncMapProps {
-  map: Map;
+  setMap?: (map: Map) => void;
+  syncWithMap: Map;
   bidirectional?: boolean;
 }
-export const SyncMap: FC<SyncMapProps> = ({ map, bidirectional = true }) => {
+export const SyncMap: FC<PropsWithChildren<SyncMapProps>> = ({
+  syncWithMap,
+  bidirectional = true,
+  setMap,
+  children,
+}) => {
   const [localMap, setLocalMap] = useState<Map | null>(null);
   const [isMoving, setIsMoving] = useState<boolean>(false);
 
@@ -15,6 +21,10 @@ export const SyncMap: FC<SyncMapProps> = ({ map, bidirectional = true }) => {
       target.fitBounds(source.getBounds(), { animate: false });
     }
   }, []);
+
+  useEffect(() => {
+    if (localMap && setMap) setMap(localMap);
+  });
 
   useEffect(() => {
     const enableIsMoving = () => setIsMoving(true);
@@ -50,35 +60,32 @@ export const SyncMap: FC<SyncMapProps> = ({ map, bidirectional = true }) => {
    * in order to synchronise the viewbox, except when the local map is moving
    */
   useEffect(() => {
-    const fn = () => syncPosition(map, localMap);
-    if (!isMoving) map.on("move", fn);
+    const fn = () => syncPosition(syncWithMap, localMap);
+    if (!isMoving) syncWithMap.on("move", fn);
     return () => {
-      if (!isMoving) map.off("move", fn);
+      if (!isMoving) syncWithMap.off("move", fn);
     };
-  }, [map, localMap, syncPosition, isMoving]);
+  }, [syncWithMap, localMap, syncPosition, isMoving]);
 
   /**
    * When the local map viewbox change and bidirectional mode is enabled
    *  => sync the position of the provided map
    */
   useEffect(() => {
-    const fn = () => syncPosition(localMap, map);
+    const fn = () => syncPosition(localMap, syncWithMap);
     if (localMap && bidirectional) localMap.on("move", fn);
     return () => {
       if (localMap && bidirectional) localMap.off("move", fn);
     };
-  }, [map, localMap, syncPosition, bidirectional]);
+  }, [syncWithMap, localMap, syncPosition, bidirectional]);
 
   const displayMap = useMemo(
     () => (
-      <MapContainer inertia={false} center={[0, 0]} zoom={13} ref={setLocalMap} zoomControl={bidirectional}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      <MapContainer inertia={false} ref={setLocalMap} zoomControl={bidirectional}>
+        {children}
       </MapContainer>
     ),
-    [bidirectional],
+    [bidirectional, children],
   );
 
   return <>{displayMap}</>;

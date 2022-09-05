@@ -4,6 +4,9 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "dependencies": {
+    "@turf/bbox": "^6.5.0",
+    "@turf/combine": "^6.5.0",
+    "@turf/helpers": "^6.5.0",
     "ajv": "^8.11.0",
     "nodemon": "^2.0.19",
     "typescript-json-schema": "^0.54.0"
@@ -15,7 +18,7 @@
     "generate:jsonschema": "typescript-json-schema ./src/types.ts '*' --required --ignoreErrors --out src/json-schema.json",
     "test": "mocha --recursive --fail-zero 'false' --require ts-node/register 'test/**/*.ts' ",
     "build": "npm run clean && npm run lint && npm run generate:jsonschema && npm run compile",
-    "start": "concurrently -n lint,compile,exec \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"nodemon --watch lib --exec npm run exec\"",
+    "start": "concurrently -n lint,compile,exec \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"nodemon --watch ./lib --watch ../../data --exec npm run exec\"",
     "exec": "ts-node ./src/index.ts"
   }
 }
