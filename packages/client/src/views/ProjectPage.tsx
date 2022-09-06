@@ -13,7 +13,7 @@ export const ProjectPage: FC = () => {
   return (
     <>
       {project ? (
-        <Layout heading={project.name}>
+        <Layout heading={project.name} fluid={true}>
           <div className="col-12 ">
             <ProjectMaps project={project} mode="side-by-side" />
           </div>

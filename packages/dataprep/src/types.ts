@@ -1,3 +1,7 @@
+import { GeoJSON } from "geojson";
+
+export type BBOX = [[number, number], [number, number]];
+
 interface IProjectMap {
   /**
    * Unique identifier of the map across the project.
@@ -38,9 +42,16 @@ interface IProject<G> {
    */
   image?: string;
   /**
-   * BBOX of the project  (minX, minY, maxX, maxY)
+   * Color of the project.
+   * Will be used on the home map to draw the rectangle.
+   * If not specified, a random color will be generated.
    */
-  bbox?: [[number, number], [number, number]];
+  color?: string;
+  /**
+   * BBOX of the project  (minX, minY, maxX, maxY)
+   * If not specified, we will compute the outer BBOX from GeoJSON layers
+   */
+  bbox?: BBOX;
   /**
    * List of layer that can be used on maps
    * A layer can be a tiles URL or a path to a geojson
@@ -62,5 +73,10 @@ type IProjectFull<G> = IProject<G> & {
 };
 
 export type ImportProject = IProject<string>;
-export type InternalProject = IProjectFull<string | unknown>;
-export type Project = IProjectFull<string> & { bbox: [[number, number], [number, number]] };
+export type InternalProject = IProjectFull<string | GeoJSON>;
+export type Project = IProjectFull<string> & { bbox: BBOX; color: string };
+
+export interface ExportedData {
+  bbox: BBOX;
+  projects: Array<Project>;
+}

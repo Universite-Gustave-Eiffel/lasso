@@ -1,0 +1,39 @@
+name: I18N
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  i18n:
+    runs-on: ubuntu-latest
+    environment: i18n
+    strategy:
+      matrix:
+        node-version: [16.x]
+    env:
+      CI: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install npm
+        run: npm install -g npm@next-8
+
+      - name: Install
+        run: npm install
+
+      - name: Transifex
+        run: npm run i18n --workspace=@lasso/client

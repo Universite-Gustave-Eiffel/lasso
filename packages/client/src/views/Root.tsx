@@ -4,7 +4,9 @@ import L from "leaflet";
 
 import { AppContextProvider } from "../core/context";
 import { Routing } from "../core/routing";
+import { I18N } from "../core/i18n";
 
+// GLobal leaflet config
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 L.Marker.prototype.setIcon(
   L.icon({
@@ -15,9 +17,11 @@ L.Marker.prototype.setIcon(
 const Root: FC = () => {
   return (
     <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <AppContextProvider>
-        <Routing />
-      </AppContextProvider>
+      <I18N>
+        <AppContextProvider>
+          <Routing />
+        </AppContextProvider>
+      </I18N>
     </BrowserRouter>
   );
 };

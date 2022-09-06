@@ -1,6 +1,9 @@
 import { FC } from "react";
 import { Layout } from "./layout";
+import { useT } from "@transifex/react";
 
 export const ErrorPage: FC = () => {
-  return <Layout heading="Error"></Layout>;
+  const t = useT();
+
+  return <Layout heading={t("common.error")}></Layout>;
 };

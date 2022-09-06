@@ -1,13 +1,14 @@
 import { head } from "lodash";
 import * as path from "path";
-import bbox from "@turf/bbox";
+import { GeoJSON } from "geojson";
 
 import { config } from "../config";
 import { ImportProject, InternalProject, Project } from "../types";
 import * as schema from "../json-schema.json";
 import * as fsu from "./files";
-import { readGeoJsonFile } from "./geojson";
+import { readGeoJsonFile, outerBbox } from "./geojson";
 import { readMarkdownFile } from "./markdown";
+import { getRandomHexColor } from "./color";
 
 /**
  * Given a folder, do the job to import internally the project.
@@ -50,36 +51,6 @@ export async function importProjectFromPath(projectFolderPath: string): Promise<
   };
 }
 
-/**
- * Compute the default BBOX of a project by taking all geojson and compute the bound box
- */
-export function getProjectBBOX(project: InternalProject): Project["bbox"] {
-  return project.layers
-    .filter((l) => !`${l.layer}`.includes("{x}"))
-    .map((l) => l.layer)
-    .map((geo) => bbox(geo))
-    .reduce(
-      (
-        acc = [
-          [Infinity, Infinity],
-          [-Infinity, -Infinity],
-        ],
-        curr,
-      ) => {
-        // min X
-        if (curr[0] < acc[0][1]) acc[0][1] = curr[0];
-        if (curr[1] < acc[0][0]) acc[0][0] = curr[1];
-        if (curr[2] > acc[1][1]) acc[1][1] = curr[2];
-        if (curr[3] > acc[1][0]) acc[1][0] = curr[3];
-        return acc;
-      },
-      [
-        [Infinity, Infinity],
-        [-Infinity, -Infinity],
-      ] as Project["bbox"],
-    );
-}
-
 export async function exportProject(project: InternalProject): Promise<Project> {
   // Create the  folder
   // ~~~~~~~~~~~~~~~~~~
@@ -87,6 +58,12 @@ export async function exportProject(project: InternalProject): Promise<Project> 
   await fsu.createFolder(projectFolder);
   const projectUrl = `${projectFolder.replace(path.resolve(config.exportPath), ".")}/`;
 
+  // Copy asset folder if needed
+  if (await fsu.checkExists(path.resolve(config.importPath, "assets"))) {
+    await fsu.copy(path.resolve(config.importPath, "assets"), path.resolve(projectFolder, "assets"));
+  }
+
+  // Project's image
   let image: string | undefined = undefined;
   if (project.image) {
     const filename = path.basename(project.image);
@@ -131,7 +108,10 @@ export async function exportProject(project: InternalProject): Promise<Project> 
 
   return {
     ...project,
-    bbox: project.bbox || getProjectBBOX(project),
+    bbox:
+      project.bbox ||
+      outerBbox(project.layers.filter((l) => !`${l.layer}`.includes("{x}")).map((l) => l.layer as GeoJSON)),
+    color: project.color || getRandomHexColor(),
     image,
     layers,
     pages,

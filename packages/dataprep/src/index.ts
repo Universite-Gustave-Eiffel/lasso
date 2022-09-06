@@ -2,9 +2,11 @@ import { sortBy } from "lodash";
 
 import { config } from "./config";
 import * as fsu from "./utils/files";
+import { metaBbox } from "./utils/geojson";
 import { importProjectFromPath, exportProject } from "./utils/project";
+import { ExportedData } from "./types";
 
-export { Project } from "./types";
+export { ExportedData, Project } from "./types";
 
 async function run(): Promise<void> {
   // List project folders in the import folder
@@ -18,8 +20,13 @@ async function run(): Promise<void> {
   // Export each project
   const projectsExport = await Promise.all(projects.map((p) => exportProject(p)));
 
+  const exportObj: ExportedData = {
+    bbox: metaBbox(projectsExport.map((p) => p.bbox)),
+    projects: projectsExport,
+  };
+
   // Export the project list
-  await fsu.writeFile(`${config.exportPath}/projects.json`, projectsExport);
+  await fsu.writeFile(`${config.exportPath}/projects.json`, exportObj);
 }
 
 console.log("Starting dataprep");

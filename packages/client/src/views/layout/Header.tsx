@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
+import { LanguagePicker } from "@transifex/react";
 
 export const Header: FC = () => {
   return (
@@ -10,6 +11,7 @@ export const Header: FC = () => {
         </Link>
 
         <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+          <LanguagePicker />
           <ul className="nav nav-pills">
             <li className="nav-item"></li>
           </ul>

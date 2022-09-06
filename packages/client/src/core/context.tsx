@@ -1,10 +1,10 @@
 import { FC, PropsWithChildren, createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Project } from "@lasso/dataprep";
+import { ExportedData } from "@lasso/dataprep";
 import { NotificationState } from "./notifications";
 import { ModalRequest } from "./modals";
-import { useProjectList } from "../hooks/useProjectList";
+import { useProjectData } from "../hooks/useProjectData";
 import { Loader } from "../components/Loader";
 
 /**
@@ -13,13 +13,19 @@ import { Loader } from "../components/Loader";
 export interface AppContextType {
   notifications: Array<NotificationState>;
   modal?: ModalRequest<any, any>;
-  projects: Array<Project>;
+  data: ExportedData;
 }
 
 const initialContext: AppContextType = {
   notifications: [],
   modal: undefined,
-  projects: [],
+  data: {
+    bbox: [
+      [0, 0],
+      [0, 0],
+    ],
+    projects: [],
+  },
 };
 
 export type AppContextSetter = (value: AppContextType | ((prev: AppContextType) => AppContextType)) => void;
@@ -37,14 +43,14 @@ export const AppContext = createContext<{
  */
 export const AppContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const navigate = useNavigate();
-  const { loading, error, data } = useProjectList();
+  const { loading, error, data } = useProjectData();
 
   const [context, setContext] = useState<AppContextType>(initialContext);
 
   useEffect(() => {
     setContext((prev) => ({
       ...prev,
-      projects: data ? data : [],
+      data: data ? data : prev.data,
     }));
   }, [data]);
 

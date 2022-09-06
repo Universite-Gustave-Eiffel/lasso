@@ -92,9 +92,9 @@ export async function readJson<T>(file: string, schema?: Schema): Promise<T> {
       throw new Error("Validation fails");
     }
   }
-  return json as unknown as T;
+  return (json as unknown) as T;
 }
 
-export async function copy(file: string, target: string): Promise<void> {
-  await fsp.copyFile(file, target);
+export async function copy(source: string, target: string): Promise<void> {
+  await fsp.copyFile(source, target);
 }
