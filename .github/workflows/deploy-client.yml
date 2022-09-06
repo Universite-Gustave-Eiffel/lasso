@@ -8,8 +8,7 @@ on:
     branches:
       - main
     paths:
-      - "packages/dataprep/**"
-      - "data/**"
+      - "packages/client/**"
 
 jobs:
   deploy:
