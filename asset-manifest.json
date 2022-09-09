@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/lasso/static/css/main.ce026731.css",
-    "main.js": "/lasso/static/js/main.ec221115.js",
+    "main.css": "/lasso/static/css/main.0ccd59d2.css",
+    "main.js": "/lasso/static/js/main.1847331c.js",
     "static/js/750.b7af5372.chunk.js": "/lasso/static/js/750.b7af5372.chunk.js",
     "index.html": "/lasso/index.html",
-    "main.ce026731.css.map": "/lasso/static/css/main.ce026731.css.map",
-    "main.ec221115.js.map": "/lasso/static/js/main.ec221115.js.map",
+    "main.0ccd59d2.css.map": "/lasso/static/css/main.0ccd59d2.css.map",
+    "main.1847331c.js.map": "/lasso/static/js/main.1847331c.js.map",
     "750.b7af5372.chunk.js.map": "/lasso/static/js/750.b7af5372.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.ce026731.css",
-    "static/js/main.ec221115.js"
+    "static/css/main.0ccd59d2.css",
+    "static/js/main.1847331c.js"
   ]
 }
