@@ -35,4 +35,8 @@ jobs:
         run: npm install
 
       - name: Transifex
+        with:
+          env:
+            TRANSIFEX_TOKEN: ${{ secrets.TRANSIFEX_TOKEN }}
+            TRANSIFEX_SECRET: ${{ secrets.TRANSIFEX_SECRET }}
         run: npm run i18n --workspace=@lasso/client
