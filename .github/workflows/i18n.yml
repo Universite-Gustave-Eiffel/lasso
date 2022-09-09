@@ -10,7 +10,6 @@ on:
 jobs:
   i18n:
     runs-on: ubuntu-latest
-    environment: i18n
     strategy:
       matrix:
         node-version: [16.x]
