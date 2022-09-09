@@ -10,7 +10,7 @@ interface AccordionProperties {
 }
 export const ProjectsAccordion: FC<AccordionProperties> = ({ projects, selected, setSelected }) => {
   return (
-    <div className="accordion">
+    <div className="accordion accordion-flush">
       {projects.map((project) => (
         <div key={project.id} className="accordion-item">
           <h2 className="accordion-header">

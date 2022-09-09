@@ -65,11 +65,7 @@ interface IProject<G> {
 }
 
 type IProjectFull<G> = IProject<G> & {
-  pages: {
-    project: string;
-    sponsors?: string;
-    bibliography?: string;
-  };
+  pages: { [key: string]: string };
 };
 
 export type ImportProject = IProject<string>;

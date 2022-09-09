@@ -98,3 +98,9 @@ export async function readJson<T>(file: string, schema?: Schema): Promise<T> {
 export async function copy(source: string, target: string): Promise<void> {
   await fsp.copyFile(source, target);
 }
+
+export function getFilenameFromPath(filePath: string): string {
+  const name1 = path.basename(filePath);
+  const ext1 = path.extname(filePath);
+  return path.basename(name1, ext1);
+}

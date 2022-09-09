@@ -1,0 +1,58 @@
+{
+  "id": "sample4",
+  "name": "Sample project 4",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "image": "logo.jpeg",
+  "layers": [
+    {
+      "id": "osm",
+      "layer": "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+    },
+    {
+      "id": "stamen-toner",
+      "layer": "http://tile.stamen.com/toner/{z}/{x}/{y}.png"
+    },
+    {
+      "id": "culture",
+      "layer": "./layers/culture.geo.json"
+    },
+    {
+      "id": "enseignement",
+      "layer": "./layers/enseignement.geo.json"
+    },
+    {
+      "id": "equipub",
+      "layer": "./layers/equipub.geo.json"
+    },
+    {
+      "id": "mobilite",
+      "layer": "./layers/mobilite.geo.json"
+    }
+  ],
+  "maps": [
+    {
+      "id": "culture",
+      "name": "Lieux culturels",
+      "layersId": ["osm", "culture"],
+      "attribution": "OSM & Villes de Nantes"
+    },
+    {
+      "id": "enseignement",
+      "name": "Etablissement éducatifs",
+      "layersId": ["osm", "enseignement"],
+      "attribution": "OSM & Villes de Nantes"
+    },
+    {
+      "id": "equipub",
+      "name": "Equipement publics",
+      "layersId": ["osm", "equipub"],
+      "attribution": "OSM & Villes de Nantes"
+    },
+    {
+      "id": "mobilite",
+      "name": "Mobilité",
+      "layersId": ["stamen-toner", "mobilite"],
+      "attribution": "OSM & Villes de Nantes"
+    }
+  ]
+}

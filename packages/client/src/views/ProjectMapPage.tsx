@@ -6,17 +6,15 @@ import { ProjectMaps } from "../components/project/ProjectMaps";
 import { NotFoundPage } from "./NotFoundPage";
 import { Layout } from "./layout";
 
-export const ProjectPage: FC = () => {
+export const ProjectMapPage: FC = () => {
   const { id } = useParams<"id">();
   const project = useProject(id || "");
 
   return (
     <>
       {project ? (
-        <Layout heading={project.name} fluid={true}>
-          <div className="col-12 ">
-            <ProjectMaps project={project} mode="side-by-side" />
-          </div>
+        <Layout project={project} heading={project.name} fullPage={true}>
+          <ProjectMaps project={project} />
         </Layout>
       ) : (
         <NotFoundPage />

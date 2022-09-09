@@ -10,7 +10,7 @@ export const Projects: FC = () => {
   const [selected, setSelected] = useState<Project | null>(null);
 
   return (
-    <div className="row">
+    <div className="d-flex align-items-stretch">
       <div className="col-8">
         <ProjectsMap bbox={data.bbox} projects={data.projects} selected={selected} setSelected={setSelected} />
       </div>

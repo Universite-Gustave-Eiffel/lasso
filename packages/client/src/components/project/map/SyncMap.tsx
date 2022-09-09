@@ -1,91 +1,81 @@
-import { FC, PropsWithChildren, useEffect, useState, useMemo, useCallback } from "react";
+import { FC, PropsWithChildren, useEffect, useState, useMemo } from "react";
 import { MapContainer } from "react-leaflet";
 import { Map } from "leaflet";
+
+function syncPosition(source: Map | null, target: Map | null) {
+  if (source && target) {
+    target.fitBounds(source.getBounds(), { animate: false, padding: [0, 0] });
+  }
+}
 
 interface SyncMapProps {
   setMap?: (map: Map) => void;
   syncWithMap: Map;
-  bidirectional?: boolean;
 }
-export const SyncMap: FC<PropsWithChildren<SyncMapProps>> = ({
-  syncWithMap,
-  bidirectional = true,
-  setMap,
-  children,
-}) => {
+export const SyncMap: FC<PropsWithChildren<SyncMapProps>> = ({ syncWithMap, setMap, children }) => {
   const [localMap, setLocalMap] = useState<Map | null>(null);
-  const [isMoving, setIsMoving] = useState<boolean>(false);
-
-  const syncPosition = useCallback((source: Map | null, target: Map | null) => {
-    if (source && target && !target.getBounds().equals(source.getBounds())) {
-      target.fitBounds(source.getBounds(), { animate: false });
-    }
-  }, []);
+  const [whoIsMoving, setWhoIsMoving] = useState<string | null>(null);
 
   useEffect(() => {
-    if (localMap && setMap) setMap(localMap);
-  });
-
-  useEffect(() => {
-    const enableIsMoving = () => setIsMoving(true);
-    const disableIsMoving = () => setIsMoving(false);
     if (localMap) {
-      localMap.on("movestart", enableIsMoving);
-      localMap.on("moveend", disableIsMoving);
-      if (!bidirectional) {
-        localMap.boxZoom.disable();
-        localMap.doubleClickZoom.disable();
-        localMap.dragging.disable();
-        localMap.keyboard.disable();
-        localMap.scrollWheelZoom.disable();
-        localMap.touchZoom.disable();
-      }
+      if (setMap) setMap(localMap);
+      localMap.fitBounds(syncWithMap.getBounds());
     }
+  }, [localMap, setMap, syncWithMap]);
+
+  /**
+   * Listen to movestart/moveend events to know who is moving.
+   */
+  useEffect(() => {
+    const fnLocalStart = () => setWhoIsMoving((prev) => (prev === null ? "local" : prev));
+    const fnSyncStart = () => setWhoIsMoving((prev) => (prev === null ? "sync" : prev));
+    const fnLocalEnd = () => setWhoIsMoving((prev) => (prev === "local" ? null : prev));
+    const fnSyncEnd = () => setWhoIsMoving((prev) => (prev === "sync" ? null : prev));
+
+    if (localMap) {
+      localMap.on("movestart", fnLocalStart);
+      localMap.on("moveend", fnLocalEnd);
+    }
+    syncWithMap.on("movestart", fnSyncStart);
+    syncWithMap.on("moveend", fnSyncEnd);
+
     return () => {
       if (localMap) {
-        localMap.off("movestart", enableIsMoving);
-        localMap.off("moveend", disableIsMoving);
-        localMap.boxZoom.enable();
-        localMap.doubleClickZoom.enable();
-        localMap.dragging.enable();
-        localMap.keyboard.enable();
-        localMap.scrollWheelZoom.enable();
-        localMap.touchZoom.enable();
+        localMap.off("movestart", fnLocalStart);
+        localMap.off("moveend", fnLocalEnd);
       }
+      syncWithMap.off("movestart", fnSyncStart);
+      syncWithMap.off("moveend", fnSyncEnd);
     };
-  }, [localMap, bidirectional]);
+  }, [localMap, syncWithMap]);
 
   /**
    * Listen on the provided map move event
    * in order to synchronise the viewbox, except when the local map is moving
    */
   useEffect(() => {
-    const fn = () => syncPosition(syncWithMap, localMap);
-    if (!isMoving) syncWithMap.on("move", fn);
-    return () => {
-      if (!isMoving) syncWithMap.off("move", fn);
+    const syncLocal = () => {
+      if (whoIsMoving === "sync") syncPosition(syncWithMap, localMap);
     };
-  }, [syncWithMap, localMap, syncPosition, isMoving]);
+    const syncMap = () => {
+      if (whoIsMoving === "local") syncPosition(localMap, syncWithMap);
+    };
 
-  /**
-   * When the local map viewbox change and bidirectional mode is enabled
-   *  => sync the position of the provided map
-   */
-  useEffect(() => {
-    const fn = () => syncPosition(localMap, syncWithMap);
-    if (localMap && bidirectional) localMap.on("move", fn);
+    syncWithMap.on("move", syncLocal);
+    if (localMap) localMap.on("move", syncMap);
     return () => {
-      if (localMap && bidirectional) localMap.off("move", fn);
+      syncWithMap.off("move", syncLocal);
+      if (localMap) localMap.off("move", syncMap);
     };
-  }, [syncWithMap, localMap, syncPosition, bidirectional]);
+  }, [syncWithMap, localMap, whoIsMoving]);
 
   const displayMap = useMemo(
     () => (
-      <MapContainer inertia={false} ref={setLocalMap} zoomControl={bidirectional}>
+      <MapContainer inertia={false} ref={setLocalMap} trackResize={true} center={[0, 0]}>
         {children}
       </MapContainer>
     ),
-    [bidirectional, children],
+    [children],
   );
 
   return <>{displayMap}</>;

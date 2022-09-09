@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compileOnSave": false,
-  "include": ["src"],
+  "include": ["src", "types"],
   "compilerOptions": {
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],

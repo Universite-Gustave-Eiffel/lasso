@@ -4,6 +4,7 @@ import cx from "classnames";
 import L, { Map, Layer } from "leaflet";
 
 import { Project } from "@lasso/dataprep";
+import { config } from "../../config";
 
 export interface LayerSelectorProps {
   /**
@@ -49,7 +50,7 @@ export const LayerSelector: FC<LayerSelectorProps> = ({ id, className, style, ma
             if (l.layer.includes("{x}") && l.layer.includes("{y}")) {
               return L.tileLayer(l.layer);
             } else {
-              const response = await fetch(`/data/${l.layer}`);
+              const response = await fetch(`${config.data_path}/${l.layer}`);
               const geoJson = await response.json();
               return L.geoJSON(geoJson as any);
             }
@@ -63,11 +64,11 @@ export const LayerSelector: FC<LayerSelectorProps> = ({ id, className, style, ma
     };
   }, [selected, map, project]);
 
-  useEffect(() => {
-    if (map) {
-      map.fitBounds(project.bbox);
-    }
-  }, [map, project]);
+  // useEffect(() => {
+  //   if (map) {
+  //     map.fitBounds(project.bbox);
+  //   }
+  // }, [map, project]);
 
   return (
     <div {...htmlProps}>

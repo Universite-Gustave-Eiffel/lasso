@@ -12,8 +12,8 @@ export interface APIResult<T> {
  * API hook for GET
  */
 export function useHttpGet<
-  P extends Record<string, string | number | boolean>,
-  Q extends Record<string, string | number | boolean>,
+  P extends Record<string, string | number | boolean | null>,
+  Q extends Record<string, string | number | boolean | null>,
   R
 >(variables: {
   path: string;

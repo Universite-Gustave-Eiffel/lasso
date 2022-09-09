@@ -1,4 +1,3 @@
-import { head } from "lodash";
 import * as path from "path";
 import { GeoJSON } from "geojson";
 
@@ -21,13 +20,17 @@ export async function importProjectFromPath(projectFolderPath: string): Promise<
   });
 
   // List md files for static pages
-  const pages = await fsu.listFolder(projectFolderPath, {
-    extension: ".md",
-  });
-  const projectPagePath = head(pages.filter((p) => p.endsWith("/project.md")));
-  if (!projectPagePath) throw new Error(`Project page is missing for ${project.name}`);
-  const sponsorsPagePath = head(pages.filter((p) => p.endsWith("/sponsors.md")));
-  const bibliographyPagePath = head(pages.filter((p) => p.endsWith("/bibliography.md")));
+  const markdownFiles = await fsu.listFolder(projectFolderPath, { extension: ".md" });
+  if (!markdownFiles.find((p) => p.endsWith("/project.md")))
+    throw new Error(`Project page is missing for ${project.name}`);
+  const pages = (
+    await Promise.all(
+      markdownFiles.map(async (f) => ({
+        name: fsu.getFilenameFromPath(f),
+        content: await readMarkdownFile(f),
+      })),
+    )
+  ).reduce((acc, curr) => ({ ...acc, [curr.name]: curr.content }), {} as { [key: string]: string });
 
   return {
     ...project,
@@ -42,12 +45,7 @@ export async function importProjectFromPath(projectFolderPath: string): Promise<
             : await readGeoJsonFile(`${projectFolderPath}/${l.layer}`),
       })),
     ),
-    // retieve page markdown content
-    pages: {
-      project: await readMarkdownFile(projectPagePath),
-      sponsors: sponsorsPagePath ? await readMarkdownFile(sponsorsPagePath) : undefined,
-      bibliography: bibliographyPagePath ? await readMarkdownFile(bibliographyPagePath) : undefined,
-    },
+    pages,
   };
 }
 

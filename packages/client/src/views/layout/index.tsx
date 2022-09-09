@@ -1,5 +1,7 @@
 import { FC, PropsWithChildren } from "react";
+import cx from "classnames";
 
+import { Project } from "@lasso/dataprep";
 import { Notifications } from "../../core/notifications";
 import { Modals } from "../../core/modals";
 import { Loader } from "../../components/Loader";
@@ -9,19 +11,18 @@ import { Heading } from "./Heading";
 
 interface LayoutProps {
   loading?: boolean;
-  fluid?: boolean;
+  fullPage?: boolean;
+  project?: Project;
   heading?: string | JSX.Element;
-  headingTools?: JSX.Element;
 }
-export const Layout: FC<PropsWithChildren<LayoutProps>> = ({ fluid, heading, headingTools, loading, children }) => {
+export const Layout: FC<PropsWithChildren<LayoutProps>> = ({ project, fullPage, heading, loading, children }) => {
   return (
     <div id="app-root">
-      <Header />
-      <main className={fluid === true ? "container-fluid" : "container"}>
-        <div className="row">
-          <Heading heading={heading} headingTools={headingTools} />
-          {children}
-        </div>
+      <Header>{project && <Heading project={project} />}</Header>
+
+      <main className={cx(fullPage === true ? "d-flex align-self-stretch" : "container py-3")}>
+        {!fullPage && <Heading heading={heading} />}
+        {children}
       </main>
 
       <Notifications />
