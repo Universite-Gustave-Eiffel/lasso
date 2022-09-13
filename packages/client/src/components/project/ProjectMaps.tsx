@@ -41,10 +41,12 @@ export const ProjectMaps: FC<ProjectMapProps> = ({ id, className, style, project
    * => remove 2nd map in state
    */
   useEffect(() => {
-    if (secondaryMap) secondaryMap.invalidateSize();
-    if (primaryMap) primaryMap.invalidateSize();
     if (mode === "single") {
+      if (primaryMap) primaryMap.invalidateSize();
       setSecondaryMap(null);
+    } else {
+      if (primaryMap) primaryMap.invalidateSize();
+      if (secondaryMap) secondaryMap.invalidateSize();
     }
   }, [mode, primaryMap, secondaryMap]);
 

@@ -78,21 +78,25 @@ export async function readFile(file: string): Promise<string> {
  * If schema is specified, the function will validate the json against it.
  */
 export async function readJson<T>(file: string, schema?: Schema): Promise<T> {
-  const data = await readFile(file);
-  const json = JSON.parse(data);
-  if (schema) {
-    const ajv = new Ajv();
-    const validateJson = await ajv.compile(schema);
-    if (!validateJson(json)) {
-      if (validateJson.errors)
-        throw new Error(
-          `Validation fails with errors:
-          ${validateJson.errors.map((e) => `${e.message}`).join("\n")}`,
-        );
-      throw new Error("Validation fails");
+  try {
+    const data = await readFile(file);
+    const json = JSON.parse(data);
+    if (schema) {
+      const ajv = new Ajv();
+      const validateJson = await ajv.compile(schema);
+      if (!validateJson(json)) {
+        if (validateJson.errors)
+          throw new Error(
+            `Validation fails with errors:
+            ${validateJson.errors.map((e) => `${e.message}`).join("\n")}`,
+          );
+        throw new Error("Validation fails");
+      }
     }
+    return (json as unknown) as T;
+  } catch (e) {
+    throw new Error(`Reading file ${file} failed : ${e}`);
   }
-  return (json as unknown) as T;
 }
 
 export async function copy(source: string, target: string): Promise<void> {

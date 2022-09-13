@@ -38,7 +38,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false --passWithNoTests",
     "eject": "react-scripts eject",
-    "i18n": "txjs-cli push src/"
+    "i18n": "txjs-cli push src/ && txjs-cli push i18n.json --parser=i18next"
   },
   "eslintConfig": {
     "extends": [

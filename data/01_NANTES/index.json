@@ -1,6 +1,6 @@
 {
-  "id": "sample2",
-  "name": "Sample project 2",
+  "id": "nantes",
+  "name": "Nantes",
   "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   "image": "logo.jpeg",
   "layers": [
@@ -27,9 +27,35 @@
     {
       "id": "mobilite",
       "layer": "./layers/mobilite.geo.json"
+    },
+    {
+      "id": "GeoAll",
+      "layer": "./layers/GeoAll.geojson"
+    },
+    {
+      "id": "Grid3857",
+      "layer": "./layers/resultGrid3857.geojson"
     }
   ],
   "maps": [
+    {
+      "id": "GeoAll",
+      "name": "GeoAll",
+      "layersId": ["osm", "GeoAll"],
+      "attribution": "OSM"
+    },
+    {
+      "id": "Grid3857",
+      "name": "Grid3857",
+      "layersId": ["osm", "Grid3857"],
+      "attribution": "OSM"
+    },
+    {
+      "id": "culture",
+      "name": "Lieux culturels",
+      "layersId": ["osm", "culture"],
+      "attribution": "OSM & Villes de Nantes"
+    },
     {
       "id": "culture",
       "name": "Lieux culturels",
