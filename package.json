@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "clean": "npm run clean --workspaces --if-present",
-    "lint": "esw . --ext .ts",
+    "lint": "esw . --ext .ts --ext tsx",
     "compile": "tsc -b --preserveWatchOutput",
     "dataprep": "npm run exec --workspace=@lasso/dataprep",
     "build": "npm run clean && npm run lint && npm run compile -- --force && npm run build --workspace=@lasso/client",
