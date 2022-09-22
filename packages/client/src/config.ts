@@ -4,5 +4,5 @@ export const config = {
   notificationTimeoutMs: 3000,
   nbHiglightedProject: 4,
   defaultLocale: "en",
-  transifexToken: process.env.TRANSIFEX_TOKEN || "1/64b3147b4103c1a091faad1deaa05a23ac2cd32a",
+  transifexToken: process.env.TRANSIFEX_TOKEN || "1/78dd771fa7b374eeeae5827e6a2e44694dd1f925",
 };
