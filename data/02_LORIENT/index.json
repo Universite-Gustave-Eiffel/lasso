@@ -8,13 +8,19 @@
       "id": "osm",
       "layer": "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
     },
-    { "id": "Geo2", "layer": "./layers/resultGrid2.geojson" }
+    {
+      "id": "Geo2",
+      "layer": "./layers/resultGrid2.geojson"
+    }
   ],
   "maps": [
     {
       "id": "Grid2",
       "name": "Grid2",
-      "layersId": ["osm", "Geo2"],
+      "layers": [
+        "osm",
+        "Geo2"
+      ],
       "attribution": "OSM"
     }
   ]

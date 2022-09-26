@@ -30,7 +30,21 @@
     },
     {
       "id": "GeoAll",
-      "layer": "./layers/GeoAll.geojson"
+      "layer": "./layers/GeoAll.geojson",
+      "variables": {
+        "emotion_pleasant": {
+          "propertyName": "Plea",
+          "type": "quantitative",
+          "origin": "model"
+        },
+        "emotion_eventful": {
+          "propertyName": "Even",
+          "origin": "model"
+        },
+        "acoustic_trafic": "Road",
+        "acoustic_birds": "Bird",
+        "acoustic_voices": "ExVo"
+      }
     },
     {
       "id": "Grid3857",
@@ -39,45 +53,93 @@
   ],
   "maps": [
     {
-      "id": "GeoAll",
-      "name": "GeoAll",
-      "layersId": ["osm", "GeoAll"],
+      "id": "GeoAll.birds",
+      "name": "birds in GeoAll",
+      "layers": [
+        "osm",
+        {
+          "layerId": "GeoAll",
+          "variable": "acoustic_birds"
+        }
+      ],
+      "attribution": "OSM"
+    },
+    {
+      "id": "GeoAll.trafic",
+      "name": "trafic in GeoAll",
+      "layers": [
+        "osm",
+        {
+          "layerId": "GeoAll",
+          "variable": "acoustic_trafic"
+        }
+      ],
+      "attribution": "OSM"
+    },
+    {
+      "id": "GeoAll.voices",
+      "name": "voices in GeoAll",
+      "layers": [
+        "osm",
+        {
+          "layerId": "GeoAll",
+          "variable": "acoustic_voices"
+        }
+      ],
       "attribution": "OSM"
     },
     {
       "id": "Grid3857",
       "name": "Grid3857",
-      "layersId": ["osm", "Grid3857"],
+      "layers": [
+        "osm",
+        "Grid3857"
+      ],
       "attribution": "OSM"
     },
     {
       "id": "culture",
       "name": "Lieux culturels",
-      "layersId": ["osm", "culture"],
+      "layers": [
+        "osm",
+        "culture"
+      ],
       "attribution": "OSM & Villes de Nantes"
     },
     {
       "id": "culture",
       "name": "Lieux culturels",
-      "layersId": ["osm", "culture"],
+      "layers": [
+        "osm",
+        "culture"
+      ],
       "attribution": "OSM & Villes de Nantes"
     },
     {
       "id": "enseignement",
       "name": "Etablissement éducatifs",
-      "layersId": ["osm", "enseignement"],
+      "layers": [
+        "osm",
+        "enseignement"
+      ],
       "attribution": "OSM & Villes de Nantes"
     },
     {
       "id": "equipub",
       "name": "Equipement publics",
-      "layersId": ["osm", "equipub"],
+      "layers": [
+        "osm",
+        "equipub"
+      ],
       "attribution": "OSM & Villes de Nantes"
     },
     {
       "id": "mobilite",
       "name": "Mobilité",
-      "layersId": ["stamen-toner", "mobilite"],
+      "layers": [
+        "stamen-toner",
+        "mobilite"
+      ],
       "attribution": "OSM & Villes de Nantes"
     }
   ]

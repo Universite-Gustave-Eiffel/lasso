@@ -2,6 +2,21 @@ import { GeoJSON } from "geojson";
 
 export type BBOX = [[number, number], [number, number]];
 
+export type SOUNDSCAPE_VARIABLES =
+  | "acoustic_intensity"
+  | "acoustic_birds"
+  | "acoustic_trafic"
+  | "acoustic_voices"
+  | "emotion_eventful"
+  | "emotion_pleasant";
+
+export type MapLayerType =
+  | string
+  | {
+      layerId: string;
+      variable: SOUNDSCAPE_VARIABLES;
+    };
+
 interface IProjectMap {
   /**
    * Unique identifier of the map across the project.
@@ -15,11 +30,46 @@ interface IProjectMap {
   /**
    * List of ordered layers IDS for the map
    */
-  layersId: Array<string>;
+  layers: Array<MapLayerType>;
   /**
    * Attribution for the map
    */
   attribution: string;
+}
+
+/**
+ * Layer variables definitions
+ */
+type WeekDay = "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
+type LayerVariable =
+  | string
+  | {
+      propertyName: string;
+      type?: "quantitative" | "ordinal" | "nominal"; // default: quantitative
+      origin: "measure" | "model";
+      unit?: string;
+      label?: string;
+      description?: string;
+      timeSeries?: {
+        hoursLabels: Record<string, { label: { fr: string; en: string }; hours: [number, number] }>;
+        dayslabels: Record<string, { label: { fr: string; en: string }; weekDays: WeekDay[] }>;
+      };
+    };
+
+/**
+ * Expected time series variable expression in GeoJSON
+ */
+export interface TimeSeriesGeoJSONProperty {
+  value: number;
+  hours: [number, number];
+  weekDays: WeekDay[];
+}
+[];
+
+export interface ProjectLayer<G> {
+  id: string;
+  layer: G;
+  variables?: Partial<Record<SOUNDSCAPE_VARIABLES, LayerVariable>>;
 }
 
 interface IProject<G> {
@@ -56,7 +106,7 @@ interface IProject<G> {
    * List of layer that can be used on maps
    * A layer can be a tiles URL or a path to a geojson
    */
-  layers: Array<{ id: string; layer: G }>;
+  layers: Array<ProjectLayer<G>>;
 
   /**
    * Maps list of the project.

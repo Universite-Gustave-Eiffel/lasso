@@ -33,25 +33,37 @@
     {
       "id": "culture",
       "name": "Lieux culturels",
-      "layersId": ["osm", "culture"],
+      "layers": [
+        "osm",
+        "culture"
+      ],
       "attribution": "OSM & Villes de Nantes"
     },
     {
       "id": "enseignement",
       "name": "Etablissement éducatifs",
-      "layersId": ["osm", "enseignement"],
+      "layers": [
+        "osm",
+        "enseignement"
+      ],
       "attribution": "OSM & Villes de Nantes"
     },
     {
       "id": "equipub",
       "name": "Equipement publics",
-      "layersId": ["osm", "equipub"],
+      "layers": [
+        "osm",
+        "equipub"
+      ],
       "attribution": "OSM & Villes de Nantes"
     },
     {
       "id": "mobilite",
       "name": "Mobilité",
-      "layersId": ["stamen-toner", "mobilite"],
+      "layers": [
+        "stamen-toner",
+        "mobilite"
+      ],
       "attribution": "OSM & Villes de Nantes"
     }
   ]
