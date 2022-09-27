@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren, useEffect, useState, useMemo } from "react";
-import { MapContainer } from "react-leaflet";
 import { Map } from "leaflet";
+import { ProjectMap, ProjectMapProps } from "./ProjectMap";
 
 function syncPosition(source: Map | null, target: Map | null) {
   if (source && target) {
@@ -8,11 +8,16 @@ function syncPosition(source: Map | null, target: Map | null) {
   }
 }
 
-interface SyncMapProps {
-  setMap?: (map: Map) => void;
+type SyncMapProps = ProjectMapProps & {
   syncWithMap: Map;
-}
-export const SyncMap: FC<PropsWithChildren<SyncMapProps>> = ({ syncWithMap, setMap, children }) => {
+};
+export const SyncMap: FC<PropsWithChildren<SyncMapProps>> = ({
+  project,
+  projectMapId,
+  syncWithMap,
+  setMap,
+  children,
+}) => {
   const [localMap, setLocalMap] = useState<Map | null>(null);
   const [whoIsMoving, setWhoIsMoving] = useState<string | null>(null);
 
@@ -71,11 +76,11 @@ export const SyncMap: FC<PropsWithChildren<SyncMapProps>> = ({ syncWithMap, setM
 
   const displayMap = useMemo(
     () => (
-      <MapContainer inertia={false} ref={setLocalMap} trackResize={true} center={[0, 0]}>
+      <ProjectMap setMap={setLocalMap} project={project} projectMapId={projectMapId} center={[0, 0]}>
         {children}
-      </MapContainer>
+      </ProjectMap>
     ),
-    [children],
+    [children, project, projectMapId],
   );
 
   return <>{displayMap}</>;

@@ -17,7 +17,7 @@ export type MapLayerType =
       variable: SOUNDSCAPE_VARIABLES;
     };
 
-interface IProjectMap {
+export interface IProjectMap {
   /**
    * Unique identifier of the map across the project.
    * Will be used in the URL.
