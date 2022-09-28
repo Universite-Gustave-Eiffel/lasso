@@ -7,7 +7,7 @@
     "allowUnusedLabels": false,
     "alwaysStrict": true,
     //https://stackoverflow.com/questions/63737470/fix-wrong-auto-imports-in-typescript-monorepo
-    //"baseUrl": ".",
+    "baseUrl": ".",
     "charset": "utf8",
     "declaration": true,
     "declarationDir": "./lib",
