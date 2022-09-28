@@ -11,7 +11,8 @@
     "geojson": "^0.5.0",
     "nodemon": "^2.0.19",
     "typescript-json-schema": "^0.54.0",
-    "chroma-js": "^2.4.2"
+    "chroma-js": "^2.4.2",
+    "shorthash2": "^1.0.3"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.10"

@@ -2,7 +2,10 @@ import { GeoJSON } from "geojson";
 
 export type BBOX = [[number, number], [number, number]];
 
+// TODO: featureIdentifier doesn't need to be a complex variable only a string.
+// also we might want to allow random variables on top of specific ones
 export type SOUNDSCAPE_VARIABLES =
+  | "featureIdentifier"
   | "acoustic_intensity"
   | "acoustic_birds"
   | "acoustic_trafic"
@@ -41,7 +44,7 @@ export interface IProjectMap {
  * Layer variables definitions
  */
 type WeekDay = "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
-type LayerVariable =
+export type LayerVariable =
   | string
   | {
       propertyName: string;

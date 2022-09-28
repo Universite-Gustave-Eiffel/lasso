@@ -42,7 +42,7 @@ export async function importProjectFromPath(projectFolderPath: string): Promise<
         layer:
           l.layer.includes("{x}") && l.layer.includes("{y}")
             ? l.layer
-            : await readGeoJsonFile(`${projectFolderPath}/${l.layer}`),
+            : await readGeoJsonFile(`${projectFolderPath}/${l.layer}`, l.variables),
       })),
     ),
     pages,
