@@ -1,5 +1,5 @@
 {
-  "id": "cartasue",
+  "id": "cartasur",
   "name": "Cart_ASUR",
   "description": "L'objectif de cette opération de recherche a été d’élaborer un outil cartographique représentant la qualité du paysage sonore urbain. Grâce à une campagne participative d’usagers à l’aide d’un téléphone mobile, plus de 3400 données ont pu être recueillies en seulement 1 an. Ces données ont permis de proposer des modèles de régressions linéaires qui expliquent la qualité de l’environnement sonore.",
   "image": "logo.jpeg",
@@ -27,6 +27,10 @@
     {
       "id": "mobilite",
       "layer": "./layers/mobilite.geo.json"
+    },
+    {
+      "id": "paysagesonore",
+      "layer": "./layers/Cart_Asur.geojson"
     }
   ],
   "maps": [
@@ -65,6 +69,15 @@
         "mobilite"
       ],
       "attribution": "OSM & Villes de Nantes"
+    },
+    {
+      "id": "paysagesonore",
+      "name": "Paysage Sonore",
+      "layers": [
+        "stamen-toner",
+        "paysagesonore"
+      ],
+      "attribution": "Projet ADEME Cart_ASUR"
     }
   ]
 }
