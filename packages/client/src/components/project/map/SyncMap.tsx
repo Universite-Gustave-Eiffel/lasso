@@ -1,32 +1,33 @@
-import { FC, PropsWithChildren, useEffect, useState, useMemo } from "react";
-import { Map } from "leaflet";
-import { ProjectMap, ProjectMapProps } from "./ProjectMap";
+import { FC, PropsWithChildren, useEffect, useState, useMemo, Ref } from "react";
 
-function syncPosition(source: Map | null, target: Map | null) {
+import { ProjectMap, ProjectMapProps } from "./ProjectMap";
+import { useMap, MapRef } from "react-map-gl";
+
+function syncPosition(source: MapRef | undefined, target: MapRef | undefined) {
   if (source && target) {
-    target.fitBounds(source.getBounds(), { animate: false, padding: [0, 0] });
+    target.fitBounds(source.getBounds(), { animate: false, padding: 0 });
   }
 }
-
 type SyncMapProps = ProjectMapProps & {
-  syncWithMap: Map;
+  syncMap: Ref<MapRef>;
 };
+
 export const SyncMap: FC<PropsWithChildren<SyncMapProps>> = ({
+  id: mapId,
   project,
   projectMapId,
-  syncWithMap,
-  setMap,
   children,
+  refMap,
 }) => {
-  const [localMap, setLocalMap] = useState<Map | null>(null);
+  //const [leftmap, setLocalMap] = useState<Map | null>(null);
   const [whoIsMoving, setWhoIsMoving] = useState<string | null>(null);
+  const { leftmap, rightmap } = useMap();
 
   useEffect(() => {
-    if (localMap) {
-      if (setMap) setMap(localMap);
-      localMap.fitBounds(syncWithMap.getBounds());
+    if (leftmap && rightmap) {
+      leftmap.fitBounds(rightmap.getBounds());
     }
-  }, [localMap, setMap, syncWithMap]);
+  }, [leftmap, rightmap]);
 
   /**
    * Listen to movestart/moveend events to know who is moving.
@@ -37,22 +38,25 @@ export const SyncMap: FC<PropsWithChildren<SyncMapProps>> = ({
     const fnLocalEnd = () => setWhoIsMoving((prev) => (prev === "local" ? null : prev));
     const fnSyncEnd = () => setWhoIsMoving((prev) => (prev === "sync" ? null : prev));
 
-    if (localMap) {
-      localMap.on("movestart", fnLocalStart);
-      localMap.on("moveend", fnLocalEnd);
+    if (leftmap) {
+      leftmap.on("movestart", fnLocalStart);
+      leftmap.on("moveend", fnLocalEnd);
     }
-    syncWithMap.on("movestart", fnSyncStart);
-    syncWithMap.on("moveend", fnSyncEnd);
-
+    if (rightmap) {
+      rightmap.on("movestart", fnSyncStart);
+      rightmap.on("moveend", fnSyncEnd);
+    }
     return () => {
-      if (localMap) {
-        localMap.off("movestart", fnLocalStart);
-        localMap.off("moveend", fnLocalEnd);
+      if (leftmap) {
+        leftmap.off("movestart", fnLocalStart);
+        leftmap.off("moveend", fnLocalEnd);
       }
-      syncWithMap.off("movestart", fnSyncStart);
-      syncWithMap.off("moveend", fnSyncEnd);
+      if (rightmap) {
+        rightmap.off("movestart", fnSyncStart);
+        rightmap.off("moveend", fnSyncEnd);
+      }
     };
-  }, [localMap, syncWithMap]);
+  }, [leftmap, rightmap]);
 
   /**
    * Listen on the provided map move event
@@ -60,27 +64,27 @@ export const SyncMap: FC<PropsWithChildren<SyncMapProps>> = ({
    */
   useEffect(() => {
     const syncLocal = () => {
-      if (whoIsMoving === "sync") syncPosition(syncWithMap, localMap);
+      if (whoIsMoving === "sync") syncPosition(rightmap, leftmap);
     };
     const syncMap = () => {
-      if (whoIsMoving === "local") syncPosition(localMap, syncWithMap);
+      if (whoIsMoving === "local") syncPosition(leftmap, rightmap);
     };
 
-    syncWithMap.on("move", syncLocal);
-    if (localMap) localMap.on("move", syncMap);
+    if (rightmap) rightmap.on("move", syncLocal);
+    if (leftmap) leftmap.on("move", syncMap);
     return () => {
-      syncWithMap.off("move", syncLocal);
-      if (localMap) localMap.off("move", syncMap);
+      if (rightmap) rightmap.off("move", syncLocal);
+      if (leftmap) leftmap.off("move", syncMap);
     };
-  }, [syncWithMap, localMap, whoIsMoving]);
+  }, [rightmap, leftmap, whoIsMoving]);
 
   const displayMap = useMemo(
     () => (
-      <ProjectMap setMap={setLocalMap} project={project} projectMapId={projectMapId} center={[0, 0]}>
+      <ProjectMap id={mapId} refMap={refMap} project={project} projectMapId={projectMapId} center={[0, 0]}>
         {children}
       </ProjectMap>
     ),
-    [children, project, projectMapId],
+    [children, mapId, project, projectMapId],
   );
 
   return <>{displayMap}</>;

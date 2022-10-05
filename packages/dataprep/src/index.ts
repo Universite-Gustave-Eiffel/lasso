@@ -6,7 +6,7 @@ import { metaBbox } from "./utils/geojson";
 import { importProjectFromPath, exportProject } from "./utils/project";
 import { ExportedData } from "./types";
 
-export { ExportedData, Project, ProjectLayer, IProjectMap } from "./types";
+export { ExportedData, Project, IProjectMap } from "./types";
 
 async function run(): Promise<void> {
   // List project folders in the import folder

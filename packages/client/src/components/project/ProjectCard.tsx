@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import cx from "classnames";
 
 import { Project } from "@lasso/dataprep";
-import { makeUrl } from "../../utils/url";
 
 export interface ProjectCardProps {
   /**
@@ -30,7 +29,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ id, className, style, projec
     <div {...htmlProps}>
       {project.image && (
         <div className="card-image">
-          <img className="card-img-top" src={makeUrl("data", project.image)} alt={project.name} />
+          <img className="card-img-top" src={project.image} alt={project.name} />
         </div>
       )}
       <div className="card-body">

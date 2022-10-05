@@ -1,13 +1,15 @@
 import * as path from "path";
 import { GeoJSON } from "geojson";
+import { Style, AnySourceData } from "maplibre-gl";
 
 import { config } from "../config";
 import { ImportProject, InternalProject, Project } from "../types";
 import * as schema from "../json-schema.json";
 import * as fsu from "./files";
-import { readGeoJsonFile, outerBbox } from "./geojson";
+import { readGeoJsonFile, outerBbox, checkGeoJson } from "./geojson";
 import { readMarkdownFile } from "./markdown";
 import { getRandomHexColor } from "./color";
+import { fromPairs, mapValues, omit, toPairs, values } from "lodash";
 
 /**
  * Given a folder, do the job to import internally the project.
@@ -35,16 +37,23 @@ export async function importProjectFromPath(projectFolderPath: string): Promise<
   return {
     ...project,
     image: project.image ? path.resolve(projectFolderPath, project.image) : undefined,
-    layers: await Promise.all(
-      project.layers.map(async (l) => ({
-        ...l,
-        // retrieve geojson content
-        layer:
-          l.layer.includes("{x}") && l.layer.includes("{y}")
-            ? l.layer
-            : await readGeoJsonFile(`${projectFolderPath}/${l.layer}`, l.variables),
-      })),
+    sources: fromPairs(
+      await Promise.all(
+        toPairs(project.sources).map(async ([id, source]): Promise<[id: string, source: AnySourceData]> => {
+          if (source.type === "geojson" && source.data) {
+            const geojsonData = checkGeoJson(
+              typeof source.data === "string"
+                ? await readGeoJsonFile(`${projectFolderPath}/${source.data}`)
+                : source.data,
+            );
+
+            return [id, { ...source, data: geojsonData } as AnySourceData];
+          }
+          return [id, source];
+        }),
+      ),
     ),
+
     pages,
   };
 }
@@ -54,7 +63,7 @@ export async function exportProject(project: InternalProject): Promise<Project> 
   // ~~~~~~~~~~~~~~~~~~
   const projectFolder = path.resolve(config.exportPath, project.id);
   await fsu.createFolder(projectFolder);
-  const projectUrl = `${projectFolder.replace(path.resolve(config.exportPath), ".")}/`;
+  const projectUrl = path.resolve("/", path.basename(config.exportPath), project.id);
 
   // Copy asset folder if needed
   if (await fsu.checkExists(path.resolve(config.importPath, "assets"))) {
@@ -67,7 +76,7 @@ export async function exportProject(project: InternalProject): Promise<Project> 
     const filename = path.basename(project.image);
     // copy the image
     await fsu.copy(project.image, path.resolve(projectFolder, filename));
-    image = `${projectUrl}${filename}`;
+    image = path.resolve(projectUrl, filename);
   }
 
   // Create markdown files
@@ -86,32 +95,56 @@ export async function exportProject(project: InternalProject): Promise<Project> 
 
   // Create geojson files if needed
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  const layers = await Promise.all(
-    project.layers.map(async (l) => {
-      if (`${l.layer}`.includes("{x}") && `${l.layer}`.includes("{y}")) {
-        return {
-          ...l,
-          layer: `${l.layer}`,
-        };
-      } else {
-        const filename = `${l.id}.geo.json`;
-        await fsu.writeFile(path.resolve(projectFolder, filename), l.layer);
-        return {
-          ...l,
-          layer: `${projectUrl}${filename}`,
-        };
-      }
+  const sources = fromPairs(
+    await Promise.all(
+      toPairs(project.sources).map(async ([key, source]) => {
+        if (source.type !== "geojson") {
+          return [key, source];
+        } else {
+          const filename = `${key}.geo.json`;
+          await fsu.writeFile(path.resolve(projectFolder, filename), source.data);
+          return [
+            key,
+            {
+              ...source,
+              data: path.resolve(projectUrl, filename),
+            },
+          ];
+        }
+      }),
+    ),
+  );
+
+  // Create map styles
+  // ~~~~~~~~~~~~~~~~~
+  Promise.all(
+    project.maps.map(async (m) => {
+      const styleFilename = `map.${m.id}.style.json`;
+      const style: Style = {
+        version: 8,
+        sources: mapValues(sources, (source) => omit(source, "variables") as AnySourceData),
+        layers: m.layers,
+      };
+
+      await fsu.writeFile(path.resolve(projectFolder, styleFilename), style);
     }),
   );
 
+  // Calculate BBOx from GeoJson
+  const bbox =
+    project.bbox ||
+    outerBbox(
+      values(project.sources)
+        .map((s) => (s.type === "geojson" && typeof s.data !== "string" ? (s.data as GeoJSON) : null))
+        .filter((s): s is GeoJSON => !!s),
+    );
+
   return {
     ...project,
-    bbox:
-      project.bbox ||
-      outerBbox(project.layers.filter((l) => !`${l.layer}`.includes("{x}")).map((l) => l.layer as GeoJSON)),
+    bbox,
     color: project.color || getRandomHexColor(),
     image,
-    layers,
+    sources,
     pages,
   };
 }

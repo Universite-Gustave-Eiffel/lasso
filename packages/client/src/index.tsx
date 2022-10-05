@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import Root from "./views/Root";
 import "./styles/index.scss";
+import "maplibre-gl/dist/maplibre-gl.css";
 
 const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container)!;

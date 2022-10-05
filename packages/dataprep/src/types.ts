@@ -1,4 +1,4 @@
-import { GeoJSON } from "geojson";
+import { AnyLayer, AnySourceData } from "maplibre-gl";
 
 export type BBOX = [[number, number], [number, number]];
 
@@ -6,7 +6,7 @@ export type BBOX = [[number, number], [number, number]];
 // also we might want to allow random variables on top of specific ones
 export type SOUNDSCAPE_VARIABLES =
   | "featureIdentifier"
-  | "acoustic_intensity"
+  | "acoustic_soundlevel"
   | "acoustic_birds"
   | "acoustic_trafic"
   | "acoustic_voices"
@@ -33,11 +33,7 @@ export interface IProjectMap {
   /**
    * List of ordered layers IDS for the map
    */
-  layers: Array<MapLayerType>;
-  /**
-   * Attribution for the map
-   */
-  attribution: string;
+  layers: Array<AnyLayer>;
 }
 
 /**
@@ -69,13 +65,7 @@ export interface TimeSeriesGeoJSONProperty {
 }
 [];
 
-export interface ProjectLayer<G> {
-  id: string;
-  layer: G;
-  variables?: Partial<Record<SOUNDSCAPE_VARIABLES, LayerVariable>>;
-}
-
-interface IProject<G> {
+interface IProject {
   /**
    * Unique identifier of the project acroos all projects.
    */
@@ -109,21 +99,22 @@ interface IProject<G> {
    * List of layer that can be used on maps
    * A layer can be a tiles URL or a path to a geojson
    */
-  layers: Array<ProjectLayer<G>>;
-
+  sources: {
+    [sourceKey: string]: AnySourceData & { variables?: Partial<Record<SOUNDSCAPE_VARIABLES, LayerVariable>> };
+  };
   /**
    * Maps list of the project.
    */
   maps: Array<IProjectMap>;
 }
 
-type IProjectFull<G> = IProject<G> & {
+type IProjectFull = IProject & {
   pages: { [key: string]: string };
 };
 
-export type ImportProject = IProject<string>;
-export type InternalProject = IProjectFull<string | GeoJSON>;
-export type Project = IProjectFull<string> & { bbox: BBOX; color: string };
+export type ImportProject = IProject;
+export type InternalProject = IProjectFull;
+export type Project = IProjectFull & { bbox: BBOX; color: string };
 
 export interface ExportedData {
   bbox: BBOX;

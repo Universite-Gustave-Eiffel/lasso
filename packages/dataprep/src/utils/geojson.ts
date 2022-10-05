@@ -6,40 +6,34 @@ import shortHash from "shorthash2";
 import { BBOX, LayerVariable, SOUNDSCAPE_VARIABLES } from "../types";
 import { readJson } from "./files";
 
-export async function readGeoJsonFile(
-  file: string,
-  variables?: Partial<Record<SOUNDSCAPE_VARIABLES, LayerVariable>>,
-): Promise<GeoJSON> {
+export async function readGeoJsonFile(file: string): Promise<GeoJSON> {
   const geojson = (await readJson(file)) as FeatureCollection;
   try {
-    const validGeojson = checkGeoJson(geojson, variables);
-    return validGeojson as GeoJSON;
+    return geojson as GeoJSON;
   } catch (e) {
     throw new Error(`GeoJSON ${file} is not valid: ${e}`);
   }
 }
 
 const isEmpty = (value: null | undefined | unknown): boolean => [null, undefined].some((empty) => empty === value);
-
+const DEFAULT_FEATURE_ID_PROPERTY_NAME = "PK";
 export function checkGeoJson(
-  geojson: FeatureCollection,
+  geojson: GeoJSON,
+  promoteId?: string,
   variables?: Partial<Record<SOUNDSCAPE_VARIABLES, LayerVariable>>,
-): FeatureCollection {
+): GeoJSON {
   const validGeoJson = { ...geojson };
-  if (variables !== undefined) {
-    let idPropertyName = "id";
-    if (variables.featureIdentifier)
-      idPropertyName =
-        typeof variables.featureIdentifier === "string"
-          ? variables.featureIdentifier
-          : variables.featureIdentifier.propertyName;
+  if (validGeoJson.type === "FeatureCollection" && variables !== undefined) {
+    let idPropertyName = DEFAULT_FEATURE_ID_PROPERTY_NAME;
+    if (promoteId) idPropertyName = typeof promoteId === "string" ? promoteId : DEFAULT_FEATURE_ID_PROPERTY_NAME;
     const nbFeaturesByVariables: { [key: string]: number } = {};
-    validGeoJson.features = geojson.features.map((f) => {
+    validGeoJson.features = validGeoJson.features.map((f) => {
       const feature = { ...f };
       if (f.properties) {
         // check or generate id in properties
         if (isEmpty(f.properties[idPropertyName]) && feature.properties) {
-          if (idPropertyName === "id") feature.properties[idPropertyName] = shortHash(JSON.stringify(f.geometry));
+          if (idPropertyName === DEFAULT_FEATURE_ID_PROPERTY_NAME)
+            feature.properties[idPropertyName] = shortHash(JSON.stringify(f.geometry));
           else
             throw new Error(
               `The identifier ${idPropertyName} is missing in one feature property set ${JSON.stringify(
@@ -49,6 +43,8 @@ export function checkGeoJson(
               )}`,
             );
         }
+        // TODO: check timestamp if timeseries
+        // check variables
         toPairs(variables).forEach(([variableName, v]) => {
           const featureName = typeof v === "string" ? v : v.propertyName;
           if (f.properties && f.properties[featureName] !== undefined)
@@ -82,8 +78,8 @@ export function outerBbox(geoJsons: Array<GeoJSON>): BBOX {
       .map(
         (bbox) =>
           [
-            [bbox[1], bbox[0]],
-            [bbox[3], bbox[2]],
+            [bbox[0], bbox[1]],
+            [bbox[2], bbox[3]],
           ] as BBOX,
       ),
   );
@@ -100,7 +96,7 @@ export function metaBbox(bboxs: Array<BBOX>): BBOX {
     ) => {
       // min X
       if (curr[0][0] < acc[0][0]) acc[0][0] = curr[0][0];
-      if (curr[0][1] < acc[0][0]) acc[0][1] = curr[0][1];
+      if (curr[0][1] < acc[0][1]) acc[0][1] = curr[0][1];
       if (curr[1][0] > acc[1][0]) acc[1][0] = curr[1][0];
       if (curr[1][1] > acc[1][1]) acc[1][1] = curr[1][1];
       return acc;
