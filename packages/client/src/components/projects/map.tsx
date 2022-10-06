@@ -26,7 +26,6 @@ export const ProjectsMap: FC<MapProperties> = ({ bbox, projects, setSelected, se
   useEffect(() => {
     if (map) {
       map.on("click", "projectsRectangles", (e) => {
-        console.log(e);
         if (e.features) {
           const selectedProjects = projects.find((p) =>
             (e.features?.map((f) => f.properties?.projectId) || []).includes(p.id),
