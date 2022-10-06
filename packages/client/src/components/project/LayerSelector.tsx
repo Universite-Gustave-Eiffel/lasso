@@ -1,4 +1,4 @@
-import { FC, CSSProperties, useMemo, useState, useEffect } from "react";
+import { FC, CSSProperties, useMemo } from "react";
 import Select from "react-select";
 import cx from "classnames";
 
@@ -24,28 +24,21 @@ export interface LayerSelectorProps {
   /**
    * The map on which the component is linked
    */
-  setProjectMapId: (projetMapId: string | null) => void;
+  projectMapId: string;
+  setProjectMapId: (projetMapId: string) => void;
 }
 
 //TODO: selected in url
-export const LayerSelector: FC<LayerSelectorProps> = ({ id, className, style, project, setProjectMapId }) => {
+export const LayerSelector: FC<LayerSelectorProps> = ({
+  id,
+  className,
+  style,
+  project,
+  projectMapId,
+  setProjectMapId,
+}) => {
   const htmlProps = { id, className: cx("layer-selector", className), style };
   const options = useMemo(() => project.maps.map((m) => ({ value: m.id, label: m.name })), [project]);
-  const [selected, setSelected] = useState<{ value: string; label: string }>(options[0]);
-
-  /**
-   * When the selected map changes
-   * => we trigger map rendering through projetMapId state
-   */
-  useEffect(() => {
-    setProjectMapId(selected ? selected.value : null);
-  }, [selected, setProjectMapId]);
-
-  // useEffect(() => {
-  //   if (map) {
-  //     map.fitBounds(project.bbox);
-  //   }
-  // }, [map, project]);
 
   return (
     <div {...htmlProps}>
@@ -53,9 +46,9 @@ export const LayerSelector: FC<LayerSelectorProps> = ({ id, className, style, pr
         isMulti={false}
         isClearable={false}
         options={options}
-        value={selected}
+        value={options.find((o) => o.value === projectMapId)}
         formatOptionLabel={(i) => <div>{i.label}</div>}
-        onChange={(e) => setSelected(e ? e : options[0])}
+        onChange={(e) => setProjectMapId(e ? e.value : options[0].value)}
       />
     </div>
   );

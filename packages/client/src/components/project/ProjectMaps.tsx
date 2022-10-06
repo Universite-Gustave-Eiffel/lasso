@@ -1,13 +1,13 @@
-import { FC, CSSProperties, useState, useEffect, useRef } from "react";
+import { FC, CSSProperties, useState } from "react";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 
 import cx from "classnames";
 import { useT } from "@transifex/react";
-import { MapProvider, MapRef, useMap } from "react-map-gl";
+import { MapProvider } from "react-map-gl";
 
 import { Project } from "@lasso/dataprep";
 import { ProjectMap } from "./map/ProjectMap";
-import { SyncMap } from "./map/SyncMap";
+import { SyncMaps, SyncMapsModes } from "./map/SyncMaps";
 import { LayerSelector } from "./LayerSelector";
 
 export interface ProjectMapsProps {
@@ -33,36 +33,15 @@ export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style, projec
   const t = useT();
 
   const htmlProps = { id, className: cx(className, "d-flex flex-grow-1"), style };
-  const { rightmap, leftmap, current } = useMap();
-  const rightMap = useRef<MapRef>(null);
-  const leftMap = useRef<MapRef>(null);
-  const [primaryMapProjectId, setPrimaryMapProjectId] = useState<string | null>(project.maps[0].id);
 
-  const [secondaryMapProjectId, setSecondaryMapProjectId] = useState<string | null>(project.maps[0].id);
-  const [mode, setMode] = useState<"single" | "side-by-side">("side-by-side");
-
-  useEffect(() => {
-    console.log(rightmap, leftmap, current);
-  }, [rightmap, leftmap, current]);
-
-  /**
-   * When mode change
-   * => invalidate  maps size
-   * => remove 2nd map in state
-   */
-  useEffect(() => {
-    if (mode === "single") {
-      if (rightMap && rightMap.current) rightMap.current.resize();
-      //if (leftmap) leftmap.resize();
-    } else {
-      if (rightMap && rightMap.current) rightMap.current.resize();
-      if (leftMap && leftMap.current) leftMap.current.resize();
-    }
-  }, [mode, rightMap, leftMap]);
-
+  const [rightMapProjectId, setRightMapProjectId] = useState<string>(project.maps[0].id);
+  const [leftMapProjectId, setLeftMapProjectId] = useState<string>(project.maps[0].id);
+  const [mode, setMode] = useState<SyncMapsModes>("side-by-side");
+  console.log(leftMapProjectId);
   return (
     <div {...htmlProps}>
       <MapProvider>
+        <SyncMaps mode={mode} />
         {mode === "single" && (
           <div className="d-flex align-items-stretch justify-content-center" style={{ width: "2em" }}>
             <button
@@ -77,14 +56,8 @@ export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style, projec
         {mode === "side-by-side" && (
           <>
             <div className={cx("d-flex flex-column flex-grow-1")} style={{ width: "calc(50% - 1em)" }}>
-              <LayerSelector setProjectMapId={setSecondaryMapProjectId} project={project} />
-              <SyncMap
-                id="leftmap"
-                refMap={leftMap}
-                syncMap={rightMap}
-                projectMapId={secondaryMapProjectId}
-                project={project}
-              ></SyncMap>
+              <LayerSelector setProjectMapId={setLeftMapProjectId} projectMapId={leftMapProjectId} project={project} />
+              <ProjectMap id="leftMap" projectMapId={leftMapProjectId} project={project}></ProjectMap>
             </div>
 
             <div className="d-flex align-items-stretch justify-content-center" style={{ width: "2em" }}>
@@ -98,12 +71,11 @@ export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style, projec
           className={cx("d-flex flex-column flex-grow-1")}
           style={{ width: mode === "single" ? "calc(100% - 2em)" : "calc(50% - 1em)" }}
         >
-          <LayerSelector setProjectMapId={setPrimaryMapProjectId} project={project} />
+          <LayerSelector setProjectMapId={setRightMapProjectId} projectMapId={rightMapProjectId} project={project} />
           <ProjectMap
-            id="rightmap"
-            refMap={rightMap}
+            id="rightMap"
             project={project}
-            projectMapId={primaryMapProjectId}
+            projectMapId={rightMapProjectId}
             bounds={project.bbox}
           ></ProjectMap>
         </div>
