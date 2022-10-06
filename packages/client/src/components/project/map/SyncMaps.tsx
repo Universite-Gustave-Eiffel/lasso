@@ -38,7 +38,6 @@ export const SyncMaps: FC<SyncMapsProps> = ({ mode }) => {
   useEffect(() => {
     if (leftMap && rightMap) {
       leftMap.fitBounds(rightMap.getBounds(), { duration: 1000 });
-      console.log(leftMap.getBounds(), rightMap.getBounds());
     }
   }, [leftMap, rightMap]);
 
