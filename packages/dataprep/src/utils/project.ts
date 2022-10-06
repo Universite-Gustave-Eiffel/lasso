@@ -1,6 +1,6 @@
 import * as path from "path";
 import { GeoJSON } from "geojson";
-import { Style, AnySourceData } from "maplibre-gl";
+import { StyleSpecification, SourceSpecification } from "maplibre-gl";
 
 import { config } from "../config";
 import { ImportProject, InternalProject, Project } from "../types";
@@ -39,15 +39,15 @@ export async function importProjectFromPath(projectFolderPath: string): Promise<
     image: project.image ? path.resolve(projectFolderPath, project.image) : undefined,
     sources: fromPairs(
       await Promise.all(
-        toPairs(project.sources).map(async ([id, source]): Promise<[id: string, source: AnySourceData]> => {
+        toPairs(project.sources).map(async ([id, source]): Promise<[id: string, source: SourceSpecification]> => {
           if (source.type === "geojson" && source.data) {
             const geojsonData = checkGeoJson(
               typeof source.data === "string"
                 ? await readGeoJsonFile(`${projectFolderPath}/${source.data}`)
-                : source.data,
+                : (source.data as GeoJSON),
             );
 
-            return [id, { ...source, data: geojsonData } as AnySourceData];
+            return [id, { ...source, data: geojsonData } as SourceSpecification];
           }
           return [id, source];
         }),
@@ -120,9 +120,9 @@ export async function exportProject(project: InternalProject): Promise<Project> 
   Promise.all(
     project.maps.map(async (m) => {
       const styleFilename = `map.${m.id}.style.json`;
-      const style: Style = {
+      const style: StyleSpecification = {
         version: 8,
-        sources: mapValues(sources, (source) => omit(source, "variables") as AnySourceData),
+        sources: mapValues(sources, (source) => omit(source, "variables") as SourceSpecification),
         layers: m.layers,
       };
 

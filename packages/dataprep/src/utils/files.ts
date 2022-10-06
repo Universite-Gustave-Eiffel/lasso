@@ -77,23 +77,29 @@ export async function readFile(file: string): Promise<string> {
  * Read file a parse it as JSON.
  * If schema is specified, the function will validate the json against it.
  */
-export async function readJson<T>(file: string, schema?: Schema): Promise<T> {
+export async function readJson<T>(file: string, schema?: Schema, stopOnErrors?: boolean): Promise<T> {
   try {
     const data = await readFile(file);
     const json = JSON.parse(data);
     if (schema) {
-      const ajv = new Ajv();
+      const ajv = new Ajv({ strict: false });
       const validateJson = await ajv.compile(schema);
       if (!validateJson(json)) {
-        if (validateJson.errors)
-          throw new Error(
-            `Validation fails with errors:
-            ${validateJson.errors.map((e) => `${e.message}`).join("\n")}`,
-          );
-        throw new Error("Validation fails");
+        if (validateJson.errors) {
+          const errorsAsString = `Validation fails with errors:
+          ${validateJson.errors.map((e) => JSON.stringify(e, null, 2)).join("\n")}`;
+
+          if (stopOnErrors) throw new Error(errorsAsString);
+          else {
+            console.log(
+              `/!\\ ${file}: ${validateJson.errors.length} validation errors wrote in validation_errors.json`,
+            );
+            //TODO: write errors in log file to be ignored by watch await writeFile(`${path.basename(file).split('.')[0]}_validation_errors.json", errorsAsString);
+          }
+        } else if (stopOnErrors) throw new Error("Validation fails");
       }
     }
-    return (json as unknown) as T;
+    return json as unknown as T;
   } catch (e) {
     throw new Error(`Reading file ${file} failed : ${e}`);
   }

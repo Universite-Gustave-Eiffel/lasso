@@ -8,11 +8,12 @@
     "@turf/combine": "^6.5.0",
     "@turf/helpers": "^6.5.0",
     "ajv": "^8.11.0",
+    "chroma-js": "^2.4.2",
     "geojson": "^0.5.0",
     "nodemon": "^2.0.19",
-    "typescript-json-schema": "^0.54.0",
-    "chroma-js": "^2.4.2",
-    "shorthash2": "^1.0.3"
+    "shorthash2": "^1.0.3",
+    "ts-json-schema-generator": "^1.1.2",
+    "typescript-json-schema": "^0.54.0"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.10"
@@ -21,7 +22,7 @@
     "clean": "rimraf lib/",
     "lint": "esw --ext .ts ./src",
     "compile": "tsc -b",
-    "generate:jsonschema": "typescript-json-schema ./src/types.ts '*' --required --ignoreErrors --out src/json-schema.json",
+    "generate:jsonschema": "ts-json-schema-generator -e all --no-ref-encode -p ./src/types.ts --no-type-check --out src/json-schema.json",
     "test": "mocha --recursive --fail-zero 'false' --require ts-node/register 'test/**/*.ts' ",
     "build": "npm run clean && npm run lint && npm run generate:jsonschema && npm run compile",
     "start": "concurrently -n lint,compile,exec \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"nodemon --watch ./lib --watch ../../data --exec npm run exec\"",

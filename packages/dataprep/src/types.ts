@@ -1,11 +1,10 @@
-import { AnyLayer, AnySourceData } from "maplibre-gl";
+import { LayerSpecification, SourceSpecification } from "maplibre-gl";
 
 export type BBOX = [[number, number], [number, number]];
 
 // TODO: featureIdentifier doesn't need to be a complex variable only a string.
 // also we might want to allow random variables on top of specific ones
 export type SOUNDSCAPE_VARIABLES =
-  | "featureIdentifier"
   | "acoustic_soundlevel"
   | "acoustic_birds"
   | "acoustic_trafic"
@@ -33,7 +32,7 @@ export interface IProjectMap {
   /**
    * List of ordered layers IDS for the map
    */
-  layers: Array<AnyLayer>;
+  layers: Array<LayerSpecification>;
 }
 
 /**
@@ -100,7 +99,7 @@ interface IProject {
    * A layer can be a tiles URL or a path to a geojson
    */
   sources: {
-    [sourceKey: string]: AnySourceData & { variables?: Partial<Record<SOUNDSCAPE_VARIABLES, LayerVariable>> };
+    [sourceKey: string]: SourceSpecification & { variables?: Partial<Record<SOUNDSCAPE_VARIABLES, LayerVariable>> };
   };
   /**
    * Maps list of the project.

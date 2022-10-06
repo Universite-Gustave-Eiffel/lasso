@@ -113,7 +113,8 @@
           "id": "acoustic-birds",
           "source": "GeoAll",
           "metadata": {
-            "lasso:geojsonProperty": "Bird"
+            "lasso:geojsonProperty": "Bird",
+            "interactive": true
           },
           "type": "circle",
           "paint": {
@@ -206,7 +207,8 @@
           "id": "emotion_pleasant",
           "source": "Grid3857",
           "metadata": {
-            "lasso:geojsonProperty": "meanagr"
+            "lasso:geojsonProperty": "meanagr",
+            "interactive": true
           },
           "type": "circle",
           "paint": {
