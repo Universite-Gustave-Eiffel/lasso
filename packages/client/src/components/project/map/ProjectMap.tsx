@@ -5,6 +5,7 @@ import Map, {
   FullscreenControl,
   MapboxGeoJSONFeature,
   AttributionControl,
+  useMap,
 } from "react-map-gl";
 import maplibregl from "maplibre-gl";
 
@@ -30,6 +31,7 @@ export const ProjectMap: FC<PropsWithChildren<ProjectMapProps>> = ({
   children,
 }) => {
   const { notify } = useNotifications();
+  const { [mapId]: map } = useMap();
   const { loading: loadingMapStyle, error: errorMapStyle, data: mapStyle } = useMapStyle(project.id, projectMapId);
 
   const [selectedFeature, setSelectedFeature] = useState<MapboxGeoJSONFeature | null>(null);
@@ -54,9 +56,18 @@ export const ProjectMap: FC<PropsWithChildren<ProjectMapProps>> = ({
             }
             onClick={(e) => {
               if (e.features?.length) {
-                console.log(e.features.map((f) => f.geometry));
                 setSelectedFeature(e.features[0]);
               } else setSelectedFeature(null);
+            }}
+            onMouseEnter={(e) => {
+              if (map)
+                // Change the cursor style as a UI indicator.
+                map.getCanvas().style.cursor = e.features ? "pointer" : "";
+            }}
+            onMouseLeave={() => {
+              if (map)
+                // Change the cursor style as a UI indicator.
+                map.getCanvas().style.cursor = "";
             }}
             attributionControl={false}
           >
