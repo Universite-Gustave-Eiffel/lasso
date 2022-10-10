@@ -3,81 +3,155 @@
   "name": "Cart_ASUR",
   "description": "L'objectif de cette opération de recherche a été d’élaborer un outil cartographique représentant la qualité du paysage sonore urbain. Grâce à une campagne participative d’usagers à l’aide d’un téléphone mobile, plus de 3400 données ont pu être recueillies en seulement 1 an. Ces données ont permis de proposer des modèles de régressions linéaires qui expliquent la qualité de l’environnement sonore.",
   "image": "logo.jpeg",
-  "layers": [
-    {
-      "id": "osm",
-      "layer": "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-    },
-    {
-      "id": "stamen-toner",
-      "layer": "http://tile.stamen.com/toner/{z}/{x}/{y}.png"
-    },
-    {
-      "id": "culture",
-      "layer": "./layers/culture.geo.json"
-    },
-    {
-      "id": "enseignement",
-      "layer": "./layers/enseignement.geo.json"
-    },
-    {
-      "id": "equipub",
-      "layer": "./layers/equipub.geo.json"
-    },
-    {
-      "id": "mobilite",
-      "layer": "./layers/mobilite.geo.json"
-    },
-    {
-      "id": "paysagesonore",
-      "layer": "./layers/Cart_Asur.geojson"
+  "sources": {
+    "Cart_ASUR": {
+      "attribution": "Cart ASUR",
+      "type": "geojson",
+      "data": "./layers/Cart_Asur.geojson",
+      "promoteId": "objective_id",
+      "timeSeries": {
+        "timestampPropertyName": "timestamPP",
+        "hoursLabels": {
+          "day": {
+            "label": {
+              "fr": "jour",
+              "en": "day"
+            },
+            "hours": [
+              8,
+              18
+            ]
+          },
+          "evening": {
+            "label": {
+              "fr": "soirée",
+              "en": "evening"
+            },
+            "hours": [
+              19,
+              23
+            ]
+          },
+          "night": {
+            "label": {
+              "fr": "nuit",
+              "en": "night"
+            },
+            "hours": [
+              0,
+              7
+            ]
+          }
+        },
+        "daysLabels": {
+          "week": {
+            "label": {
+              "fr": "semaine",
+              "en": "week"
+            },
+            "weekDays": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "weekend": {
+            "label": {
+              "fr": "week-end",
+              "en": "week-end"
+            },
+            "weekDays": [
+              6,
+              7
+            ]
+          }
+        },
+        "monthsLabels": {
+          "fallWinter": {
+            "label": {
+              "fr": "automne-hiver",
+              "en": "fall-winter"
+            },
+            "months": [
+              10,
+              11,
+              12,
+              1,
+              2,
+              3
+            ]
+          },
+          "springSummer": {
+            "label": {
+              "fr": "printemps-été",
+              "en": "spring-summer"
+            },
+            "months": [
+              4,
+              5,
+              6,
+              7,
+              8,
+              9
+            ]
+          }
+        }
+      },
+      "variables": {
+        "emotion_pleasant": {
+          "propertyName": "Agr_Mean",
+          "type": "quantitative"
+        },
+        "emotion_eventful": {
+          "propertyName": "Ani_Mean"
+        },
+        "acoustic_trafic": "Circ_Mean",
+        "acoustic_birds": "Ani_Mean",
+        "acoustic_voices": "Voix_Mean",
+        "acoustic_soundlevel": "Bru_Mean"
+      }
     }
-  ],
+  },
   "maps": [
     {
-      "id": "culture",
-      "name": "Lieux culturels",
+      "id": "pleasant",
+      "name": "Pleasant",
+      "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
       "layers": [
-        "osm",
-        "culture"
-      ],
-      "attribution": "OSM & Villes de Nantes"
-    },
-    {
-      "id": "enseignement",
-      "name": "Etablissement éducatifs",
-      "layers": [
-        "osm",
-        "enseignement"
-      ],
-      "attribution": "OSM & Villes de Nantes"
-    },
-    {
-      "id": "equipub",
-      "name": "Equipement publics",
-      "layers": [
-        "osm",
-        "equipub"
-      ],
-      "attribution": "OSM & Villes de Nantes"
-    },
-    {
-      "id": "mobilite",
-      "name": "Mobilité",
-      "layers": [
-        "stamen-toner",
-        "mobilite"
-      ],
-      "attribution": "OSM & Villes de Nantes"
-    },
-    {
-      "id": "paysagesonore",
-      "name": "Paysage Sonore",
-      "layers": [
-        "stamen-toner",
-        "paysagesonore"
-      ],
-      "attribution": "Projet ADEME Cart_ASUR"
+        {
+          "id": "emotion_pleasant",
+          "source": "Cart_ASUR",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "circle",
+          "paint": {
+            "circle-radius": 5,
+            "circle-color": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "get",
+                "Agr_Mean"
+              ],
+              0,
+              [
+                "to-color",
+                "#f8e9ed"
+              ],
+              7,
+              [
+                "to-color",
+                "#6d2c00"
+              ]
+            ]
+          }
+        }
+      ]
     }
   ]
 }

@@ -3,13 +3,14 @@ import { GeoJSON } from "geojson";
 import { StyleSpecification, SourceSpecification } from "maplibre-gl";
 
 import { config } from "../config";
-import { ImportProject, InternalProject, Project } from "../types";
+import { ImportProject, InternalProject, LassoSource, Project } from "../types";
 import * as schema from "../json-schema.json";
 import * as fsu from "./files";
-import { readGeoJsonFile, outerBbox, checkGeoJson } from "./geojson";
+import { outerBbox, checkGeoJsonSource } from "./geojson";
 import { readMarkdownFile } from "./markdown";
 import { getRandomHexColor } from "./color";
 import { fromPairs, mapValues, omit, toPairs, values } from "lodash";
+import axios, { AxiosError } from "axios";
 
 /**
  * Given a folder, do the job to import internally the project.
@@ -39,15 +40,11 @@ export async function importProjectFromPath(projectFolderPath: string): Promise<
     image: project.image ? path.resolve(projectFolderPath, project.image) : undefined,
     sources: fromPairs(
       await Promise.all(
-        toPairs(project.sources).map(async ([id, source]): Promise<[id: string, source: SourceSpecification]> => {
+        toPairs(project.sources).map(async ([id, source]): Promise<[id: string, source: LassoSource]> => {
           if (source.type === "geojson" && source.data) {
-            const geojsonData = checkGeoJson(
-              typeof source.data === "string"
-                ? await readGeoJsonFile(`${projectFolderPath}/${source.data}`)
-                : (source.data as GeoJSON),
-            );
+            const geojsonData = await checkGeoJsonSource(source, projectFolderPath);
 
-            return [id, { ...source, data: geojsonData } as SourceSpecification];
+            return [id, { ...source, data: geojsonData } as LassoSource];
           }
           return [id, source];
         }),
@@ -120,10 +117,23 @@ export async function exportProject(project: InternalProject): Promise<Project> 
   Promise.all(
     project.maps.map(async (m) => {
       const styleFilename = `map.${m.id}.style.json`;
-      const style: StyleSpecification = {
-        version: 8,
-        sources: mapValues(sources, (source) => omit(source, "variables") as SourceSpecification),
-        layers: m.layers,
+      let style: StyleSpecification = { version: 8, sources: {}, layers: [] };
+      if (m.basemapStyle)
+        if (typeof m.basemapStyle === "string") {
+          try {
+            const response = await axios.get<StyleSpecification>(m.basemapStyle, { responseType: "json" });
+            if (response.status === 200) style = response.data;
+          } catch (e) {
+            throw new Error(`Style URL ${m.basemapStyle} returned a ${(e as AxiosError).status} HTTP status.`);
+          }
+        } else style = m.basemapStyle;
+      style = {
+        ...style,
+        sources: {
+          ...style.sources,
+          ...mapValues(sources, (source) => omit(source, ["variables", "timeSeries"]) as SourceSpecification),
+        },
+        layers: [...style.layers, ...m.layers],
       };
 
       await fsu.writeFile(path.resolve(projectFolder, styleFilename), style);

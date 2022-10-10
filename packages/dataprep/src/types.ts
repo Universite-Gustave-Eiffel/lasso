@@ -1,4 +1,4 @@
-import { LayerSpecification, SourceSpecification } from "maplibre-gl";
+import { LayerSpecification, SourceSpecification, StyleSpecification } from "maplibre-gl";
 
 export type BBOX = [[number, number], [number, number]];
 
@@ -30,7 +30,13 @@ export interface IProjectMap {
    */
   name: string;
   /**
+   * Mapgl style specification to boostrap the map with
+   */
+  basemapStyle?: string | StyleSpecification;
+  /**
    * List of ordered layers IDS for the map
+   * Layers will be drawn one of top oth the other folowwing the order (first = bottom).
+   * If a style is provided the extra layers listed in this variable will be drawn on top of the style layers.
    */
   layers: Array<LayerSpecification>;
 }
@@ -38,7 +44,30 @@ export interface IProjectMap {
 /**
  * Layer variables definitions
  */
-type WeekDay = "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
+enum WeekDay {
+  monday,
+  tuesday,
+  wednesday,
+  thursday,
+  friday,
+  saturday,
+  sunday,
+}
+enum Month {
+  january,
+  february,
+  march,
+  april,
+  may,
+  june,
+  july,
+  august,
+  september,
+  october,
+  november,
+  december,
+}
+
 export type LayerVariable =
   | string
   | {
@@ -48,10 +77,6 @@ export type LayerVariable =
       unit?: string;
       label?: string;
       description?: string;
-      timeSeries?: {
-        hoursLabels: Record<string, { label: { fr: string; en: string }; hours: [number, number] }>;
-        dayslabels: Record<string, { label: { fr: string; en: string }; weekDays: WeekDay[] }>;
-      };
     };
 
 /**
@@ -63,6 +88,16 @@ export interface TimeSeriesGeoJSONProperty {
   weekDays: WeekDay[];
 }
 [];
+
+export type LassoSource = SourceSpecification & {
+  variables?: Partial<Record<SOUNDSCAPE_VARIABLES, LayerVariable>>;
+  timeSeries?: {
+    timestampPropertyName: string;
+    hoursLabels?: Record<string, { label: { fr: string; en: string }; hours: [number, number] }>;
+    daysLabels?: Record<string, { label: { fr: string; en: string }; weekDays: WeekDay[] }>;
+    monthsLabels?: Record<string, { label: { fr: string; en: string }; months: Month[] }>;
+  };
+};
 
 interface IProject {
   /**
@@ -99,7 +134,7 @@ interface IProject {
    * A layer can be a tiles URL or a path to a geojson
    */
   sources: {
-    [sourceKey: string]: SourceSpecification & { variables?: Partial<Record<SOUNDSCAPE_VARIABLES, LayerVariable>> };
+    [sourceKey: string]: LassoSource;
   };
   /**
    * Maps list of the project.
