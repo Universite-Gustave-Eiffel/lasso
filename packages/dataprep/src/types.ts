@@ -89,14 +89,16 @@ export interface TimeSeriesGeoJSONProperty {
 }
 [];
 
+export interface TimeSpecification {
+  timestampPropertyName: string;
+  hoursLabels?: Record<string, { label: { fr: string; en: string }; hours: [number, number] }>;
+  daysLabels?: Record<string, { label: { fr: string; en: string }; weekDays: WeekDay[] }>;
+  monthsLabels?: Record<string, { label: { fr: string; en: string }; months: Month[] }>;
+}
+
 export type LassoSource = SourceSpecification & {
   variables?: Partial<Record<SOUNDSCAPE_VARIABLES, LayerVariable>>;
-  timeSeries?: {
-    timestampPropertyName: string;
-    hoursLabels?: Record<string, { label: { fr: string; en: string }; hours: [number, number] }>;
-    daysLabels?: Record<string, { label: { fr: string; en: string }; weekDays: WeekDay[] }>;
-    monthsLabels?: Record<string, { label: { fr: string; en: string }; months: Month[] }>;
-  };
+  timeSeries?: TimeSpecification;
 };
 
 interface IProject {

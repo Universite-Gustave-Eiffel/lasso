@@ -128,7 +128,7 @@
           },
           "type": "circle",
           "paint": {
-            "circle-radius": 5,
+            "circle-radius": 10,
             "circle-color": [
               "interpolate",
               [
@@ -136,7 +136,7 @@
               ],
               [
                 "get",
-                "Agr_Mean"
+                "emotion_pleasant"
               ],
               0,
               [

@@ -16,8 +16,8 @@ export async function readGeoJsonFile(file: string): Promise<GeoJSON> {
   }
 }
 
-const isEmpty = (value: null | undefined | unknown): boolean => [null, undefined].some((empty) => empty === value);
-const DEFAULT_FEATURE_ID_PROPERTY_NAME = "PK";
+//const isEmpty = (value: null | undefined | unknown): boolean => [null, undefined].some((empty) => empty === value);
+//const DEFAULT_FEATURE_ID_PROPERTY_NAME = "PK";
 export async function checkGeoJsonSource(source: LassoSource, projectFolderPath: string): Promise<GeoJSON> {
   if (source.type === "geojson") {
     const geojson =
@@ -27,13 +27,47 @@ export async function checkGeoJsonSource(source: LassoSource, projectFolderPath:
 
     const validGeoJson = { ...geojson };
     if (validGeoJson.type === "FeatureCollection" && source.variables !== undefined) {
-      let idPropertyName = DEFAULT_FEATURE_ID_PROPERTY_NAME;
-      if (source.promoteId)
-        idPropertyName = typeof source.promoteId === "string" ? source.promoteId : DEFAULT_FEATURE_ID_PROPERTY_NAME;
+      // let idPropertyName = DEFAULT_FEATURE_ID_PROPERTY_NAME;
+
+      // if (source.promoteId)
+      //   idPropertyName = typeof source.promoteId === "string" ? source.promoteId : DEFAULT_FEATURE_ID_PROPERTY_NAME;
+
+      const filterTransformProperties = (properties: Record<string, unknown>): Record<string, unknown> => {
+        const newProperties: Record<string, unknown> = {};
+        toPairs(source.variables).forEach(([variableName, v]) => {
+          const featureName = typeof v === "string" ? v : v.propertyName;
+          if (properties && properties[featureName] !== undefined)
+            newProperties[variableName] = properties[featureName];
+        });
+        return newProperties;
+      };
       const nbFeaturesByVariables: { [key: string]: number } = {};
 
       validGeoJson.features = toPairs(groupBy(validGeoJson.features, (f) => shortHash(JSON.stringify(f.geometry)))).map(
         ([key, features]) => {
+          // check variables
+          features.forEach((f) =>
+            toPairs(source.variables).forEach(([variableName, v]) => {
+              const featureName = typeof v === "string" ? v : v.propertyName;
+              if (f.properties && f.properties[featureName] !== undefined)
+                nbFeaturesByVariables[variableName] = (nbFeaturesByVariables[variableName] || 0) + 1;
+            }),
+          );
+          // TODO: refacto the id check
+          //  // check or generate id in properties
+          //  if (aggregatedFeature.properties && isEmpty(aggregatedFeature.properties[idPropertyName])) {
+          // if (idPropertyName === DEFAULT_FEATURE_ID_PROPERTY_NAME)
+          //   aggregatedFeature.properties[idPropertyName] = shortHash(JSON.stringify(aggregatedFeature.geometry));
+          // else
+          //   throw new Error(
+          //     `The identifier ${idPropertyName} is missing in one feature property set ${JSON.stringify(
+          //       aggregatedFeature.properties,
+          //       null,
+          //       2,
+          //     )}`,
+          //   );
+          // }
+
           const aggregatedFeature: Feature<Geometry, GeoJsonProperties> = {
             id: key,
             type: features[0].type,
@@ -72,7 +106,7 @@ export async function checkGeoJsonSource(source: LassoSource, projectFolderPath:
                   if (labelsKeys.length > 0) {
                     // tag with the proper timeSeries keys
                     //TODO: share timekey generation method with client
-                    timeKey = labelsKeys.join("_");
+                    timeKey = labelsKeys.join("|");
                   }
                 } else {
                   // case of a static features for which there is no time key
@@ -81,42 +115,23 @@ export async function checkGeoJsonSource(source: LassoSource, projectFolderPath:
                 }
 
                 //finally index features values with appropriate time key
-                propertiesInTime[timeKey] = { ...f.properties };
+                propertiesInTime[timeKey] = filterTransformProperties(f.properties);
               }
               // no properties => ignore it
             });
             // END FOREACH FEATURES
             aggregatedFeature.properties = {
               // use static as default values
-              ...(propertiesInTime["static"] || features[0].properties),
+              ...filterTransformProperties(propertiesInTime["static"] || features[0].properties),
               ...propertiesInTime,
             };
           } else {
             if (features.length > 1) {
               console.warn("Duplicated feature with the same geometry");
             }
-            aggregatedFeature.properties = features[0].properties;
+            aggregatedFeature.properties = filterTransformProperties(features[0].properties || {});
           }
 
-          // check or generate id in properties
-          if (aggregatedFeature.properties && isEmpty(aggregatedFeature.properties[idPropertyName])) {
-            if (idPropertyName === DEFAULT_FEATURE_ID_PROPERTY_NAME)
-              aggregatedFeature.properties[idPropertyName] = shortHash(JSON.stringify(aggregatedFeature.geometry));
-            else
-              throw new Error(
-                `The identifier ${idPropertyName} is missing in one feature property set ${JSON.stringify(
-                  aggregatedFeature.properties,
-                  null,
-                  2,
-                )}`,
-              );
-          }
-          // check variables
-          toPairs(source.variables).forEach(([variableName, v]) => {
-            const featureName = typeof v === "string" ? v : v.propertyName;
-            if (aggregatedFeature.properties && aggregatedFeature.properties[featureName] !== undefined)
-              nbFeaturesByVariables[variableName] = (nbFeaturesByVariables[variableName] || 0) + 1;
-          });
           return aggregatedFeature;
         },
       );
