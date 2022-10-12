@@ -9,8 +9,8 @@
       "type": "geojson",
       "data": "./layers/resultGrid2.geojson",
       "variables": {
-        "acoustic-birds": "meanBrd",
-        "acoustic-trafic": "meanTra"
+        "acoustic_birds": "meanBrd",
+        "acoustic_trafic": "meanTra"
       }
     }
   },
@@ -21,7 +21,7 @@
       "basemapStyle": "./OSM_BDTOPO.style.json",
       "layers": [
         {
-          "id": "acoustic-birds",
+          "id": "acoustic_birds",
           "source": "Geo2",
           "beforeId": "bati",
           "metadata": {
@@ -36,7 +36,7 @@
               ],
               [
                 "get",
-                "acoustic-birds"
+                "acoustic_birds"
               ],
               0,
               [
@@ -59,9 +59,8 @@
       "basemapStyle": "./OSM_BDTOPO.style.json",
       "layers": [
         {
-          "id": "acoustic-trafic",
+          "id": "acoustic_trafic",
           "source": "Geo2",
-          "beforeId": "bati",
           "metadata": {
             "interactive": true
           },
@@ -74,7 +73,7 @@
               ],
               [
                 "get",
-                "acoustic-trafic"
+                "acoustic_trafic"
               ],
               0,
               [
