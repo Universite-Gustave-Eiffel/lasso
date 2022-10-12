@@ -30,10 +30,28 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
   const [selectedFeature, setSelectedFeature] = useState<MapboxGeoJSONFeature | null>(null);
   const [projectMap, setProjectMap] = useState<IProjectMap | undefined>();
   const [interactiveLayerIds, setInteractiveLayerIds] = useState<string[]>([]);
+  const [currentTimeKey] = useState<string | null>(null);
+  const [mapLoaded, setMapLoaded] = useState<boolean>(false);
 
+  // find the chosen projetMap from id
   useEffect(() => {
-    if (project && projectMapId) setProjectMap(project.maps.find((m) => m.id === projectMapId));
+    if (project && projectMapId) {
+      setProjectMap(project.maps.find((m) => m.id === projectMapId));
+    }
   }, [project, projectMapId]);
+  useEffect(() => {
+    if (projectMap && mapLoaded)
+      setInteractiveLayerIds(
+        projectMap.layers
+          .filter((l) => "metadata" in l && (l.metadata as { interactive: boolean }).interactive)
+          .map((l) => l.id),
+      );
+  }, [projectMap, mapLoaded]);
+
+  // filter source data base on currentTime state
+  useEffect(() => {
+    console.log("todo", currentTimeKey);
+  }, [currentTimeKey, projectMap]);
 
   return (
     <>
@@ -50,7 +68,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
                 const selectedFeature = e.features[0];
                 setSelectedFeature({
                   ...selectedFeature,
-                  // nesrted geojson properties are not parsed... https://github.com/maplibre/maplibre-gl-js/issues/1325
+                  // nested geojson properties are not parsed... https://github.com/maplibre/maplibre-gl-js/issues/1325
                   properties: mapValues(selectedFeature.properties, (value) => {
                     if (typeof value === "string" && value[0] === "{" && last(value) === "}") {
                       try {
@@ -74,34 +92,19 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
                 // Change the cursor style as a UI indicator.
                 map.getCanvas().style.cursor = "";
             }}
-            onLoad={() =>
+            onLoad={() => {
               // setting interactiveLayerIds after children are loaded
               // see https://github.com/visgl/react-map-gl/issues/1618
-              setInteractiveLayerIds(
-                projectMap.layers
-                  .filter((l) => "metadata" in l && (l.metadata as { interactive: boolean }).interactive)
-                  .map((l) => l.id),
-              )
-            }
+              setMapLoaded(true);
+            }}
             attributionControl={false}
           >
-            {toPairs(project.sources).map(([sourceId, source]) => {
-              const layers = projectMap.layers.filter((l) => "source" in l && l.source === sourceId);
-              if (layers.length > 0) {
-                return (
-                  <Source
-                    key={sourceId}
-                    id={sourceId}
-                    {...(omit(source, ["variables", "timeSeries"]) as AnySourceData)}
-                  >
-                    {layers.map((l) => (
-                      <Layer key={l.id} {...(l as AnyLayer)} />
-                    ))}
-                  </Source>
-                );
-              }
-              return null;
-            })}
+            {toPairs(project.sources).map(([sourceId, source]) => (
+              <Source key={sourceId} id={sourceId} {...(omit(source, ["variables", "timeSeries"]) as AnySourceData)} />
+            ))}
+            {projectMap.layers.map((l) => (
+              <Layer key={l.id} {...(l as AnyLayer)} />
+            ))}
 
             <NavigationControl showCompass={false} />
             <FullscreenControl />
