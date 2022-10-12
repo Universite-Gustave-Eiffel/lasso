@@ -113,7 +113,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
           ((project.sources[selectedFeatureId.sourceId] as GeoJSONSourceSpecification).data as FeatureCollection)
         ).features.find((f) => f.properties?.id === selectedFeatureId.featureId),
       );
-    }
+    } else setSelectedFeature(undefined);
   }, [selectedFeatureId, timedSourcesData, project]);
 
   // refresh selec
@@ -130,6 +130,11 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
             interactiveLayerIds={interactiveLayerIds}
             onClick={(e) => {
               if (e.features?.length) {
+                if (selectedFeatureId && selectedFeatureId.featureId !== e.features[0].properties?.id)
+                  map?.setFeatureState(
+                    { id: selectedFeatureId.featureId, source: selectedFeatureId.sourceId },
+                    { selected: false },
+                  );
                 const selectedFeature = e.features[0];
                 // FYI we encountered two issues in the event feature:
                 // 1. nested properties are not parsed
@@ -138,13 +143,25 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
                   selectedFeature.layer.source &&
                   typeof selectedFeature.layer.source === "string" &&
                   selectedFeature.properties
-                )
+                ) {
+                  map?.setFeatureState(
+                    { id: selectedFeature.properties.id, source: selectedFeature.layer.source },
+                    { selected: true },
+                  );
                   setSelectedFeatureId({
                     sourceId: selectedFeature.layer.source,
                     featureId: selectedFeature.properties.id,
                     layerId: selectedFeature.layer.id,
                   });
-              } else setSelectedFeatureId(null);
+                }
+              } else {
+                if (selectedFeatureId)
+                  map?.setFeatureState(
+                    { id: selectedFeatureId.featureId, source: selectedFeatureId.sourceId },
+                    { selected: false },
+                  );
+                setSelectedFeatureId(null);
+              }
             }}
             onMouseEnter={(e) => {
               if (map)

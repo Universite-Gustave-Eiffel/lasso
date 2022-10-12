@@ -8,6 +8,7 @@
       "attribution": "Cart ASUR",
       "type": "geojson",
       "data": "./layers/Cart_Asur.geojson",
+      "promoteId": "id",
       "timeSeries": {
         "timestampPropertyName": "timestamPP",
         "hoursLabels": {
@@ -166,24 +167,62 @@
           "type": "circle",
           "paint": {
             "circle-radius": 10,
-            "circle-color": [
-              "interpolate",
+            "circle-stroke-width": [
+              "case",
               [
-                "linear"
-              ],
-              [
-                "get",
-                "acoustic_birds"
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
               ],
               0,
               [
-                "to-color",
-                "#edf8e9"
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
               ],
-              7,
+              5,
+              0
+            ],
+            "circle-stroke-color": "black",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "acoustic_birds"
+                ],
+                null
+              ],
               [
                 "to-color",
-                "#006d2c"
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_birds"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#edf8e9"
+                ],
+                7,
+                [
+                  "to-color",
+                  "#006d2c"
+                ]
               ]
             ]
           }
