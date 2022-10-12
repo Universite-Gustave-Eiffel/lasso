@@ -37,7 +37,7 @@ export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style, projec
   const [rightMapProjectId, setRightMapProjectId] = useState<string>(project.maps[0].id);
   const [leftMapProjectId, setLeftMapProjectId] = useState<string>(project.maps[0].id);
   const [mode, setMode] = useState<SyncMapsModes>("side-by-side");
-  console.log(leftMapProjectId);
+
   return (
     <div {...htmlProps}>
       <MapProvider>

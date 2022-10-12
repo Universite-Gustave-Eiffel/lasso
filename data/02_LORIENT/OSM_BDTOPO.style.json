@@ -1,0 +1,79 @@
+{
+    "version": 8,
+    "sources": {
+        "bdTopo": {
+            "attribution": "IGN",
+            "type": "vector",
+            "tiles": [
+                "https://wxs.ign.fr/topographie/geoportail/tms/1.0.0/BDTOPO/{z}/{x}/{y}.pbf"
+            ],
+            "minzoom": 4,
+            "maxzoom": 19
+        },
+        "osm": {
+            "attribution": "OSM",
+            "type": "raster",
+            "tiles": [
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+            ]
+        }
+    },
+    "layers": [
+        {
+            "id": "basemap",
+            "type": "raster",
+            "source": "osm"
+        },
+        {
+            "id": "bati",
+            "type": "fill-extrusion",
+            "source": "bdTopo",
+            "source-layer": "batiment",
+            "paint": {
+                "fill-extrusion-height": {
+                    "property": "hauteur",
+                    "stops": [
+                        [
+                            0,
+                            2
+                        ],
+                        [
+                            2,
+                            5
+                        ],
+                        [
+                            5,
+                            10
+                        ],
+                        [
+                            10,
+                            20
+                        ],
+                        [
+                            20,
+                            40
+                        ],
+                        [
+                            40,
+                            60
+                        ],
+                        [
+                            60,
+                            80
+                        ],
+                        [
+                            80,
+                            100
+                        ],
+                        [
+                            100,
+                            200
+                        ]
+                    ]
+                },
+                "fill-extrusion-base": 0,
+                "fill-extrusion-color": "#EEEEEE"
+            }
+        }
+    ]
+}

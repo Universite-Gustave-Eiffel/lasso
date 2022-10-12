@@ -4,43 +4,28 @@
   "description": " Les cartes de paysages sonores présentent les résultats d'une enquête réalisée auprès des habitants de la zone d'étude (du centre ville de Lorient).",
   "image": "logo.jpeg",
   "sources": {
-    "bdTopo": {
-      "attribution": "IGN",
-      "type": "vector",
-      "tiles": [
-        "https://wxs.ign.fr/topographie/geoportail/tms/1.0.0/BDTOPO/{z}/{x}/{y}.pbf"
-      ],
-      "minzoom": 4,
-      "maxzoom": 19
-    },
-    "osm": {
-      "attribution": "OSM",
-      "type": "raster",
-      "tiles": [
-        "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-      ]
-    },
     "Geo2": {
       "attribution": "Pierre",
       "type": "geojson",
-      "data": "./layers/resultGrid2.geojson"
+      "data": "./layers/resultGrid2.geojson",
+      "variables": {
+        "acoustic-birds": "meanBrd",
+        "acoustic-trafic": "meanTra"
+      }
     }
   },
   "maps": [
     {
       "id": "Grid2_bird",
       "name": "Bird from Grid2",
+      "basemapStyle": "./OSM_BDTOPO.style.json",
       "layers": [
-        {
-          "id": "basemap",
-          "type": "raster",
-          "source": "osm"
-        },
         {
           "id": "acoustic-birds",
           "source": "Geo2",
+          "beforeId": "bati",
           "metadata": {
-            "lasso:geojsonProperty": "meanBrd"
+            "interactive": true
           },
           "type": "fill",
           "paint": {
@@ -51,7 +36,7 @@
               ],
               [
                 "get",
-                "meanBrd"
+                "acoustic-birds"
               ],
               0,
               [
@@ -65,56 +50,43 @@
               ]
             ]
           }
-        },
+        }
+      ]
+    },
+    {
+      "id": "Grid2_traf",
+      "name": "Trafic",
+      "basemapStyle": "./OSM_BDTOPO.style.json",
+      "layers": [
         {
-          "id": "bati",
-          "type": "fill-extrusion",
-          "source": "bdTopo",
-          "source-layer": "batiment",
+          "id": "acoustic-trafic",
+          "source": "Geo2",
+          "beforeId": "bati",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "fill",
           "paint": {
-            "fill-extrusion-height": {
-              "property": "hauteur",
-              "stops": [
-                [
-                  0,
-                  2
-                ],
-                [
-                  2,
-                  5
-                ],
-                [
-                  5,
-                  10
-                ],
-                [
-                  10,
-                  20
-                ],
-                [
-                  20,
-                  40
-                ],
-                [
-                  40,
-                  60
-                ],
-                [
-                  60,
-                  80
-                ],
-                [
-                  80,
-                  100
-                ],
-                [
-                  100,
-                  200
-                ]
+            "fill-color": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "get",
+                "acoustic-trafic"
+              ],
+              0,
+              [
+                "to-color",
+                "#FFDDDD"
+              ],
+              7,
+              [
+                "to-color",
+                "#F22"
               ]
-            },
-            "fill-extrusion-base": 0,
-            "fill-extrusion-color": "#EEEEEE"
+            ]
           }
         }
       ]

@@ -6,15 +6,16 @@ import Map, {
   MapboxGeoJSONFeature,
   AttributionControl,
   useMap,
+  Source,
+  Layer,
 } from "react-map-gl";
 import maplibregl from "maplibre-gl";
 
-import { Project } from "@lasso/dataprep";
+import { IProjectMap, Project } from "@lasso/dataprep";
 import { Loader } from "../../Loader";
 import { FeatureDataPanel } from "./FeatureDataPanel";
-import { useNotifications } from "@lasso/client/src/core/notifications";
-import { useMapStyle } from "@lasso/client/src/hooks/useMapStyle";
-import { last, mapValues } from "lodash";
+import { last, mapValues, omit, toPairs } from "lodash";
+import { AnyLayer, AnySourceData } from "mapbox-gl";
 
 export interface ProjectMapProps {
   id: string;
@@ -24,31 +25,26 @@ export interface ProjectMapProps {
   center?: [number, number];
 }
 export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMapId, bounds, center }) => {
-  const { notify } = useNotifications();
   const { [mapId]: map } = useMap();
-  const { loading: loadingMapStyle, error: errorMapStyle, data: mapStyle } = useMapStyle(project.id, projectMapId);
 
   const [selectedFeature, setSelectedFeature] = useState<MapboxGeoJSONFeature | null>(null);
-  //const [layersData, setLayersData] = useState<Dictionary<FeatureCollection>>({});
+  const [projectMap, setProjectMap] = useState<IProjectMap | undefined>();
+  const [interactiveLayerIds, setInteractiveLayerIds] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!loadingMapStyle && errorMapStyle) {
-      notify({ message: `Could not load the map style ${errorMapStyle}`, type: "error" });
-    }
-  }, [loadingMapStyle, errorMapStyle, notify]);
+    if (project && projectMapId) setProjectMap(project.maps.find((m) => m.id === projectMapId));
+  }, [project, projectMapId]);
 
   return (
     <>
-      {!loadingMapStyle && mapStyle ? (
+      {projectMap ? (
         <>
           <Map
             id={mapId}
             initialViewState={{ bounds, latitude: center && center[0], longitude: center && center[1] }}
             mapLib={maplibregl}
-            mapStyle={mapStyle !== null ? mapStyle : undefined}
-            interactiveLayerIds={
-              mapStyle ? mapStyle.layers.filter((l) => "metadata" in l && l.metadata.interactive).map((l) => l.id) : []
-            }
+            mapStyle={projectMap?.basemapStyle}
+            interactiveLayerIds={interactiveLayerIds}
             onClick={(e) => {
               if (e.features?.length) {
                 const selectedFeature = e.features[0];
@@ -78,8 +74,35 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
                 // Change the cursor style as a UI indicator.
                 map.getCanvas().style.cursor = "";
             }}
+            onLoad={() =>
+              // setting interactiveLayerIds after children are loaded
+              // see https://github.com/visgl/react-map-gl/issues/1618
+              setInteractiveLayerIds(
+                projectMap.layers
+                  .filter((l) => "metadata" in l && (l.metadata as { interactive: boolean }).interactive)
+                  .map((l) => l.id),
+              )
+            }
             attributionControl={false}
           >
+            {toPairs(project.sources).map(([sourceId, source]) => {
+              const layers = projectMap.layers.filter((l) => "source" in l && l.source === sourceId);
+              if (layers.length > 0) {
+                return (
+                  <Source
+                    key={sourceId}
+                    id={sourceId}
+                    {...(omit(source, ["variables", "timeSeries"]) as AnySourceData)}
+                  >
+                    {layers.map((l) => (
+                      <Layer key={l.id} {...(l as AnyLayer)} />
+                    ))}
+                  </Source>
+                );
+              }
+              return null;
+            })}
+
             <NavigationControl showCompass={false} />
             <FullscreenControl />
             <AttributionControl position="top-left" compact />

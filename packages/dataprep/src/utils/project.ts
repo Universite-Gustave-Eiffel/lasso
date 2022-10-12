@@ -1,6 +1,5 @@
 import * as path from "path";
 import { GeoJSON } from "geojson";
-import { StyleSpecification, SourceSpecification } from "maplibre-gl";
 
 import { config } from "../config";
 import { ImportProject, InternalProject, LassoSource, Project } from "../types";
@@ -9,8 +8,7 @@ import * as fsu from "./files";
 import { outerBbox, checkGeoJsonSource } from "./geojson";
 import { readMarkdownFile } from "./markdown";
 import { getRandomHexColor } from "./color";
-import { fromPairs, mapValues, omit, toPairs, values } from "lodash";
-import axios, { AxiosError } from "axios";
+import { fromPairs, toPairs, values } from "lodash";
 
 /**
  * Given a folder, do the job to import internally the project.
@@ -35,8 +33,30 @@ export async function importProjectFromPath(projectFolderPath: string): Promise<
     )
   ).reduce((acc, curr) => ({ ...acc, [curr.name]: curr.content }), {} as { [key: string]: string });
 
+  // change relative local map style path to absolute path
+  const maps = await Promise.all(
+    project.maps.map(async (m) => {
+      if (m.basemapStyle)
+        if (typeof m.basemapStyle === "string") {
+          try {
+            // testing if the style is an URL
+            new URL(m.basemapStyle);
+            // it's an URL dont do nothing
+            return m;
+          } catch (e) {
+            return {
+              ...m,
+              basemapStyle: path.resolve(projectFolderPath, m.basemapStyle),
+            };
+          }
+        }
+      return m;
+    }),
+  );
+
   return {
     ...project,
+    maps,
     image: project.image ? path.resolve(projectFolderPath, project.image) : undefined,
     sources: fromPairs(
       await Promise.all(
@@ -112,31 +132,30 @@ export async function exportProject(project: InternalProject): Promise<Project> 
     ),
   );
 
-  // Create map styles
-  // ~~~~~~~~~~~~~~~~~
-  Promise.all(
+  // Create map styles if needed
+  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  const maps = await Promise.all(
     project.maps.map(async (m) => {
-      const styleFilename = `map.${m.id}.style.json`;
-      let style: StyleSpecification = { version: 8, sources: {}, layers: [] };
       if (m.basemapStyle)
         if (typeof m.basemapStyle === "string") {
           try {
-            const response = await axios.get<StyleSpecification>(m.basemapStyle, { responseType: "json" });
-            if (response.status === 200) style = response.data;
+            // testing if the style is an URL
+            new URL(m.basemapStyle);
+            // it's an URL dont do nothing
+            return m;
           } catch (e) {
-            throw new Error(`Style URL ${m.basemapStyle} returned a ${(e as AxiosError).status} HTTP status.`);
+            const styleFilename = path.basename(m.basemapStyle);
+            if (!(await fsu.checkExists(path.resolve(projectFolder, styleFilename))))
+              // copy the style file. It may already exist as same style can be shared in multiple maps
+              await fsu.copy(m.basemapStyle, path.resolve(projectFolder, styleFilename));
+            return {
+              ...m,
+              basemapStyle: path.resolve(projectUrl, styleFilename),
+            };
           }
-        } else style = m.basemapStyle;
-      style = {
-        ...style,
-        sources: {
-          ...style.sources,
-          ...mapValues(sources, (source) => omit(source, ["variables", "timeSeries"]) as SourceSpecification),
-        },
-        layers: [...style.layers, ...m.layers],
-      };
-
-      await fsu.writeFile(path.resolve(projectFolder, styleFilename), style);
+        }
+      // don't change anything otherwise
+      return m;
     }),
   );
 
@@ -155,6 +174,7 @@ export async function exportProject(project: InternalProject): Promise<Project> 
     color: project.color || getRandomHexColor(),
     image,
     sources,
+    maps,
     pages,
   };
 }
