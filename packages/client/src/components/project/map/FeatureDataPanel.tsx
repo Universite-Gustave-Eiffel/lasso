@@ -1,25 +1,30 @@
-import { MapboxGeoJSONFeature } from "mapbox-gl";
-import { Project } from "@lasso/dataprep/src/types";
+import { TimeSpecification } from "@lasso/dataprep/src/types";
 import { FC } from "react";
+import { Feature } from "geojson";
+
 import { FeatureDataTimeline } from "./FeatureDataTimeline";
 import { FeatureDataVizualisations } from "./FeatureDataVizualisations";
 
-export const FeatureDataPanel: FC<{ feature: MapboxGeoJSONFeature | null; project: Project }> = ({
-  feature,
-  project,
-}) => {
-  const source =
-    feature?.layer.source && typeof feature.layer.source === "string"
-      ? project.sources[feature?.layer.source]
-      : undefined;
-
+export const FeatureDataPanel: FC<{
+  feature?: Feature;
+  timeSpecification?: TimeSpecification;
+  setCurrentTimeKey: (timeKey: string | null) => void;
+  currentTimeKey: string | null;
+  layerId: string;
+}> = ({ feature, setCurrentTimeKey, currentTimeKey, timeSpecification, layerId }) => {
   return (
-    <div className="map-point-data ">
+    <div className="map-point-data">
       {feature && (
         <>
           {<FeatureDataVizualisations feature={feature} />}
-          {source && source.timeSeries && (
-            <FeatureDataTimeline feature={feature} timeSpecification={source.timeSeries} />
+          {timeSpecification && (
+            <FeatureDataTimeline
+              feature={feature}
+              layerId={layerId}
+              timeSpecification={timeSpecification}
+              currentTimeKey={currentTimeKey}
+              setCurrentTimeKey={setCurrentTimeKey}
+            />
           )}
         </>
       )}

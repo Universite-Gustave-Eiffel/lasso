@@ -8,7 +8,6 @@
       "attribution": "Cart ASUR",
       "type": "geojson",
       "data": "./layers/Cart_Asur.geojson",
-      "promoteId": "objective_id",
       "timeSeries": {
         "timestampPropertyName": "timestamPP",
         "hoursLabels": {
@@ -147,6 +146,44 @@
               [
                 "to-color",
                 "#6d2c00"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "birds",
+      "name": "Birds",
+      "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+      "layers": [
+        {
+          "id": "acoustic_birds",
+          "source": "Cart_ASUR",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "circle",
+          "paint": {
+            "circle-radius": 10,
+            "circle-color": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "get",
+                "acoustic_birds"
+              ],
+              0,
+              [
+                "to-color",
+                "#edf8e9"
+              ],
+              7,
+              [
+                "to-color",
+                "#006d2c"
               ]
             ]
           }

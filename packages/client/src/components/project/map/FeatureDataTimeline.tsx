@@ -1,14 +1,23 @@
 import { flatten, keys, sortBy } from "lodash";
 import { TimeSpecification } from "@lasso/dataprep/src/types";
-import { MapboxGeoJSONFeature } from "mapbox-gl";
 import { FC } from "react";
+import { Feature } from "geojson";
 
 interface FeatureDataTimelineProps {
-  feature: MapboxGeoJSONFeature;
+  feature: Feature;
   timeSpecification: TimeSpecification;
+  setCurrentTimeKey: (timeKey: string | null) => void;
+  currentTimeKey: string | null;
+  layerId: string;
 }
 
-export const FeatureDataTimeline: FC<FeatureDataTimelineProps> = ({ feature, timeSpecification }) => {
+export const FeatureDataTimeline: FC<FeatureDataTimelineProps> = ({
+  feature,
+  timeSpecification,
+  setCurrentTimeKey,
+  currentTimeKey,
+  layerId,
+}) => {
   const timelineKeys = flatten(
     keys(timeSpecification.monthsLabels).map((mlKey) => {
       return keys(timeSpecification.daysLabels).map((dlKey) => [mlKey, dlKey].join("|"));
@@ -32,13 +41,17 @@ export const FeatureDataTimeline: FC<FeatureDataTimelineProps> = ({ feature, tim
               const hoursLabel = timeSpecification.hoursLabels && timeSpecification.hoursLabels[k];
 
               const hoursValue =
-                feature.properties && feature.properties[hoursKey] && feature.properties[hoursKey][feature.layer.id];
+                feature.properties && feature.properties[hoursKey] && feature.properties[hoursKey][layerId];
 
               if (hoursLabel)
                 return (
-                  <span key={k}>
+                  <button
+                    className={`btn btn-small ${hoursKey === currentTimeKey ? "active" : ""}`}
+                    key={k}
+                    onClick={() => setCurrentTimeKey(hoursKey)}
+                  >
                     {hoursLabel.label.fr}: {hoursValue || "N/A"}
-                  </span>
+                  </button>
                 );
               else return <></>;
             })}

@@ -1,11 +1,11 @@
 import { toPairs } from "lodash";
-import { MapboxGeoJSONFeature } from "mapbox-gl";
+import { Feature } from "geojson";
 import { FC } from "react";
 
-export const FeatureDataVizualisations: FC<{ feature: MapboxGeoJSONFeature }> = ({ feature }) => {
+export const FeatureDataVizualisations: FC<{ feature: Feature }> = ({ feature }) => {
   if (feature.properties)
     return (
-      <div className="d-flex">
+      <div className="map-feature-viz">
         <div className="d-flex acoustics">
           {toPairs(feature.properties).map(([key, value]) => {
             if (key.startsWith("acoustic"))

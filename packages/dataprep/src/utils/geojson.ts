@@ -72,7 +72,7 @@ export async function checkGeoJsonSource(source: LassoSource, projectFolderPath:
             id: key,
             type: features[0].type,
             geometry: features[0].geometry,
-            properties: {},
+            properties: { id: key },
           };
 
           if (source.timeSeries !== undefined) {
@@ -122,6 +122,7 @@ export async function checkGeoJsonSource(source: LassoSource, projectFolderPath:
             // END FOREACH FEATURES
             aggregatedFeature.properties = {
               // use static as default values
+              id: key,
               ...filterTransformProperties(propertiesInTime["static"] || features[0].properties),
               ...propertiesInTime,
             };
@@ -129,7 +130,7 @@ export async function checkGeoJsonSource(source: LassoSource, projectFolderPath:
             if (features.length > 1) {
               console.warn("Duplicated feature with the same geometry");
             }
-            aggregatedFeature.properties = filterTransformProperties(features[0].properties || {});
+            aggregatedFeature.properties = { id: key, ...filterTransformProperties(features[0].properties || {}) };
           }
 
           return aggregatedFeature;
