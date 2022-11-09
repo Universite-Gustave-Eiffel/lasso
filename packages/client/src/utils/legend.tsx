@@ -23,4 +23,6 @@ export const defaultLegendSpecs: LegendSpecType = {
   acoustic_voices: {
     icon: RiUserVoiceFill,
   },
+  emotion_eventful: {},
+  emotion_pleasant: {},
 };
