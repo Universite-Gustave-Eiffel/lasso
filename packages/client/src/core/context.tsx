@@ -4,16 +4,19 @@ import { useNavigate } from "react-router-dom";
 import { ExportedData } from "@lasso/dataprep";
 import { NotificationState } from "./notifications";
 import { ModalRequest } from "./modals";
-import { useProjectData } from "../hooks/useProjectData";
+import { useProjectsData } from "../hooks/useProjectData";
 import { Loader } from "../components/Loader";
+import { LoadedProject } from "../hooks/useProject";
 
 /**
  * Type definition of the context
  */
+
 export interface AppContextType {
   notifications: Array<NotificationState>;
   modal?: ModalRequest<any, any>;
-  data: ExportedData;
+  data: ExportedData & { loadedProject: Record<string, LoadedProject> };
+  currentProjectId?: string;
 }
 
 const initialContext: AppContextType = {
@@ -25,6 +28,7 @@ const initialContext: AppContextType = {
       [0, 0],
     ],
     projects: [],
+    loadedProject: {},
   },
 };
 
@@ -43,14 +47,14 @@ export const AppContext = createContext<{
  */
 export const AppContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const navigate = useNavigate();
-  const { loading, error, data } = useProjectData();
+  const { loading, error, data } = useProjectsData();
 
   const [context, setContext] = useState<AppContextType>(initialContext);
 
   useEffect(() => {
     setContext((prev) => ({
       ...prev,
-      data: data ? data : prev.data,
+      data: { ...prev.data, ...data },
     }));
   }, [data]);
 

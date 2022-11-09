@@ -13,18 +13,21 @@ import { Dictionary, mapValues, omit, omitBy, toPairs } from "lodash";
 import { AnyLayer } from "mapbox-gl";
 import { FeatureCollection, Feature } from "geojson";
 
-import { IProjectMap, Project } from "@lasso/dataprep";
+import { IProjectMap } from "@lasso/dataprep";
 import { Loader } from "../../Loader";
 import { FeatureDataPanel } from "./FeatureDataPanel";
+import { useCurrentProject } from "../../../hooks/useProject";
 
 export interface ProjectMapProps {
   id: string;
-  project: Project;
-  projectMapId: string | null;
+  projectMapId?: string;
   bounds?: LngLatBoundsLike;
   center?: [number, number];
 }
-export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMapId, bounds, center }) => {
+
+export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bounds, center }) => {
+  //project
+  const project = useCurrentProject();
   // map lifecycle
   const { [mapId]: map } = useMap();
   const [projectMap, setProjectMap] = useState<IProjectMap | undefined>();
@@ -33,8 +36,8 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
 
   // Feature selection
   // feature id is used as maplibre have issues with feature provided in click event (nested properties as string and missing feature ID)
-  const [selectedFeatureId, setSelectedFeatureId] = useState<{
-    sourceId: string;
+  const [selectedMapFeature, setSelectedMapFeature] = useState<{
+    source: string;
     featureId: string;
     layerId: string;
   } | null>(null);
@@ -65,7 +68,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
 
   // adapt source data based on currentTime state
   useEffect(() => {
-    if (projectMap && currentTimeKey) {
+    if (projectMap && project && currentTimeKey) {
       const sourcesData = omitBy(
         mapValues(project.sources, (source) => {
           if (
@@ -105,22 +108,19 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
   // pick and refresh the selected feature
   useEffect(() => {
     // when changing selection or time, refresh selectedFeature
-    if (selectedFeatureId) {
-      setSelectedFeature(
-        // use timedSource in priority of original data
-        (
-          timedSourcesData[selectedFeatureId.sourceId] ||
-          ((project.sources[selectedFeatureId.sourceId] as GeoJSONSourceSpecification).data as FeatureCollection)
-        ).features.find((f) => f.properties?.id === selectedFeatureId.featureId),
-      );
+    if (selectedMapFeature && project) {
+      // use timedSource in priority of original data
+      const sf = (
+        timedSourcesData[selectedMapFeature.source] ||
+        ((project.sources[selectedMapFeature.source] as GeoJSONSourceSpecification).data as FeatureCollection)
+      ).features.find((f) => f.properties?.id === selectedMapFeature.featureId);
+      setSelectedFeature(sf);
     } else setSelectedFeature(undefined);
-  }, [selectedFeatureId, timedSourcesData, project]);
-
-  // refresh selec
+  }, [selectedMapFeature, timedSourcesData, project]);
 
   return (
     <>
-      {projectMap ? (
+      {projectMap && project ? (
         <>
           <Map
             id={mapId}
@@ -130,9 +130,9 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
             interactiveLayerIds={interactiveLayerIds}
             onClick={(e) => {
               if (e.features?.length) {
-                if (selectedFeatureId && selectedFeatureId.featureId !== e.features[0].properties?.id)
+                if (selectedMapFeature && selectedMapFeature.featureId !== e.features[0].properties?.id)
                   map?.setFeatureState(
-                    { id: selectedFeatureId.featureId, source: selectedFeatureId.sourceId },
+                    { id: selectedMapFeature.featureId, source: selectedMapFeature.source },
                     { selected: false },
                   );
                 const selectedFeature = e.features[0];
@@ -148,19 +148,19 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
                     { id: selectedFeature.properties.id, source: selectedFeature.layer.source },
                     { selected: true },
                   );
-                  setSelectedFeatureId({
-                    sourceId: selectedFeature.layer.source,
+                  setSelectedMapFeature({
+                    source: selectedFeature.layer.source,
                     featureId: selectedFeature.properties.id,
                     layerId: selectedFeature.layer.id,
                   });
                 }
               } else {
-                if (selectedFeatureId)
+                if (selectedMapFeature)
                   map?.setFeatureState(
-                    { id: selectedFeatureId.featureId, source: selectedFeatureId.sourceId },
+                    { id: selectedMapFeature.featureId, source: selectedMapFeature.source },
                     { selected: false },
                   );
-                setSelectedFeatureId(null);
+                setSelectedMapFeature(null);
               }
             }}
             onMouseEnter={(e) => {
@@ -201,11 +201,11 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, project, projectMap
             <NavigationControl showCompass={false} />
             <FullscreenControl />
             <AttributionControl position="top-left" compact />
-            {selectedFeatureId && (
+            {selectedMapFeature && project && (
               <FeatureDataPanel
                 feature={selectedFeature}
-                timeSpecification={project.sources[selectedFeatureId.sourceId].timeSeries}
-                layerId={selectedFeatureId.layerId}
+                timeSpecification={project.sources[selectedMapFeature.source].timeSeries}
+                layerId={selectedMapFeature.layerId}
                 currentTimeKey={currentTimeKey}
                 setCurrentTimeKey={setCurrentTimeKey}
               />

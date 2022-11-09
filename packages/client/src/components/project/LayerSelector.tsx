@@ -2,7 +2,7 @@ import { FC, CSSProperties, useMemo } from "react";
 import Select from "react-select";
 import cx from "classnames";
 
-import { Project } from "@lasso/dataprep";
+import { IProjectMap } from "@lasso/dataprep";
 
 export interface LayerSelectorProps {
   /**
@@ -20,11 +20,11 @@ export interface LayerSelectorProps {
   /**
    * The project to display
    */
-  project: Project;
+  maps: IProjectMap[];
   /**
    * The map on which the component is linked
    */
-  projectMapId: string;
+  projectMapId?: string;
   setProjectMapId: (projetMapId: string) => void;
 }
 
@@ -33,12 +33,12 @@ export const LayerSelector: FC<LayerSelectorProps> = ({
   id,
   className,
   style,
-  project,
+  maps,
   projectMapId,
   setProjectMapId,
 }) => {
   const htmlProps = { id, className: cx("layer-selector", className), style };
-  const options = useMemo(() => project.maps.map((m) => ({ value: m.id, label: m.name })), [project]);
+  const options = useMemo(() => maps.map((m) => ({ value: m.id, label: m.name })), [maps]);
 
   return (
     <div {...htmlProps}>

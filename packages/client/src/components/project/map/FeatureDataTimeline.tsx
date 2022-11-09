@@ -1,5 +1,5 @@
 import { flatten, keys, sortBy } from "lodash";
-import { TimeSpecification } from "@lasso/dataprep/src/types";
+import { TimeSpecification } from "@lasso/dataprep";
 import { FC } from "react";
 import { Feature } from "geojson";
 

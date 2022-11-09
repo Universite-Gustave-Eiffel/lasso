@@ -4,7 +4,7 @@ export type BBOX = [[number, number], [number, number]];
 
 // TODO: featureIdentifier doesn't need to be a complex variable only a string.
 // also we might want to allow random variables on top of specific ones
-export type SOUNDSCAPE_VARIABLES =
+export type SOUNDSCAPE_VARIABLES_TYPES =
   | "acoustic_soundlevel"
   | "acoustic_birds"
   | "acoustic_trafic"
@@ -16,7 +16,7 @@ export type MapLayerType =
   | string
   | {
       layerId: string;
-      variable: SOUNDSCAPE_VARIABLES;
+      variable: SOUNDSCAPE_VARIABLES_TYPES;
     };
 
 export interface IProjectMap {
@@ -97,7 +97,7 @@ export interface TimeSpecification {
 }
 
 export type LassoSource = SourceSpecification & {
-  variables?: Partial<Record<SOUNDSCAPE_VARIABLES, LayerVariable>>;
+  variables?: Partial<Record<SOUNDSCAPE_VARIABLES_TYPES, LayerVariable>>;
   timeSeries?: TimeSpecification;
 };
 
