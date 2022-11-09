@@ -218,7 +218,7 @@
                   "to-color",
                   "#edf8e9"
                 ],
-                7,
+                11,
                 [
                   "to-color",
                   "#006d2c"
@@ -294,10 +294,86 @@
                   "to-color",
                   "#FFDDDD"
                 ],
-                7,
+                11,
                 [
                   "to-color",
                   "#F22"
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "voices",
+      "name": "Voices",
+      "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+      "layers": [
+        {
+          "id": "acoustic_voices",
+          "source": "Cart_ASUR",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "circle",
+          "paint": {
+            "circle-radius": 10,
+            "circle-stroke-width": [
+              "case",
+              [
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
+              ],
+              0,
+              [
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
+              ],
+              5,
+              0
+            ],
+            "circle-stroke-color": "black",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "acoustic_voices"
+                ],
+                null
+              ],
+              [
+                "to-color",
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_birds"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#DDDDFF"
+                ],
+                11,
+                [
+                  "to-color",
+                  "#22F"
                 ]
               ]
             ]

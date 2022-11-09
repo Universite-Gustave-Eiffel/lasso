@@ -1,8 +1,9 @@
 import { toPairs } from "lodash";
+import { FC } from "react";
 import { Feature } from "geojson";
-import { CSSProperties, FC } from "react";
-import { SOUNDSCAPE_VARIABLES_TYPES } from "@lasso/dataprep";
+
 import { useCurrentProject } from "../../../hooks/useProject";
+import { AcousticFeatureCircles } from "./AcousticFeatureCircles";
 
 export const FeatureDataVizualisations: FC<{ feature: Feature }> = ({ feature }) => {
   const project = useCurrentProject();
@@ -11,26 +12,7 @@ export const FeatureDataVizualisations: FC<{ feature: Feature }> = ({ feature })
     return (
       <div className="map-feature-viz">
         <div className="d-flex acoustics">
-          {toPairs(feature.properties).map(([key, value]) => {
-            if (key.startsWith("acoustic")) {
-              const legendSpec = project.legendSpecs ? project.legendSpecs[key as SOUNDSCAPE_VARIABLES_TYPES] : null;
-              const itemStyle: CSSProperties = {};
-              if (legendSpec && legendSpec.colorStyleExpression) {
-                try {
-                  itemStyle.backgroundColor = legendSpec.colorStyleExpression.evaluate({ zoom: 14 }, feature);
-                } catch (e) {
-                  console.error(e);
-                }
-              }
-
-              return (
-                <div key={key} style={itemStyle}>
-                  {key}:{value}
-                </div>
-              );
-            }
-            return null;
-          })}
+          <AcousticFeatureCircles feature={feature} />
         </div>
         <div className="d-flex emotions">
           {toPairs(feature.properties).map(([key, value]) => {

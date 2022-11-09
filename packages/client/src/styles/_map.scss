@@ -13,10 +13,41 @@
     
     max-width:50%;
     display: flex;
-    flex-direction: column;
+    // todo media query to go column in small width screen
     .acoustics,.emotions {
       display: flex;
       flex-direction: column;
+      
+      .acoustic-circles{
+        width: 100px;
+        height: 100px;
+        position: relative;
+
+        .acoustic-birds, .acoustic-voices , .acoustic-trafic {
+          position: absolute;
+          display:flex;
+          justify-content: center;
+          align-items: center;
+          .icon {
+            color: white;
+          }
+        }
+          .acoustic-birds{
+          top: 0;
+          left: 0;
+        }
+        .acoustic-voices {
+        
+          top: 0;
+          right: 0;
+        }
+        .acoustic-trafic {
+          bottom: 0;
+          margin: 0 auto;
+          left:0;
+          right: 0;
+        }
+      }
     }
   }
 }
