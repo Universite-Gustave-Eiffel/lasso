@@ -1,7 +1,8 @@
-import { flatten, keys, sortBy } from "lodash";
+import { flatten, keys } from "lodash";
 import { TimeSpecification } from "@lasso/dataprep";
 import { FC } from "react";
 import { Feature } from "geojson";
+import { DonutDay } from "./DonutDay";
 
 interface FeatureDataTimelineProps {
   feature: Feature;
@@ -23,38 +24,21 @@ export const FeatureDataTimeline: FC<FeatureDataTimelineProps> = ({
       return keys(timeSpecification.daysLabels).map((dlKey) => [mlKey, dlKey].join("|"));
     }),
   );
-  const timelineHoursKeys = timeSpecification.hoursLabels
-    ? sortBy(
-        keys(timeSpecification.hoursLabels),
-        (k) => timeSpecification!.hoursLabels && timeSpecification!.hoursLabels[k].hours[0],
-      )
-    : [];
 
   return (
-    <div className="timelines d-flex flex-column">
+    <div className="timelines d-flex flex-wrap">
       {timelineKeys.map((timelineKey) => {
         return (
           <div key={timelineKey} className="timeline">
-            {timelineKey}:{" "}
-            {timelineHoursKeys.map((k) => {
-              const hoursKey = `${timelineKey}|${k}`;
-              const hoursLabel = timeSpecification.hoursLabels && timeSpecification.hoursLabels[k];
-
-              const hoursValue =
-                feature.properties && feature.properties[hoursKey] && feature.properties[hoursKey][layerId];
-
-              if (hoursLabel)
-                return (
-                  <button
-                    className={`btn btn-small ${hoursKey === currentTimeKey ? "active" : ""}`}
-                    key={k}
-                    onClick={() => setCurrentTimeKey(hoursKey)}
-                  >
-                    {hoursLabel.label.fr}: {hoursValue || "N/A"}
-                  </button>
-                );
-              else return <></>;
-            })}
+            <div>{timelineKey}</div>
+            <DonutDay
+              timelineKey={timelineKey}
+              feature={feature}
+              timeSpecification={timeSpecification}
+              setCurrentTimeKey={setCurrentTimeKey}
+              currentTimeKey={currentTimeKey}
+              layerId={layerId}
+            />
           </div>
         );
       })}
