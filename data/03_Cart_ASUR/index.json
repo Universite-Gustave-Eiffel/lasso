@@ -108,7 +108,7 @@
           "propertyName": "Ani_Mean"
         },
         "acoustic_trafic": "Circ_Mean",
-        "acoustic_birds": "Ani_Mean",
+        "acoustic_birds": "Ois_Mean",
         "acoustic_voices": "Voix_Mean",
         "acoustic_soundlevel": "Bru_Mean"
       }
@@ -147,6 +147,44 @@
               [
                 "to-color",
                 "#6d2c00"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "eventful",
+      "name": "EventFul",
+      "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+      "layers": [
+        {
+          "id": "emotion_eventful",
+          "source": "Cart_ASUR",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "circle",
+          "paint": {
+            "circle-radius": 10,
+            "circle-color": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "get",
+                "emotion_eventful"
+              ],
+              0,
+              [
+                "to-color",
+                "#e9edf8"
+              ],
+              7,
+              [
+                "to-color",
+                "#2c006d"
               ]
             ]
           }
@@ -213,7 +251,7 @@
                   "get",
                   "acoustic_birds"
                 ],
-                0,
+                1,
                 [
                   "to-color",
                   "#edf8e9"
@@ -272,7 +310,7 @@
                 "==",
                 [
                   "get",
-                  "acoustic_birds"
+                  "acoustic_trafic"
                 ],
                 null
               ],
@@ -287,9 +325,9 @@
                 ],
                 [
                   "get",
-                  "acoustic_birds"
+                  "acoustic_trafic"
                 ],
-                0,
+                1,
                 [
                   "to-color",
                   "#FFDDDD"
@@ -363,9 +401,9 @@
                 ],
                 [
                   "get",
-                  "acoustic_birds"
+                  "acoustic_voices"
                 ],
-                0,
+                1,
                 [
                   "to-color",
                   "#DDDDFF"
