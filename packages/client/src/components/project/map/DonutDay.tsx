@@ -139,14 +139,14 @@ export const DonutDay: FC<DonutDayProps> = ({
     .filter((s): s is DonutSegment => !!s);
 
   return (
-    <div style={{ height: "100px" }}>
+    <div className="donut-day">
       <DonutChart
+        wrapperClassName="donut-chart"
         segments={segments}
         onClick={(hoursKey: string) => {
           console.log(hoursKey);
           setCurrentTimeKey(hoursKey);
         }}
-        wrapperClassName="donut-chart"
       />
     </div>
   );

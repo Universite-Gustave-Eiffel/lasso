@@ -6,109 +6,102 @@
   position: absolute;
   bottom: 0;
   left: 0;
+  width: fit-content;
   background-color: rgba(255, 255, 255, 0.8);
   display: flex;
+  justify-content: space-between;
+  //width: 100%;
 
-  .map-feature-viz {
-    max-width: 50%;
-    display: flex;
-    // todo media query to go column in small width screen
+  // todo media query to go column in small width screen
 
-    .acoustic-circles {
-      width: 100px;
-      height: 100px;
-      position: relative;
+  .acoustic-circles {
+    width: 100px;
+    height: 100px;
+    position: relative;
 
-      .acoustic-birds,
-      .acoustic-voices,
-      .acoustic-trafic {
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        .icon {
-          color: white;
-        }
-      }
-      .acoustic-birds {
-        top: 0;
-        left: 0;
-      }
-      .acoustic-voices {
-        top: 0;
-        right: 0;
-      }
-      .acoustic-trafic {
-        bottom: 0;
-        margin: 0 auto;
-        left: 0;
-        right: 0;
+    .acoustic-birds,
+    .acoustic-voices,
+    .acoustic-trafic {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .icon {
+        color: white;
       }
     }
+    .acoustic-birds {
+      top: 0;
+      left: 0;
+    }
+    .acoustic-voices {
+      top: 0;
+      right: 0;
+    }
+    .acoustic-trafic {
+      bottom: 0;
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+    }
+  }
 
-    .emotions-scatter-plot {
-      position: relative;
-
+  .emotions-scatter-plot {
+    padding: 1rem;
+    flex-shrink: 0;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    .scatter-plot-row {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      .scatter-plot-row {
-        display: flex;
-        align-items: center;
-      }
-      .scatter-plot {
-        flex-grow: 0;
-        flex-shrink: 0;
-        position: relative;
-        width: 100px;
-        height: 100px;
+      flex-direction: column;
+    }
+    .scatter-plot {
+      flex-grow: 0;
+      flex-shrink: 0;
+      position: relative;
+      width: 100px;
+      height: 100px;
 
-        .point {
-          z-index: 1;
-          position: absolute;
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          border: 2px solid black;
-        }
-        .x-axe {
-          position: absolute;
-          bottom: 50%;
-          left: 0;
-          border-top: 1px dashed black;
-          width: 100%;
-          height: 0px;
-          display: flex;
-          justify-content: end;
-          label {
-            font-size: 0.8rem;
-          }
-        }
-        .y-axe {
-          position: absolute;
-          left: 50%;
-          top: 0;
-          border-right: 1px dashed black;
-          width: 0px;
-          height: 100%;
-          display: flex;
-          justify-content: end;
+      .point {
+        z-index: 1;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 2px solid black;
+      }
+      .x-axe {
+        position: absolute;
+        bottom: 50%;
+        left: 0;
+        border-top: 1px dashed black;
+        width: 100%;
+        height: 0px;
+        display: flex;
+        justify-content: end;
+        label {
+          font-size: 0.8rem;
         }
       }
-      label {
-        font-size: 0.8rem;
-        &.min-x-label,
-        &.max-x-label {
-          writing-mode: vertical-rl;
-          text-orientation: mixed;
-          top: 0;
-        }
-        &.min-x-label {
-          left: 0;
-        }
-        &.max-x-label {
-          right: 0;
-        }
+      .y-axe {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        border-right: 1px dashed black;
+        width: 0px;
+        height: 100%;
+        display: flex;
+        justify-content: end;
+      }
+    }
+    label {
+      font-size: 0.8rem;
+      &.min-x-label,
+      &.max-x-label {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
       }
     }
   }

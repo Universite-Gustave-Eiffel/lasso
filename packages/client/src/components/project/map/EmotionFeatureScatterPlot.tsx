@@ -12,9 +12,9 @@ export const EmotionFeatureScatterPlot: FC<{ feature: Feature }> = ({ feature })
   if (feature.properties && feature.properties.emotion_pleasant && feature.properties.emotion_eventful) {
     return (
       <div className="emotions-scatter-plot">
-        <label>{t("eventful")}</label>
+        <label className="min-x-label">{t("unpleasant")}</label>
         <div className="scatter-plot-row">
-          <label className="min-x-label">{t("unpleasant")}</label>
+          <label>{t("eventful")}</label>
 
           <div className="scatter-plot">
             <div
@@ -30,9 +30,9 @@ export const EmotionFeatureScatterPlot: FC<{ feature: Feature }> = ({ feature })
             <div className="x-axe" />
             <div className="y-axe" />
           </div>
-          <label className="max-x-label">{t("pleasant")}</label>
+          <label>{t("calm")}</label>
         </div>
-        <label>{t("calm")}</label>
+        <label className="max-x-label">{t("pleasant")}</label>
       </div>
     );
   } else return null;

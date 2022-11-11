@@ -1,6 +1,18 @@
-.timeline {
-  .donut-chart {
-    height: 100%;
-    display: block;
+.timelines {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .donut-day {
+      height: 100px;
+      .donut-chart {
+        height: 100%;
+        display: block;
+      }
+    }
   }
 }

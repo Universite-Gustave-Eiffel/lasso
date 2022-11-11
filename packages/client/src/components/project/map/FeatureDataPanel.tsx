@@ -3,7 +3,8 @@ import { FC } from "react";
 import { Feature } from "geojson";
 
 import { FeatureDataTimeline } from "./FeatureDataTimeline";
-import { FeatureDataVizualisations } from "./FeatureDataVizualisations";
+import { EmotionFeatureScatterPlot } from "./EmotionFeatureScatterPlot";
+import { AcousticFeatureCircles } from "./AcousticFeatureCircles";
 
 export const FeatureDataPanel: FC<{
   feature?: Feature;
@@ -16,7 +17,10 @@ export const FeatureDataPanel: FC<{
     <div className="map-point-data">
       {feature && (
         <>
-          {<FeatureDataVizualisations feature={feature} />}
+          <div className="d-flex justify-content-center align-items-center p-1">
+            <AcousticFeatureCircles feature={feature} />
+          </div>
+          <EmotionFeatureScatterPlot feature={feature} />
           {timeSpecification && (
             <FeatureDataTimeline
               feature={feature}
