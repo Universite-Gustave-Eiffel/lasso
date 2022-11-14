@@ -1,5 +1,5 @@
 import { TimeSpecification } from "@lasso/dataprep";
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { Feature } from "geojson";
 
 import { FeatureDataTimeline } from "./FeatureDataTimeline";
@@ -12,7 +12,7 @@ export const FeatureDataPanel: FC<{
   feature?: Feature;
   timeSpecification?: TimeSpecification;
   variables?: LassoSourceVariables;
-  setCurrentTimeKey: (timeKey: string | null) => void;
+  setCurrentTimeKey: Dispatch<SetStateAction<string | null>>;
   currentTimeKey: string | null;
   layerId: string;
   isLeft?: boolean;

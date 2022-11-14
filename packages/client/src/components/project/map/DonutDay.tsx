@@ -1,4 +1,4 @@
-import { FC, Fragment } from "react";
+import { Dispatch, FC, Fragment, SetStateAction } from "react";
 import { Feature } from "geojson";
 import { keys, round, sortBy } from "lodash";
 
@@ -10,7 +10,7 @@ export interface DonutDayProps {
   timelineKey: string;
   timeSpecification: TimeSpecification;
   feature: Feature;
-  setCurrentTimeKey: (timeKey: string | null) => void;
+  setCurrentTimeKey: Dispatch<SetStateAction<string | null>>;
   currentTimeKey: string | null;
   layerId: string;
 }
@@ -145,7 +145,7 @@ export const DonutDay: FC<DonutDayProps> = ({
         segments={segments}
         onClick={(hoursKey: string) => {
           console.log(hoursKey);
-          setCurrentTimeKey(hoursKey);
+          setCurrentTimeKey((prev) => (prev === hoursKey ? null : hoursKey));
         }}
       />
     </div>

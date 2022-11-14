@@ -1,6 +1,6 @@
 import { toPairs } from "lodash";
 import { TimeSpecification } from "@lasso/dataprep";
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { Feature } from "geojson";
 import { DonutDay } from "./DonutDay";
 import { useT } from "@transifex/react";
@@ -8,7 +8,7 @@ import { useT } from "@transifex/react";
 interface FeatureDataTimelineProps {
   feature: Feature;
   timeSpecification: TimeSpecification;
-  setCurrentTimeKey: (timeKey: string | null) => void;
+  setCurrentTimeKey: Dispatch<SetStateAction<string | null>>;
   currentTimeKey: string | null;
   layerId: string;
 }

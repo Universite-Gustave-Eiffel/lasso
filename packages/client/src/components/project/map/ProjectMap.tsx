@@ -69,7 +69,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
 
   // adapt source data based on currentTime state
   useEffect(() => {
-    if (projectMap && project && currentTimeKey) {
+    if (projectMap && project) {
       const sourcesData = omitBy(
         mapValues(project.sources, (source) => {
           if (
@@ -91,8 +91,9 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
                         // for each decalred variable we pick the value index at the time selected key
                         variable &&
                         f.properties &&
-                        f.properties[currentTimeKey] &&
-                        f.properties[currentTimeKey][variable],
+                        (currentTimeKey && f.properties[currentTimeKey]
+                          ? f.properties[currentTimeKey][variable]
+                          : f.properties[variable]),
                     ),
                   },
                 };
