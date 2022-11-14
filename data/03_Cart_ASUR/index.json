@@ -102,10 +102,14 @@
       "variables": {
         "emotion_pleasant": {
           "propertyName": "Agr_Mean",
-          "type": "quantitative"
+          "type": "quantitative",
+          "minimumValue": 0,
+          "maximumValue": 10
         },
         "emotion_eventful": {
-          "propertyName": "Ani_Mean"
+          "propertyName": "Ani_Mean",
+          "minimumValue": 0,
+          "maximumValue": 10
         },
         "acoustic_trafic": "Circ_Mean",
         "acoustic_birds": "Ois_Mean",
@@ -129,29 +133,67 @@
           "type": "circle",
           "paint": {
             "circle-radius": 10,
-            "circle-color": [
-              "interpolate-hcl",
+            "circle-stroke-width": [
+              "case",
               [
-                "linear"
-              ],
-              [
-                "get",
-                "emotion_pleasant"
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
               ],
               0,
               [
-                "to-color",
-                "#d4322c"
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
               ],
               5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
               [
-                "to-color",
-                "#f9f7ae"
+                "==",
+                [
+                  "get",
+                  "emotion_pleasant"
+                ],
+                null
               ],
-              10,
               [
                 "to-color",
-                "#22964f"
+                "#DDD"
+              ],
+              [
+                "interpolate-hcl",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "emotion_pleasant"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#d4322c"
+                ],
+                5,
+                [
+                  "to-color",
+                  "#f2f0eb"
+                ],
+                10,
+                [
+                  "to-color",
+                  "#22964f"
+                ]
               ]
             ]
           }
@@ -172,24 +214,67 @@
           "type": "circle",
           "paint": {
             "circle-radius": 10,
-            "circle-color": [
-              "interpolate",
+            "circle-stroke-width": [
+              "case",
               [
-                "linear"
-              ],
-              [
-                "get",
-                "emotion_eventful"
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
               ],
               0,
               [
-                "to-color",
-                "#e9edf8"
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
               ],
-              7,
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "emotion_eventful"
+                ],
+                null
+              ],
               [
                 "to-color",
-                "#2c006d"
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "emotion_eventful"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#151aaf"
+                ],
+                5,
+                [
+                  "to-color",
+                  "#f2f0eb"
+                ],
+                10,
+                [
+                  "to-color",
+                  "#dee401"
+                ]
               ]
             ]
           }
@@ -232,7 +317,7 @@
               5,
               0
             ],
-            "circle-stroke-color": "black",
+            "circle-stroke-color": "grey",
             "circle-color": [
               "case",
               [
@@ -308,7 +393,7 @@
               5,
               0
             ],
-            "circle-stroke-color": "black",
+            "circle-stroke-color": "grey",
             "circle-color": [
               "case",
               [
@@ -384,7 +469,7 @@
               5,
               0
             ],
-            "circle-stroke-color": "black",
+            "circle-stroke-color": "grey",
             "circle-color": [
               "case",
               [
@@ -417,6 +502,82 @@
                 [
                   "to-color",
                   "#22F"
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "soundlevel",
+      "name": "Sound Level",
+      "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+      "layers": [
+        {
+          "id": "acoustic_soundlevel",
+          "source": "Cart_ASUR",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "circle",
+          "paint": {
+            "circle-radius": 10,
+            "circle-stroke-width": [
+              "case",
+              [
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
+              ],
+              0,
+              [
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
+              ],
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "acoustic_soundlevel"
+                ],
+                null
+              ],
+              [
+                "to-color",
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_soundlevel"
+                ],
+                1,
+                [
+                  "to-color",
+                  "#f7bfef"
+                ],
+                11,
+                [
+                  "to-color",
+                  "#6d005e"
                 ]
               ]
             ]
