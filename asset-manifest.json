@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/lasso/static/css/main.a197096a.css",
-    "main.js": "/lasso/static/js/main.91465e7e.js",
+    "main.css": "/lasso/static/css/main.435362d3.css",
+    "main.js": "/lasso/static/js/main.de5e72d7.js",
     "static/js/727.c3dae2bf.chunk.js": "/lasso/static/js/727.c3dae2bf.chunk.js",
     "static/js/750.b7af5372.chunk.js": "/lasso/static/js/750.b7af5372.chunk.js",
     "index.html": "/lasso/index.html",
-    "main.a197096a.css.map": "/lasso/static/css/main.a197096a.css.map",
-    "main.91465e7e.js.map": "/lasso/static/js/main.91465e7e.js.map",
+    "main.435362d3.css.map": "/lasso/static/css/main.435362d3.css.map",
+    "main.de5e72d7.js.map": "/lasso/static/js/main.de5e72d7.js.map",
     "727.c3dae2bf.chunk.js.map": "/lasso/static/js/727.c3dae2bf.chunk.js.map",
     "750.b7af5372.chunk.js.map": "/lasso/static/js/750.b7af5372.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a197096a.css",
-    "static/js/main.91465e7e.js"
+    "static/css/main.435362d3.css",
+    "static/js/main.de5e72d7.js"
   ]
 }
