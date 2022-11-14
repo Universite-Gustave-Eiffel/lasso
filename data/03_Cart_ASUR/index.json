@@ -118,7 +118,7 @@
     {
       "id": "pleasant",
       "name": "Pleasant",
-      "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+      "basemapStyle": "./ign_simple_bright.json",
       "layers": [
         {
           "id": "emotion_pleasant",
@@ -130,7 +130,7 @@
           "paint": {
             "circle-radius": 10,
             "circle-color": [
-              "interpolate",
+              "interpolate-hcl",
               [
                 "linear"
               ],
@@ -141,12 +141,17 @@
               0,
               [
                 "to-color",
-                "#f8e9ed"
+                "#d4322c"
               ],
-              7,
+              5,
               [
                 "to-color",
-                "#6d2c00"
+                "#f9f7ae"
+              ],
+              10,
+              [
+                "to-color",
+                "#22964f"
               ]
             ]
           }

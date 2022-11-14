@@ -145,9 +145,9 @@ export async function exportProject(project: InternalProject): Promise<Project> 
             return m;
           } catch (e) {
             const styleFilename = path.basename(m.basemapStyle);
-            if (!(await fsu.checkExists(path.resolve(projectFolder, styleFilename))))
-              // copy the style file. It may already exist as same style can be shared in multiple maps
-              await fsu.copy(m.basemapStyle, path.resolve(projectFolder, styleFilename));
+
+            await fsu.copy(m.basemapStyle, path.resolve(projectFolder, styleFilename));
+
             return {
               ...m,
               basemapStyle: path.resolve(projectUrl, styleFilename),

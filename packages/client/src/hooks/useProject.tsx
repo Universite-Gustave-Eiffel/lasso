@@ -7,6 +7,7 @@ import { FeatureCollection } from "geojson";
 import { flatten, fromPairs, keyBy, mapValues, omit, toPairs } from "lodash";
 import { defaultLegendSpecs, LegendSpecType, LegendSymbolSpec } from "../utils/legend";
 import { DataDrivenPropertyValueSpecification, ExpressionSpecification } from "maplibre-gl";
+import { Style } from "mapbox-gl";
 import { expression } from "@mapbox/mapbox-gl-style-spec";
 
 export type LoadedProject = Project & { legendSpecs: LegendSpecType };
@@ -82,6 +83,19 @@ export const useCurrentProject = (id?: string): LoadedProject | null => {
                 return [sourceId, source];
               }),
             ),
+          ),
+          // load basemap
+          maps: await Promise.all(
+            projectToLoad.maps.map(async (m) => {
+              if (m.basemapStyle && typeof m.basemapStyle === "string") {
+                const r = await axios.get<Style>(m.basemapStyle, { responseType: "json" });
+                if (r.status === 200) {
+                  return { ...m, basemapStyle: r.data };
+                }
+                throw new Error(`Loading sources data ${m.basemapStyle} raised a ${r.status} HTTP code`);
+              }
+              return m;
+            }),
           ),
           // create legendSpec
           legendSpecs: legendSpecs,

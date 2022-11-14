@@ -1,4 +1,5 @@
 import { LayerSpecification, SourceSpecification } from "maplibre-gl";
+import { Style } from "mapbox-gl";
 
 export type BBOX = [[number, number], [number, number]];
 
@@ -32,7 +33,7 @@ export interface IProjectMap {
   /**
    * Mapgl style specification to boostrap the map with
    */
-  basemapStyle?: string;
+  basemapStyle?: string | Style;
   /**
    * List of ordered layers IDS for the map
    * Layers will be drawn one of top oth the other folowwing the order (first = bottom).
