@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import cx from "classnames";
 
 import { Project } from "@lasso/dataprep";
+import { useLocale } from "@transifex/react";
+import { values } from "lodash";
 
 export interface ProjectCardProps {
   /**
@@ -24,6 +26,7 @@ export interface ProjectCardProps {
 }
 
 export const ProjectCard: FC<ProjectCardProps> = ({ id, className, style, project }) => {
+  const locale = useLocale();
   const htmlProps = { id, className: cx("card", className), style };
   return (
     <div {...htmlProps}>
@@ -36,7 +39,9 @@ export const ProjectCard: FC<ProjectCardProps> = ({ id, className, style, projec
         <Link className="stretched-link" to={`/project/${project.id}`} title={project.name}>
           <h5 className="card-title">{project.name}</h5>
         </Link>
-        {project.description && <p className="card-text">{project.description}</p>}
+        {project.description !== undefined && (
+          <p className="card-text">{project.description[locale] || values(project.description)[0]}</p>
+        )}
       </div>
     </div>
   );

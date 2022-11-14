@@ -117,7 +117,7 @@ interface IProject {
    * A short description of the project in text only.
    * Will be used for the project's card.
    */
-  description?: string;
+  description?: Record<string, string>;
   /**
    * Image of the project that will be used to create the project card.
    * It's a relative path to the image.

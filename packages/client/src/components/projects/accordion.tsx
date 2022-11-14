@@ -2,6 +2,8 @@ import { FC } from "react";
 import cx from "classnames";
 
 import { Project } from "@lasso/dataprep";
+import { useLocale } from "@transifex/react";
+import { values } from "lodash";
 
 interface AccordionProperties {
   projects: Array<Project>;
@@ -9,6 +11,7 @@ interface AccordionProperties {
   setSelected: (p: Project | null) => void;
 }
 export const ProjectsAccordion: FC<AccordionProperties> = ({ projects, selected, setSelected }) => {
+  const locale = useLocale();
   return (
     <div className="accordion accordion-flush">
       {projects.map((project) => (
@@ -23,7 +26,9 @@ export const ProjectsAccordion: FC<AccordionProperties> = ({ projects, selected,
             </button>
           </h2>
           <div className={cx("accordion-collapse collapse", selected && selected.id === project.id && "show")}>
-            <div className="accordion-body">{project.description}</div>
+            <div className="accordion-body">
+              {project.description && (project.description[locale] || values(project.description)[0])}
+            </div>
           </div>
         </div>
       ))}
