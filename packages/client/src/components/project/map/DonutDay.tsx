@@ -53,8 +53,8 @@ export const DonutChart = withSize<{ segments: DonutSegment[]; onClick: (key: st
                 key={segment.key}
                 d={getCircleSlicePath(radius, segment.angleSize, segment.anglePosition)}
                 stroke={segment.color}
-                strokeWidth={10}
-                fill="transparent"
+                strokeWidth={segment.selected ? 15 : 8}
+                fill={"transparent"}
                 onClick={() => onClick(segment.key)}
               >
                 <title>{segment.label}</title>
@@ -67,7 +67,7 @@ export const DonutChart = withSize<{ segments: DonutSegment[]; onClick: (key: st
             const x = -xStart(radius + 18, segment.anglePosition);
             const y = yStart(radius + 18, segment.anglePosition);
             return (
-              <text key={segment.key} x={x} dy={y} text-anchor={x > 0 && y > 0 ? "middle" : "start"}>
+              <text key={segment.key} x={x} dy={y} textAnchor={x > 0 && y > 0 ? "middle" : "start"}>
                 {segment.startHour}h
               </text>
             );

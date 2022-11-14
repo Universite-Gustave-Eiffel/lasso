@@ -69,16 +69,16 @@ enum Month {
   december,
 }
 
-export type LayerVariable =
-  | string
-  | {
-      propertyName: string;
-      type?: "quantitative" | "ordinal" | "nominal"; // default: quantitative
-      origin: "measure" | "model";
-      unit?: string;
-      label?: string;
-      description?: string;
-    };
+export type LayerVariable = {
+  propertyName: string;
+  minimumValue: number;
+  maximumValue: number;
+  type?: "quantitative" | "ordinal" | "nominal"; // default: quantitative
+  origin?: "measure" | "model";
+  unit?: string;
+  label?: string;
+  description?: string;
+};
 
 /**
  * Expected time series variable expression in GeoJSON
@@ -97,8 +97,10 @@ export interface TimeSpecification {
   monthsLabels?: Record<string, { label: { fr: string; en: string }; months: Month[] }>;
 }
 
+export type LassoSourceVariables = Partial<Record<SOUNDSCAPE_VARIABLES_TYPES, LayerVariable>>;
+
 export type LassoSource = SourceSpecification & {
-  variables?: Partial<Record<SOUNDSCAPE_VARIABLES_TYPES, LayerVariable>>;
+  variables?: LassoSourceVariables;
   timeSeries?: TimeSpecification;
 };
 

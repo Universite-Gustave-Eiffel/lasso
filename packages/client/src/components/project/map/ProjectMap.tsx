@@ -23,9 +23,10 @@ export interface ProjectMapProps {
   projectMapId?: string;
   bounds?: LngLatBoundsLike;
   center?: [number, number];
+  isLeft?: boolean;
 }
 
-export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bounds, center }) => {
+export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bounds, center, isLeft }) => {
   //project
   const project = useCurrentProject();
   // map lifecycle
@@ -115,7 +116,9 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
         ((project.sources[selectedMapFeature.source] as GeoJSONSourceSpecification).data as FeatureCollection)
       ).features.find((f) => f.properties?.id === selectedMapFeature.featureId);
       setSelectedFeature(sf);
-    } else setSelectedFeature(undefined);
+    } else {
+      setSelectedFeature(undefined);
+    }
   }, [selectedMapFeature, timedSourcesData, project]);
 
   return (
@@ -201,13 +204,22 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
             <NavigationControl showCompass={false} />
             <FullscreenControl />
             <AttributionControl position="top-left" compact />
-            {selectedMapFeature && project && (
+            {selectedFeature && selectedMapFeature && project && (
               <FeatureDataPanel
+                isLeft={isLeft}
                 feature={selectedFeature}
                 timeSpecification={project.sources[selectedMapFeature.source].timeSeries}
+                variables={project.sources[selectedMapFeature.source].variables}
                 layerId={selectedMapFeature.layerId}
                 currentTimeKey={currentTimeKey}
                 setCurrentTimeKey={setCurrentTimeKey}
+                onClose={() => {
+                  map?.setFeatureState(
+                    { ...selectedMapFeature, id: selectedMapFeature.featureId },
+                    { selected: false },
+                  );
+                  setSelectedMapFeature(null);
+                }}
               />
             )}
           </Map>
