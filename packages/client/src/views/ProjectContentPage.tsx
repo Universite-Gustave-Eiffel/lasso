@@ -26,9 +26,17 @@ export const ProjectContentPage: FC = () => {
   }, [id, page, fetch]);
 
   return (
-    <Layout loading={loading} project={project ?? undefined}>
+    <Layout loading={loading} project={project ?? undefined} currentProjectPage={page || "maps"}>
       <>
-        {data && <Markdown content={data as unknown as string} />}
+        {data && (
+          <div className="row">
+            <div className="col-2" />
+            <div className="col-8">
+              <Markdown content={data as unknown as string} />
+            </div>
+            <div className="col-2" />
+          </div>
+        )}
         {!data && error && <Error error={error} />}
       </>
     </Layout>

@@ -14,11 +14,21 @@ interface LayoutProps {
   fullPage?: boolean;
   project?: Project;
   heading?: string | JSX.Element;
+  currentProjectPage?: string; //"maps" | "project" | "sponsors" | "bibliography"
 }
-export const Layout: FC<PropsWithChildren<LayoutProps>> = ({ project, fullPage, heading, loading, children }) => {
+export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
+  project,
+  fullPage,
+  heading,
+  loading,
+  children,
+  currentProjectPage,
+}) => {
   return (
     <div id="app-root">
-      <Header>{project && <Heading project={project} />}</Header>
+      <Header project={project}>
+        <Heading project={project} currentProjectPage={currentProjectPage} />
+      </Header>
 
       <main className={cx(fullPage === true ? "d-flex align-self-stretch" : "container py-3")}>
         {!fullPage && <Heading heading={heading} />}

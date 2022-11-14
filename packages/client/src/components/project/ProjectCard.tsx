@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import cx from "classnames";
 
 import { Project } from "@lasso/dataprep";
-import { useLocale } from "@transifex/react";
+import { useLocale, useT } from "@transifex/react";
 import { values } from "lodash";
 
 export interface ProjectCardProps {
@@ -27,21 +27,28 @@ export interface ProjectCardProps {
 
 export const ProjectCard: FC<ProjectCardProps> = ({ id, className, style, project }) => {
   const locale = useLocale();
-  const htmlProps = { id, className: cx("card", className), style };
+  const t = useT();
+  const htmlProps = { id, className: cx("card h-100", className), style };
   return (
     <div {...htmlProps}>
       {project.image && (
         <div className="card-image">
-          <img className="card-img-top" src={project.image} alt={project.name} />
+          <Link to={`/project/${project.id}`} title={project.name}>
+            <img className="card-img-top" src={project.image} alt={project.name} />
+          </Link>
         </div>
       )}
       <div className="card-body">
-        <Link className="stretched-link" to={`/project/${project.id}`} title={project.name}>
-          <h5 className="card-title">{project.name}</h5>
-        </Link>
+        <h4 className="card-title">{project.name}</h4>
+
         {project.description !== undefined && (
           <p className="card-text">{project.description[locale] || values(project.description)[0]}</p>
         )}
+        <div className="w-100 text-end">
+          <Link className="btn btn-primary" to={`/project/${project.id}`} title={project.name}>
+            {t("htom.project.open")} {project.name}
+          </Link>
+        </div>
       </div>
     </div>
   );

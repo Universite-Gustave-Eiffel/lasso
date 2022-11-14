@@ -47,13 +47,13 @@ export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style }) => {
         <MapProvider>
           <SyncMaps mode={mode} />
           {mode === "single" && (
-            <div className="d-flex align-items-stretch justify-content-center" style={{ width: "2em" }}>
+            <div className="d-flex align-items-stretch justify-content-center bg-primary ml-0" style={{ width: "2em" }}>
               <button
-                className="btn btn-light p-0"
+                className="btn btn-primary p-0 rounded-0"
                 title={t("map.mode-side-by-side")}
                 onClick={() => setMode("side-by-side")}
               >
-                <BsChevronRight />
+                <BsChevronRight size="2rem" />
               </button>
             </div>
           )}
@@ -68,9 +68,13 @@ export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style }) => {
                 <ProjectMap id="leftMap" projectMapId={leftMapProjectId}></ProjectMap>
               </div>
 
-              <div className="d-flex align-items-stretch justify-content-center" style={{ width: "2em" }}>
-                <button className="btn btn-light p-0" title={t("map.mode-single")} onClick={() => setMode("single")}>
-                  <BsChevronLeft />
+              <div className="d-flex align-items-stretch justify-content-center bg-primary" style={{ width: "2em" }}>
+                <button
+                  className="btn btn-primary rounded-0 p-0"
+                  title={t("map.mode-single")}
+                  onClick={() => setMode("single")}
+                >
+                  <BsChevronLeft size="2rem" />
                 </button>
               </div>
             </>

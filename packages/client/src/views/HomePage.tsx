@@ -24,7 +24,7 @@ export const HomePage: FC = () => {
       <div className="row">
         <div className="col-12">
           <h2>{t("home.higlightedProjects.title")}</h2>
-          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 pb-4 justify-content-center">
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-3 g-4 pb-4 justify-content-center">
             {higlightedProject.map((project) => (
               <div className="col" key={project.id}>
                 <ProjectCard project={project} />

@@ -14,8 +14,8 @@
 
       .heading {
         margin: 0 1em;
-        h1 {
-          font-size: 1em;
+        .nav-link.active {
+          font-weight: 700;
         }
       }
     }

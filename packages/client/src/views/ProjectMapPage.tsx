@@ -13,7 +13,7 @@ export const ProjectMapPage: FC = () => {
   return (
     <>
       {project ? (
-        <Layout project={project} heading={project.name} fullPage={true}>
+        <Layout project={project} heading={project.name} fullPage={true} currentProjectPage={"maps"}>
           <ProjectMaps />
         </Layout>
       ) : (
