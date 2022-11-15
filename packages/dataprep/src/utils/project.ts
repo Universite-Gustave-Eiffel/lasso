@@ -80,7 +80,7 @@ export async function exportProject(project: InternalProject): Promise<Project> 
   // ~~~~~~~~~~~~~~~~~~
   const projectFolder = path.resolve(config.exportPath, project.id);
   await fsu.createFolder(projectFolder);
-  const projectUrl = path.resolve("/", path.basename(config.exportPath), project.id);
+  const projectUrl = path.resolve(process.env.PUBLIC_URL || "", "/", path.basename(config.exportPath), project.id);
 
   // Copy asset folder if needed
   if (await fsu.checkExists(path.resolve(config.importPath, "assets"))) {
