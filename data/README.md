@@ -1,12 +1,36 @@
 # LASSO Data
 
-One folder by project
+Lasso software can host multiple project data. One project is a set of soundscape variables mapped into one specific territory.
+Each project must configure the way it will use the lasso web application by:
 
-## Project presentation
+1. documenting the project with content
+2. tuning the way the maps will use the provided GeoJson
 
-### `index.json`: project configuration
+## Project folder
 
-#### metadata
+Each project use a specific folder inside `/data`.
+
+> create a folder into `/data/project_name`
+
+The projects will be listed following the folder name alphabetic order to feel free to prefix the folder name if needed. Don"t bother naming the folder with the complete project name the configuration will allow you to name the project fully.
+
+## Main data: one GeoJSON file
+
+The main data of the project should be added as a GeoJson file holding the many data variable into geolocalised features.
+The features can be point or geometry depending to your needs.
+You can keep the property name we are using in your project you will be able to map those specific names into the normalized Lasso variables in the configuration file.
+
+> Add one GeoJson file into your project folder `/data/project_name/data.geo.json`
+
+## Project configuration : `index.json`
+
+The main file you will be edited is the configuration file `/data/project_name/index.json`.
+
+> create or copy from other project `/data/project_name/index.json`
+
+### metadata
+
+- id: a uniqu slug which will be used to build the project url ` compatible with URL (alphanumeric and \_)
 
 #### color schemes
 
@@ -130,3 +154,7 @@ This specification aims at proving a maximum flexibility to describe concisely h
 Time series are therefore express as a hourly/daily defined set of values.
 To adapt the way the map will display the variable in a time line, the variable configuration into the project configuration file can specify hours and days labels.
 Those labels are used to indicate which are the labels which should be used to describe the hours and days periods describe in the variable time series. It's important to be able to notify the reader that a stable value during morning hours is not a phenomenon but a data modelling artefact.
+
+## IGN maputnik
+
+https://geoservices.ign.fr/documentation/services/utilisation-sig/tutoriel-maputnik
