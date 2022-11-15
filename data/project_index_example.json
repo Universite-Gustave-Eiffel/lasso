@@ -1,0 +1,608 @@
+{
+    "id": "project_url_slug",
+    "name": "Project Name",
+    "description": {
+        "en": "todo",
+        "fr": "L'objectif de cette opération de recherche a été d’élaborer un outil cartographique représentant la qualité du paysage sonore urbain. Grâce à une campagne participative d’usagers à l’aide d’un téléphone mobile, plus de 3400 données ont pu être recueillies en seulement 1 an. Ces données ont permis de proposer des modèles de régressions linéaires qui expliquent la qualité de l’environnement sonore."
+    },
+    "image": "logo.jpeg",
+    "sources": {
+        "main_geojson_id": {
+            "attribution": "Data Attribution",
+            "type": "geojson",
+            "data": "./layers/main_data.geojson",
+            "promoteId": "id",
+            "timeSeries": {
+                "timestampPropertyName": "timestamPP",
+                "hoursLabels": {
+                    "day": {
+                        "label": {
+                            "fr": "jour",
+                            "en": "day"
+                        },
+                        "hours": [
+                            8,
+                            18
+                        ]
+                    },
+                    "evening": {
+                        "label": {
+                            "fr": "soirée",
+                            "en": "evening"
+                        },
+                        "hours": [
+                            19,
+                            23
+                        ]
+                    },
+                    "night": {
+                        "label": {
+                            "fr": "nuit",
+                            "en": "night"
+                        },
+                        "hours": [
+                            0,
+                            7
+                        ]
+                    }
+                },
+                "daysLabels": {
+                    "week": {
+                        "label": {
+                            "fr": "semaine",
+                            "en": "week"
+                        },
+                        "weekDays": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            5
+                        ]
+                    },
+                    "weekend": {
+                        "label": {
+                            "fr": "week-end",
+                            "en": "week-end"
+                        },
+                        "weekDays": [
+                            6,
+                            7
+                        ]
+                    }
+                },
+                "monthsLabels": {
+                    "fallWinter": {
+                        "label": {
+                            "fr": "automne-hiver",
+                            "en": "fall-winter"
+                        },
+                        "months": [
+                            10,
+                            11,
+                            12,
+                            1,
+                            2,
+                            3
+                        ]
+                    },
+                    "springSummer": {
+                        "label": {
+                            "fr": "printemps-été",
+                            "en": "spring-summer"
+                        },
+                        "months": [
+                            4,
+                            5,
+                            6,
+                            7,
+                            8,
+                            9
+                        ]
+                    }
+                }
+            },
+            "variables": {
+                "emotion_pleasant": {
+                    "propertyName": "Agr_Mean",
+                    "minimumValue": 0,
+                    "maximumValue": 10
+                },
+                "emotion_eventful": {
+                    "propertyName": "Ani_Mean",
+                    "minimumValue": 0,
+                    "maximumValue": 10
+                },
+                "acoustic_trafic": {
+                    "propertyName": "Circ_Mean",
+                    "minimumValue": 1,
+                    "maximumValue": 11
+                },
+                "acoustic_birds": {
+                    "propertyName": "Ois_Mean",
+                    "minimumValue": 1,
+                    "maximumValue": 11
+                },
+                "acoustic_voices": {
+                    "propertyName": "Voix_Mean",
+                    "minimumValue": 1,
+                    "maximumValue": 11
+                },
+                "acoustic_soundlevel": {
+                    "propertyName": "Bru_Mean",
+                    "minimumValue": 1,
+                    "maximumValue": 11
+                }
+            }
+        }
+    },
+    "maps": [
+        {
+            "id": "pleasant",
+            "name": "Pleasant",
+            "basemapStyle": "./ign_simple_bright.json",
+            "layers": [
+                {
+                    "id": "emotion_pleasant",
+                    "source": "Cart_ASUR",
+                    "metadata": {
+                        "interactive": true
+                    },
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 10,
+                        "circle-stroke-width": [
+                            "case",
+                            [
+                                "==",
+                                [
+                                    "feature-state",
+                                    "selected"
+                                ],
+                                null
+                            ],
+                            0,
+                            [
+                                "boolean",
+                                [
+                                    "feature-state",
+                                    "selected"
+                                ],
+                                true
+                            ],
+                            5,
+                            0
+                        ],
+                        "circle-stroke-color": "grey",
+                        "circle-color": [
+                            "case",
+                            [
+                                "==",
+                                [
+                                    "get",
+                                    "emotion_pleasant"
+                                ],
+                                null
+                            ],
+                            [
+                                "to-color",
+                                "#DDD"
+                            ],
+                            [
+                                "interpolate-hcl",
+                                [
+                                    "linear"
+                                ],
+                                [
+                                    "get",
+                                    "emotion_pleasant"
+                                ],
+                                0,
+                                [
+                                    "to-color",
+                                    "#d4322c"
+                                ],
+                                5,
+                                [
+                                    "to-color",
+                                    "#f2f0eb"
+                                ],
+                                10,
+                                [
+                                    "to-color",
+                                    "#22964f"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "eventful",
+            "name": "EventFul",
+            "basemapStyle": "./basemapStyle_example.json",
+            "layers": [
+                {
+                    "id": "emotion_eventful",
+                    "source": "Cart_ASUR",
+                    "beforeId": "bati",
+                    "metadata": {
+                        "interactive": true
+                    },
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 10,
+                        "circle-stroke-width": [
+                            "case",
+                            [
+                                "==",
+                                [
+                                    "feature-state",
+                                    "selected"
+                                ],
+                                null
+                            ],
+                            0,
+                            [
+                                "boolean",
+                                [
+                                    "feature-state",
+                                    "selected"
+                                ],
+                                true
+                            ],
+                            5,
+                            0
+                        ],
+                        "circle-stroke-color": "grey",
+                        "circle-color": [
+                            "case",
+                            [
+                                "==",
+                                [
+                                    "get",
+                                    "emotion_eventful"
+                                ],
+                                null
+                            ],
+                            [
+                                "to-color",
+                                "#DDD"
+                            ],
+                            [
+                                "interpolate",
+                                [
+                                    "linear"
+                                ],
+                                [
+                                    "get",
+                                    "emotion_eventful"
+                                ],
+                                0,
+                                [
+                                    "to-color",
+                                    "#151aaf"
+                                ],
+                                5,
+                                [
+                                    "to-color",
+                                    "#f2f0eb"
+                                ],
+                                10,
+                                [
+                                    "to-color",
+                                    "#dee401"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "birds",
+            "name": "Birds",
+            "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+            "layers": [
+                {
+                    "id": "acoustic_birds",
+                    "source": "Cart_ASUR",
+                    "metadata": {
+                        "interactive": true
+                    },
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 10,
+                        "circle-stroke-width": [
+                            "case",
+                            [
+                                "==",
+                                [
+                                    "feature-state",
+                                    "selected"
+                                ],
+                                null
+                            ],
+                            0,
+                            [
+                                "boolean",
+                                [
+                                    "feature-state",
+                                    "selected"
+                                ],
+                                true
+                            ],
+                            5,
+                            0
+                        ],
+                        "circle-stroke-color": "grey",
+                        "circle-color": [
+                            "case",
+                            [
+                                "==",
+                                [
+                                    "get",
+                                    "acoustic_birds"
+                                ],
+                                null
+                            ],
+                            [
+                                "to-color",
+                                "#DDD"
+                            ],
+                            [
+                                "interpolate",
+                                [
+                                    "linear"
+                                ],
+                                [
+                                    "get",
+                                    "acoustic_birds"
+                                ],
+                                1,
+                                [
+                                    "to-color",
+                                    "#edf8e9"
+                                ],
+                                11,
+                                [
+                                    "to-color",
+                                    "#006d2c"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "trafic",
+            "name": "Trafic",
+            "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+            "layers": [
+                {
+                    "id": "acoustic_trafic",
+                    "source": "Cart_ASUR",
+                    "metadata": {
+                        "interactive": true
+                    },
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 10,
+                        "circle-stroke-width": [
+                            "case",
+                            [
+                                "==",
+                                [
+                                    "feature-state",
+                                    "selected"
+                                ],
+                                null
+                            ],
+                            0,
+                            [
+                                "boolean",
+                                [
+                                    "feature-state",
+                                    "selected"
+                                ],
+                                true
+                            ],
+                            5,
+                            0
+                        ],
+                        "circle-stroke-color": "grey",
+                        "circle-color": [
+                            "case",
+                            [
+                                "==",
+                                [
+                                    "get",
+                                    "acoustic_trafic"
+                                ],
+                                null
+                            ],
+                            [
+                                "to-color",
+                                "#DDD"
+                            ],
+                            [
+                                "interpolate",
+                                [
+                                    "linear"
+                                ],
+                                [
+                                    "get",
+                                    "acoustic_trafic"
+                                ],
+                                1,
+                                [
+                                    "to-color",
+                                    "#FFDDDD"
+                                ],
+                                11,
+                                [
+                                    "to-color",
+                                    "#F22"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "voices",
+            "name": "Voices",
+            "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+            "layers": [
+                {
+                    "id": "acoustic_voices",
+                    "source": "Cart_ASUR",
+                    "metadata": {
+                        "interactive": true
+                    },
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 10,
+                        "circle-stroke-width": [
+                            "case",
+                            [
+                                "==",
+                                [
+                                    "feature-state",
+                                    "selected"
+                                ],
+                                null
+                            ],
+                            0,
+                            [
+                                "boolean",
+                                [
+                                    "feature-state",
+                                    "selected"
+                                ],
+                                true
+                            ],
+                            5,
+                            0
+                        ],
+                        "circle-stroke-color": "grey",
+                        "circle-color": [
+                            "case",
+                            [
+                                "==",
+                                [
+                                    "get",
+                                    "acoustic_voices"
+                                ],
+                                null
+                            ],
+                            [
+                                "to-color",
+                                "#DDD"
+                            ],
+                            [
+                                "interpolate",
+                                [
+                                    "linear"
+                                ],
+                                [
+                                    "get",
+                                    "acoustic_voices"
+                                ],
+                                1,
+                                [
+                                    "to-color",
+                                    "#DDDDFF"
+                                ],
+                                11,
+                                [
+                                    "to-color",
+                                    "#22F"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "soundlevel",
+            "name": "Sound Level",
+            "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+            "layers": [
+                {
+                    "id": "acoustic_soundlevel",
+                    "source": "Cart_ASUR",
+                    "metadata": {
+                        "interactive": true
+                    },
+                    "type": "circle",
+                    "paint": {
+                        "circle-radius": 10,
+                        "circle-stroke-width": [
+                            "case",
+                            [
+                                "==",
+                                [
+                                    "feature-state",
+                                    "selected"
+                                ],
+                                null
+                            ],
+                            0,
+                            [
+                                "boolean",
+                                [
+                                    "feature-state",
+                                    "selected"
+                                ],
+                                true
+                            ],
+                            5,
+                            0
+                        ],
+                        "circle-stroke-color": "grey",
+                        "circle-color": [
+                            "case",
+                            [
+                                "==",
+                                [
+                                    "get",
+                                    "acoustic_soundlevel"
+                                ],
+                                null
+                            ],
+                            [
+                                "to-color",
+                                "#DDD"
+                            ],
+                            [
+                                "interpolate",
+                                [
+                                    "linear"
+                                ],
+                                [
+                                    "get",
+                                    "acoustic_soundlevel"
+                                ],
+                                1,
+                                [
+                                    "to-color",
+                                    "#f7bfef"
+                                ],
+                                11,
+                                [
+                                    "to-color",
+                                    "#6d005e"
+                                ]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

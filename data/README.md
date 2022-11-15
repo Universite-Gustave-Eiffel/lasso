@@ -14,6 +14,16 @@ Each project use a specific folder inside `/data`.
 
 The projects will be listed following the folder name alphabetic order to feel free to prefix the folder name if needed. Don"t bother naming the folder with the complete project name the configuration will allow you to name the project fully.
 
+## Static content pages
+
+Finally you can add context to your project by adding markdown files in the project folder:
+
+- `project.md`: about page
+- `sponsors.md`: sponsors page
+- `bibliography.md`: references page
+
+Those contents will be rendered as web pages accessible from the project page menu.
+
 ## Main data: one GeoJSON file
 
 The main data of the project should be added as a GeoJson file holding the many data variable into geolocalised features.
@@ -27,6 +37,8 @@ You can keep the property name we are using in your project you will be able to 
 The main file you will be edited is the configuration file `/data/project_name/index.json`.
 
 > create or copy from other project `/data/project_name/index.json`
+
+Please consult this [full example](./project_index_example.json) while reading this documentation.
 
 ### metadata
 
@@ -115,7 +127,9 @@ You must provide a `timeseries` configuration to define discrete time steps from
 First you must indicate the `timestampPropertyName`: name of the geojson property where to find the timestamp.
 
 Then you can indicate the time steps for the months, days of the week and hours appropriate for you data.
-/!\ hours needs to be contiguous and [min,max]. For now you can't do soemthing like [23,7] to go over midnight. It might be possible see
+/!\ hours needs to be contiguous and [min,max]. For now you can't do something like [23,7] to go over midnight. It might be possible in a close future see https://github.com/ouestware/lasso/issues/9
+
+A complete example of timeseries specification
 
 ```json
 {
@@ -180,36 +194,36 @@ Then you can indicate the time steps for the months, days of the week and hours 
 }
 ```
 
-#### color schemes
+### maps
 
-Color schemes to be used to represent the variables on the map.
-A color scheme is a list of colors which will be used to represent the value in the color space. If the variable to map is quantitative, its value will be RGB interpolated on those color segments. It its nominal, different colors will be used for each value.
+The maps section list the different maps a user can explore using lasso in your project.
 
-```json
-{
-  "color_schemes": {
-    "fancy_light_nominal_5": ["#e5bb99", "#9cc0ec", "#b8d8a7", "#e5afd4", "#82d8d8"],
-    "pimp_green_blue_quantitative": ["#54c8a8", "#5785cb"]
-  }
-}
-```
+A map must have an id and a name.
 
-#### data layers
+It is composed of layers which are rendered one on top of the other.
+Layers are maplibre-gl styles see https://maplibre.org/maplibre-gl-js-docs/style-spec/.
 
-See below
+In Lasso layers has a few constraints on top of maplibre-gl specification:
 
-### `project.md`: about page
+- a layer representing one of the Lasso variable must use the variable name as an id
+- a layer will be interactive only if you add a `"interactive":true` in `metadata` (might change)
+- you can add a `basemapStyle` field which must be a local maplibre-style file or an URL to a style file somewhere on the web (CORS must be enabled). The `basemapStyle` allow to define in one single file the map background on which you want your data layer to be rendered on. For instance one can tune a precise basemap by tuning the IGN style with maputnik as explained here https://geoservices.ign.fr/documentation/services/utilisation-sig/tutoriel-maputnik see [ign_simple_bright.json](./ign_simple_bright.json) as an example where road colors were reset
+- by adding a `beforeId` field you can force one of your data layer to be rendered under/before an other layer defined for instance in the `basemapStyle`. You must indicate an existing layer id in this field.
 
-### `sponsors.md`: sponsors page
+By exposing the maplibre-gl style specification directly we chose to enable the maximum flexibility at the cost of complexity and repetition. Indeed for a full project exposing all the acoustic and emotion variables, an editor needs to write six maps specifications. Each needs to describe how the data will be rendered on the map using the paint directive (circle, fill existing geometry...).
 
-### `bibliography.md`: references page
+This configuration should indicate how to paint data when:
 
-## Data layers
+- there is data indicating the colour scale
+- there is no data indicating the no-data colour or symbol
+- the feature has been selected by the user
 
-### `./layers/` GeoJson files
+Which makes a complex and verbose specification but opens experimentation and precise customization of the layout.
 
-### Time series specification
+When writing those specification it's important to keep in mind that:
 
-## IGN maputnik
-
-https://geoservices.ign.fr/documentation/services/utilisation-sig/tutoriel-maputnik
+1. it's usually safe to copy/paste maps from one project to the other as the variable specificities are handled in the source object
+2. to make sure the data value range are accurate in style paint as you need to indicate it twice in variables and in the style specification
+3. not to worry about time it will be handled automatically for you. Note that data value ranges must cover all time steps cases
+4. the `feature-state` will contain a `{"selected":true}` when selected
+5. the color scales your are defining in those specifications will be automatically reused to adapt the selected feature panel which acts as a legend.
