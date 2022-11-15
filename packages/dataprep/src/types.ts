@@ -73,11 +73,6 @@ export type LayerVariable = {
   propertyName: string;
   minimumValue: number;
   maximumValue: number;
-  type?: "quantitative" | "ordinal" | "nominal"; // default: quantitative
-  origin?: "measure" | "model";
-  unit?: string;
-  label?: string;
-  description?: string;
 };
 
 /**

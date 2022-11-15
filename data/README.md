@@ -20,7 +20,7 @@ The main data of the project should be added as a GeoJson file holding the many 
 The features can be point or geometry depending to your needs.
 You can keep the property name we are using in your project you will be able to map those specific names into the normalized Lasso variables in the configuration file.
 
-> Add one GeoJson file into your project folder `/data/project_name/data.geo.json`
+> Add one GeoJson file into your project folder `/data/project_name/layers/data.geojson`
 
 ## Project configuration : `index.json`
 
@@ -30,7 +30,155 @@ The main file you will be edited is the configuration file `/data/project_name/i
 
 ### metadata
 
-- id: a uniqu slug which will be used to build the project url ` compatible with URL (alphanumeric and \_)
+Here the first section of the `index.json` file which describe your project identity:
+
+- id: a unique slug which will be used to build the project url `https://ouestware.github.io/lasso/project/{id]` (must be alphanumeric + \_)
+- name: the project name in full text
+- description: a short text which will present the project in the home page. Descriptions must be language specific by using different language ISO alpha-2 codes as keys.
+- image: filename of an image representing the project. This file must be added in the `/data/project_name/` folder. This image will be used in the home page project's presentation card.
+
+### sources
+
+The sources section is based on maplibre-gl Style specification syntax (https://maplibre.org/maplibre-gl-js-docs/style-spec/sources/).
+
+You must add one source describing your main GeoJson file.
+This source must be of `geojon` type and the point to the file (`data` field) you added in the project.
+
+we added two Lasso specific sections in the source description : variables and timeSeries.
+
+#### `variables`
+
+The variables is a dictionary indicating which Lasso specific variable can be found in our main geojson file and under each property name.
+
+The Lasso variables are :
+
+- acoustic_soundlevel
+- acoustic_birds
+- acoustic_trafic
+- acoustic_voices
+- emotion_eventful
+- emotion_pleasant
+
+For each, the variables should indicate:
+
+- propertyName: name of the variable the geojson feature properties
+- minimumValue: the minimum possible value of the variable
+- maximumValue: the maximum possible value of the variable
+
+```json
+{
+  "variables": {
+    "emotion_pleasant": {
+      "propertyName": "Agr_Mean",
+      "minimumValue": 0,
+      "maximumValue": 10
+    },
+    "emotion_eventful": {
+      "propertyName": "Ani_Mean",
+      "minimumValue": 0,
+      "maximumValue": 10
+    },
+    "acoustic_trafic": {
+      "propertyName": "Circ_Mean",
+      "minimumValue": 1,
+      "maximumValue": 11
+    },
+    "acoustic_birds": {
+      "propertyName": "Ois_Mean",
+      "minimumValue": 1,
+      "maximumValue": 11
+    },
+    "acoustic_voices": {
+      "propertyName": "Voix_Mean",
+      "minimumValue": 1,
+      "maximumValue": 11
+    },
+    "acoustic_soundlevel": {
+      "propertyName": "Bru_Mean",
+      "minimumValue": 1,
+      "maximumValue": 11
+    }
+  }
+}
+```
+
+#### `timeseries`
+
+The `timeseries` section indicate if your data are time-based and if yes what are the time steps according to Lasso constraints.
+
+In the GeoJson file time based variables must be represented as one feature by time step. The property name are therefore stable, the time step must be documented as a timestamp property. The absolut time is not important only the months, day of the week and hours of the day can be used in Lasso.
+
+You can also provide a series of features with empty timestamps in which case those features will be used as the static version of the map, i.e. the map with no time filter applied. This let the data producer decide how to best aggregate the time steps into one static version. Note all the features doesn't have to have a value for every time steps. Missing data will be displayed as such in the map and timeline.
+
+You must provide a `timeseries` configuration to define discrete time steps from the continuous timestamp. This configuration will be used to display the variable in a time line.
+
+First you must indicate the `timestampPropertyName`: name of the geojson property where to find the timestamp.
+
+Then you can indicate the time steps for the months, days of the week and hours appropriate for you data.
+/!\ hours needs to be contiguous and [min,max]. For now you can't do soemthing like [23,7] to go over midnight. It might be possible see
+
+```json
+{
+  "timeSeries": {
+    "timestampPropertyName": "timestamPP",
+    "hoursLabels": {
+      "day": {
+        "label": {
+          "fr": "jour",
+          "en": "day"
+        },
+        "hours": [8, 18]
+      },
+      "evening": {
+        "label": {
+          "fr": "soirée",
+          "en": "evening"
+        },
+        "hours": [19, 23]
+      },
+      "night": {
+        "label": {
+          "fr": "nuit",
+          "en": "night"
+        },
+        "hours": [0, 7]
+      }
+    },
+    "daysLabels": {
+      "week": {
+        "label": {
+          "fr": "semaine",
+          "en": "week"
+        },
+        "weekDays": [1, 2, 3, 4, 5]
+      },
+      "weekend": {
+        "label": {
+          "fr": "week-end",
+          "en": "week-end"
+        },
+        "weekDays": [6, 7]
+      }
+    },
+    "monthsLabels": {
+      "fallWinter": {
+        "label": {
+          "fr": "automne-hiver",
+          "en": "fall-winter"
+        },
+        "months": [10, 11, 12, 1, 2, 3]
+      },
+      "springSummer": {
+        "label": {
+          "fr": "printemps-été",
+          "en": "spring-summer"
+        },
+        "months": [4, 5, 6, 7, 8, 9]
+      }
+    }
+  }
+}
+```
 
 #### color schemes
 
@@ -46,10 +194,6 @@ A color scheme is a list of colors which will be used to represent the value in 
 }
 ```
 
-#### acoustic viz // emotion viz
-
-Should we add configuration to define which variables should be used in the Viz
-
 #### data layers
 
 See below
@@ -64,96 +208,7 @@ See below
 
 ### `./layers/` GeoJson files
 
-### layers specifications
-
-The project's metadata must contain an array of layers which being referenced as:
-
-- id: a unique (in the project scope) identifier for this layer
-- layer: relative path or URL to a GeoJson file
-- variable: the variable definition (see below)
-
-Each layer points to one variable in one GeoJson.
-There will be often many layers using the same GeoJson.
-
-#### variable definition
-
-Each variable must be described to indicate with GeoJson property should be used and what which acoustic/emotional phenomenon this variable describe.
-
-Thus a variable must contain those descriptors:
-
-- geojsonProperty: the property and its type in the GeoJson to be used in this layer
-
-```json
-{
-  "field": "meanTra",
-  "type": "quantitative",
-  "scale": { "scheme": "pimp_green_blue_quantitative" }
-}
-```
-
-```typescript
-interface GeoJsonProperType {
-  field: str;
-  type: "quantitative" | "ordinal";
-  scale: Scale<ExprRef | SignalRef>; //https://github.com/vega/vega-lite/blob/next/src/scale.ts#L511-L723
-}
-```
-
-- origin: measure or model
-- type: acoustic or emotion
-- label: intensity, voices, trafic, birds, pleasant, eventfull
-- unit: free text but typically "db" or "seconds"
-- notes: free text to add some methodological documentation about this variable
-- time_series: boolean (indicate if this variable contain a time series or is static)
-- hours_labels: list of labels to display hours (if none hours are used as-is)
-  ```json
-    {
-        "matin": {
-            "label": {
-              "fr":"matin",
-              "en": "morning"
-            },
-            "hours": [8,12]
-        },
-        "midi": {...}
-    }
-  ```
-- days_labels: list of labels to display days (if none days are used as-is)
-  ```json
-  {
-      "week": {
-          "label": {
-            "fr":"semaine",
-            "en": "working week"
-          },
-          "weekDays": ["monday", "tuesday", "wednesday", "thursday","friday"] ,
-          "displayPosition": 0
-      },
-      "weekEnd": {...}
-  }
-  ```
-
 ### Time series specification
-
-Time series variables must be describe into GeoJson propreties by using this format to describe the variable data points in time:
-
-```json
-[
-  {
-    "value": 5,
-    "hours": [0, 1],
-    "weekDays": ["monday", "friday"]
-  }
-]
-```
-
-A time series variable is an array of data points.
-Each data points represent one contiguous period of time during which the variable has the same value. The contiguity is expressed with an interval of hours (two integers [0-23]) and an interval of weekdays expressed in english lowercase.
-This specification aims at proving a maximum flexibility to describe concisely how a variable change: hourly but only for week-days or change by periods of hours (morning, afternoon..) but different each days, etc.
-
-Time series are therefore express as a hourly/daily defined set of values.
-To adapt the way the map will display the variable in a time line, the variable configuration into the project configuration file can specify hours and days labels.
-Those labels are used to indicate which are the labels which should be used to describe the hours and days periods describe in the variable time series. It's important to be able to notify the reader that a stable value during morning hours is not a phenomenon but a data modelling artefact.
 
 ## IGN maputnik
 
