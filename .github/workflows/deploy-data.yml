@@ -14,6 +14,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_URL: "/lasso"
     steps:
       - name: Checkout
         uses: actions/checkout@v2

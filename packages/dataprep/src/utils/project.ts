@@ -80,7 +80,8 @@ export async function exportProject(project: InternalProject): Promise<Project> 
   // ~~~~~~~~~~~~~~~~~~
   const projectFolder = path.resolve(config.exportPath, project.id);
   await fsu.createFolder(projectFolder);
-  const projectUrl = path.resolve(process.env.PUBLIC_URL || "", "/", path.basename(config.exportPath), project.id);
+  const projectUrl = path.join(process.env.PUBLIC_URL || "", "/", path.basename(config.exportPath), project.id);
+  //`${projectFolder.replace(path.resolve(config.exportPath), ".")}/`
 
   // Copy asset folder if needed
   if (await fsu.checkExists(path.resolve(config.importPath, "assets"))) {
@@ -93,7 +94,7 @@ export async function exportProject(project: InternalProject): Promise<Project> 
     const filename = path.basename(project.image);
     // copy the image
     await fsu.copy(project.image, path.resolve(projectFolder, filename));
-    image = path.resolve(projectUrl, filename);
+    image = path.join(projectUrl, filename);
   }
 
   // Create markdown files
@@ -124,7 +125,7 @@ export async function exportProject(project: InternalProject): Promise<Project> 
             key,
             {
               ...source,
-              data: path.resolve(projectUrl, filename),
+              data: path.join(projectUrl, filename),
             },
           ];
         }
@@ -150,7 +151,7 @@ export async function exportProject(project: InternalProject): Promise<Project> 
 
             return {
               ...m,
-              basemapStyle: path.resolve(projectUrl, styleFilename),
+              basemapStyle: path.join(projectUrl, styleFilename),
             };
           }
         }
