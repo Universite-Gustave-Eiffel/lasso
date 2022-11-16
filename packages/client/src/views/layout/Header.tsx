@@ -6,7 +6,7 @@ import { LanguagePicker } from "../../components/LanguagePicker";
 
 export const Header: FC<PropsWithChildren & { project?: Project }> = ({ project, children }) => {
   return (
-    <header className="sticky-top border-bottom bg-primary">
+    <header className="sticky-top  bg-primary">
       <div className="py-1 px-3 d-flex flex-column flex-md-row align-items-center">
         <Link to="/" title="Home" className="navbar-brand fs-2">
           <span>Lasso</span>
