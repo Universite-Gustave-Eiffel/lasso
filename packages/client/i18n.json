@@ -1,5 +1,9 @@
 {
   "page.project": "Project",
   "page.sponsors": "Sponsors",
-  "page.bibliography": "Bibliography"
+  "page.bibliography": "Bibliography",
+  "variable.acoustic-birds": "Birds",
+  "variable.acoustic-voices": "Voices",
+  "variable.acoustic-trafic": "Trafic",
+  "variable.acoustic-soundLevel": "Sound level"
 }

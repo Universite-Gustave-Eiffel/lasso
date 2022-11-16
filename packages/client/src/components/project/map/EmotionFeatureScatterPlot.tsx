@@ -19,19 +19,19 @@ export const EmotionFeatureScatterPlot: FC<{ feature: Feature; variables: LassoS
     feature && feature.properties && feature.properties.emotion_pleasant && feature.properties.emotion_eventful;
   return (
     <div>
-      <h6>{t("Emotions")}</h6>
+      <h6>{t("viz-panel.emotions")}</h6>
       <div className={`emotions-scatter-plot ${notEmpty ? "" : "empty"}`}>
-        <label className="min-x-label">{t("unpleasant")}</label>
+        <label className="min-x-label">{t("variable.unpleasant")}</label>
         <div className="scatter-plot-row">
-          <label>{t("eventful")}</label>
+          <label>{t("variable.eventful")}</label>
 
           <div className={`scatter-plot`}>
             {notEmpty && (
               <div
                 className="point"
-                title={`${t("emotion_pleasant")}: ${feature.properties?.emotion_pleasant} ${t("emotion_eventful")}: ${
-                  feature.properties?.emotion_eventful
-                }`}
+                title={`${t("variable.emotion-pleasant")}: ${feature.properties?.emotion_pleasant} ${t(
+                  "variable.emotion-eventful",
+                )}: ${feature.properties?.emotion_eventful}`}
                 style={{
                   left: `${
                     (SQUARE_SIZE *
@@ -83,9 +83,9 @@ export const EmotionFeatureScatterPlot: FC<{ feature: Feature; variables: LassoS
               ))}
             </div>
           </div>
-          <label>{t("calm")}</label>
+          <label>{t("variable.calm")}</label>
         </div>
-        <label className="max-x-label">{t("pleasant")}</label>
+        <label className="max-x-label">{t("variable.pleasant")}</label>
       </div>
     </div>
   );

@@ -144,7 +144,6 @@ export const DonutDay: FC<DonutDayProps> = ({
         wrapperClassName="donut-chart"
         segments={segments}
         onClick={(hoursKey: string) => {
-          console.log(hoursKey);
           setCurrentTimeKey((prev) => (prev === hoursKey ? null : hoursKey));
         }}
       />

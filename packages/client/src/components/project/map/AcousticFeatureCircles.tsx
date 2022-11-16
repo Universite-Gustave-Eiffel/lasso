@@ -26,12 +26,12 @@ const AcousticCircle: FC<{
           // borderRadius: circleSize,
           backgroundColor: symbolSpec?.colorStyleExpression?.evaluate({ zoom: 14 }, feature) || "lightgrey",
         }}
-        title={`${t(`acoustic-${variable}`)} - ${value}`}
+        title={`${t(`variable.acoustic-${variable}`)} - ${value}`}
       >
         {symbolSpec && symbolSpec.icon ? symbolSpec.icon({ className: "icon", size: "2em" }) : null}
       </div>
       <label className="d-flex flex-column ms-1">
-        <div>{t(`acoustic-${variable}`)}</div>
+        <div>{t(`variable.acoustic-${variable}`)}</div>
         <div>{value}</div>
       </label>
     </div>
@@ -40,13 +40,14 @@ const AcousticCircle: FC<{
 
 export const AcousticFeatureCircles: FC<{ feature: Feature }> = ({ feature }) => {
   const project = useCurrentProject();
+  const t = useT();
   //TODO
   // - sound level as background centered circle
   // - circle size according to value (we need to compute range at build time)
 
   return (
     <div className="acoustic-panel">
-      <h6>Acoustics</h6>
+      <h6>{t("viz-panel.acoustics")}</h6>
       <div className="acoustic-circles">
         <AcousticCircle variable="birds" feature={feature} legendSpec={project?.legendSpecs} />
         <AcousticCircle variable="trafic" feature={feature} legendSpec={project?.legendSpecs} />
