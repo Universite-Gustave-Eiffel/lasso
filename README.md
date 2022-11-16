@@ -1,6 +1,6 @@
 # Lasso: urban soundscape cartography
 
-Access Lasso's maps: (https://ouestware.github.io/lasso/)[https://ouestware.github.io/lasso/]
+Access Lasso's maps: [https://ouestware.github.io/lasso/](https://ouestware.github.io/lasso/)
 
 ## Edit projects data
 
@@ -40,4 +40,4 @@ The override open access to the client port if needs be to bypass the nginx conf
 
 ## Internationalization
 
-We use [Transiflex](https://www.transifex.com/LAE/lasso-2) to ease translation of the interface.
+We use [Transifex](https://www.transifex.com/LAE/lasso-2) to ease translation of the interface.
