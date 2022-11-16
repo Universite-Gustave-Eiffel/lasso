@@ -7,6 +7,16 @@ Access Lasso's maps: (https://ouestware.github.io/lasso/)[https://ouestware.gith
 Projects data are listed in the `data` folder. One folder for each project.
 Please read carefully the [data folder documentation](./data/README.md) which provides examples.
 
+## Architecture
+
+**Serverless**
+Lasso is a Single Page Web application with no server.
+The data are "compiled" by a node script which prepare everything the web client software needs.
+
+**Maplibre-gl**
+Lasso client uses [maplibre-gl](https://maplibre.org/maplibre-gl-js-docs/api/) at its core.
+The maps are all rendered through maplibre letting map editor a great flexibility in rendering.
+
 ## Deploy
 
 The project is deployed automatically on [github pages](https://ouestware.github.io/lasso/).
@@ -30,4 +40,4 @@ The override open access to the client port if needs be to bypass the nginx conf
 
 ## Internationalization
 
-We use Transiflex to ease translation of the interface.
+We use [Transiflex](https://www.transifex.com/LAE/lasso-2) to ease translation of the interface.
