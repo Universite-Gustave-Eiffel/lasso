@@ -1,6 +1,6 @@
 # Lasso: urban soundscape cartography
 
-Access Lasso's maps: https://github.com/Universite-Gustave-Eiffel/lasso
+Access Lasso's maps: https://universite-gustave-eiffel.github.io/lasso/
 
 ## Edit projects data
 
