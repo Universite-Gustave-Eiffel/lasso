@@ -1,6 +1,6 @@
 # Lasso: urban soundscape cartography
 
-Access Lasso's maps: (https://ouestware.github.io/lasso/)[https://ouestware.github.io/lasso/]
+Access Lasso's maps: https://github.com/Universite-Gustave-Eiffel/lasso
 
 ## Edit projects data
 
