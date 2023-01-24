@@ -19,7 +19,7 @@ The maps are all rendered through maplibre letting map editor a great flexibilit
 
 ## Deploy
 
-The project is deployed automatically on [github pages](https://ouestware.github.io/lasso/).
+The project is deployed automatically on [github pages](https://universite-gustave-eiffel.github.io/lasso/).
 
 If you need to deploy the project elsewhere, the easiest way to deploy Lasso cartography is to use docker.
 
