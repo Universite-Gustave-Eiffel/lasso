@@ -8,6 +8,7 @@ function syncPosition(source: MapRef | undefined, target: MapRef | undefined) {
   if (source && target) {
     target.fitBounds(source.getBounds(), { animate: false, padding: 0 });
     target.setPitch(source.getPitch(), { animate: false, padding: 0 });
+    target.setBearing(source.getBearing(), { animate: false, padding: 0 });
   }
 }
 export type SyncMapsModes = "single" | "side-by-side";
