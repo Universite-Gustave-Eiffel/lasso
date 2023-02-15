@@ -9,6 +9,9 @@ function syncPosition(source: MapRef | undefined, target: MapRef | undefined) {
     target.fitBounds(source.getBounds(), { animate: false, padding: 0 });
     target.setPitch(source.getPitch(), { animate: false, padding: 0 });
     target.setBearing(source.getBearing(), { animate: false, padding: 0 });
+    target.setCenter(source.getCenter(), { animate: false, padding: 0 });
+    target.setZoom(source.getZoom(), { animate: false, padding: 0 });
+    target.setPadding(source.getPadding(), { animate: false, padding: 0 });
   }
 }
 export type SyncMapsModes = "single" | "side-by-side";
