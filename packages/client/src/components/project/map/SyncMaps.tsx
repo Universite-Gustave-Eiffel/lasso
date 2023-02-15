@@ -7,6 +7,7 @@ import { useMap, MapRef } from "react-map-gl";
 function syncPosition(source: MapRef | undefined, target: MapRef | undefined) {
   if (source && target) {
     target.fitBounds(source.getBounds(), { animate: false, padding: 0 });
+    target.setPitch(source.getPitch(), { animate: false, padding: 0 })
   }
 }
 export type SyncMapsModes = "single" | "side-by-side";
