@@ -1,8 +1,8 @@
 import { IconType } from "react-icons";
 import { FaCar } from "react-icons/fa";
-import { FaTwitter } from "react-icons/gi";
-import { IoChatbubblesSharp } from "react-icons/ri";
-import { FaVolumeUp } from "react-icons/hi";
+import { FaTwitter } from "react-icons/fa";
+import { IoChatbubblesSharp } from "react-icons/io5";
+import { FaVolumeUp } from "react-icons/fa";
 import { expression } from "@mapbox/mapbox-gl-style-spec";
 
 import { SOUNDSCAPE_VARIABLES_TYPES } from "@lasso/dataprep";
