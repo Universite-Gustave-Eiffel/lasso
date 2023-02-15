@@ -46,7 +46,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({ id, className, style, projec
         )}
         <div className="w-100 text-end">
           <Link className="btn btn-primary" to={`/project/${project.id}`} title={project.name}>
-            {t("home.project.open")} {project.name}
+            {t("Go to ")} {project.name}
           </Link>
         </div>
       </div>
