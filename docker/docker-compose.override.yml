@@ -3,4 +3,4 @@ services:
   project:
     ports:
       - ${CLIENT_PORT}:${CLIENT_PORT}
-      - ${HOST_HTTP_PORT}:80
+      - ${HOST_HTTP_PORT}:9581

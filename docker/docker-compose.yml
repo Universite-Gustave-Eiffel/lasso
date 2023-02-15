@@ -6,7 +6,7 @@ services:
       dockerfile: ./Dockerfile
     restart: ${RESTART_POLICY}
     ports:
-      - ${HOST_HTTP_PORT}:80
+      - ${HOST_HTTP_PORT}:9581
     volumes:
       - ${PROJECT_PATH}/docker/project/entrypoint.sh:/entrypoint.sh
       - ${PROJECT_PATH}/docker/project/nginx.${MODE}.conf:/etc/nginx/nginx.conf
