@@ -21,7 +21,7 @@
     {
       "id": "Grid2_bird",
       "name": "Bird from Grid2",
-      "basemapStyle": "./OSM_BDTOPO.style.json",
+      "basemapStyle": "./dark_matter.style.json",
       "layers": [
         {
           "id": "acoustic_birds",
@@ -59,7 +59,7 @@
     {
       "id": "Grid2_traf",
       "name": "Trafic",
-      "basemapStyle": "./OSM_BDTOPO.style.json",
+      "basemapStyle": "./dark_matter.style.json",
       "layers": [
         {
           "id": "acoustic_trafic",

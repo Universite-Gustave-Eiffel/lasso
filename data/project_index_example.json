@@ -140,7 +140,7 @@
         {
             "id": "pleasant",
             "name": "Pleasant",
-            "basemapStyle": "./ign_simple_bright.json",
+            "basemapStyle": "./dark_matter.style.json",
             "layers": [
                 {
                     "id": "emotion_pleasant",
