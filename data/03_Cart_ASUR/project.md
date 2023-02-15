@@ -1,4 +1,4 @@
-# REPRESENTATIONS CARTOGRAPHIQUES DE LA QUALITE DES AMBIANCES SONORES URBAINES: ACCEPTABILITE DES CARTES
+# Représentations cartographiques de la qualité des ambiances sonores urbaines
 
 ## Résumé
 

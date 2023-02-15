@@ -2,7 +2,7 @@
   "id": "cartasur",
   "name": "Cart_ASUR",
   "description": {
-    "en": "todo",
+    "en": "The objective of this research operation was to develop a mapping tool representing the quality of the urban soundscape. Through a participatory campaign of users using a mobile phone, more than 3400 data were collected in only 1 year. This data was used to propose linear regression models that explain the quality of the noise environment.",
     "fr": "L'objectif de cette opération de recherche a été d’élaborer un outil cartographique représentant la qualité du paysage sonore urbain. Grâce à une campagne participative d’usagers à l’aide d’un téléphone mobile, plus de 3400 données ont pu être recueillies en seulement 1 an. Ces données ont permis de proposer des modèles de régressions linéaires qui expliquent la qualité de l’environnement sonore."
   },
   "image": "logo.jpeg",
