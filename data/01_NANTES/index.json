@@ -39,13 +39,13 @@
     {
       "id": "osm_bati",
       "name": "Fond de carte avec bati",
-      "basemapStyle": "./OSM_BDTOPO.style.json",
+      "basemapStyle": "./dark_matter.style.json",
       "layers": []
     },
     {
       "id": "GeoAll.birds",
       "name": "birds in GeoAll",
-      "basemapStyle": "./OSM_BDTOPO.style.json",
+      "basemapStyle": "./dark_matter.style.json",
       "layers": [
         {
           "id": "acoustic_birds",
@@ -83,7 +83,7 @@
     {
       "id": "Grid.birds",
       "name": "birds in Grid",
-      "basemapStyle": "./OSM_BDTOPO.style.json",
+      "basemapStyle": "./dark_matter.style.json",
       "layers": [
         {
           "id": "emotion_pleasant",
