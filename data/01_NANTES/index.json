@@ -50,7 +50,7 @@
         {
           "id": "acoustic_birds",
           "source": "GeoAll",
-          "beforeId": "bati",
+          "beforeId": "highway_name_other",
           "metadata": {
             "interactive": true
           },
@@ -89,7 +89,7 @@
         {
           "id": "emotion_pleasant",
           "source": "Grid3857",
-          "beforeId": "bati",
+          "beforeId": "highway_name_other",
           "metadata": {
             "interactive": true
           },
