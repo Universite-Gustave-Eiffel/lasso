@@ -6,7 +6,7 @@ export const Footer: FC = () => {
 
   return (
     <footer className="d-flex flex-wrap justify-content-center align-items-center py-3  bg-primary">
-      <p className="mb-0">{t("footer.copyright")} &copy; 2022-2023 projet Exploratoire I-SITE LASSO</p>
+      <p className="mb-0">{t("Copyright")} &copy; 2022-2023 - Exploratory I-Site Project LASSO - Analysis and modeling of the Localization and Activity of Sound Sources in urban spaces</p>
     </footer>
   );
 };

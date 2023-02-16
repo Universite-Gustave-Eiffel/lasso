@@ -47,7 +47,7 @@ export const AcousticFeatureCircles: FC<{ feature: Feature }> = ({ feature }) =>
 
   return (
     <div className="acoustic-panel">
-      <h6>{t("viz-panel.acoustics")}</h6>
+      <h6>{t("Perceiced Sound Sources")}</h6>
       <div className="acoustic-circles">
         <AcousticCircle variable="birds" feature={feature} legendSpec={project?.legendSpecs} />
         <AcousticCircle variable="trafic" feature={feature} legendSpec={project?.legendSpecs} />

@@ -8,9 +8,7 @@ export const NotFound: FC<{ className?: string }> = ({ className }) => {
   return (
     <div className={cx("container text-center col-6", className)}>
       <div className="row">
-        <h1>{t("page.notFound.title")}</h1>
-        <h2>{t("page.notFound.subtitle")}</h2>
-        <p>{t("page.notFound.text")}</p>
+        <h1>{t("Page not Found")}</h1>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ export const Header: FC<PropsWithChildren & { project?: Project }> = ({ project,
     <header className="sticky-top  bg-primary">
       <div className="py-1 px-3 d-flex flex-column flex-md-row align-items-center">
         <Link to="/" title="Home" className="navbar-brand fs-2">
-          <span>Lasso</span>
+          <span>LASSO</span>
           {project ? (
             <>
               <BsChevronRight size="1.5rem" />

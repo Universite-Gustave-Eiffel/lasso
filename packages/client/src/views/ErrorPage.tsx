@@ -5,5 +5,5 @@ import { useT } from "@transifex/react";
 export const ErrorPage: FC = () => {
   const t = useT();
 
-  return <Layout heading={t("common.error")}></Layout>;
+  return <Layout heading={t("Error page !")}></Layout>;
 };

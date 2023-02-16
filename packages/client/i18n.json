@@ -5,5 +5,6 @@
   "variable.acoustic-birds": "Birds",
   "variable.acoustic-voices": "Voices",
   "variable.acoustic-trafic": "Trafic",
-  "variable.acoustic-soundLevel": "Sound level"
+  "variable.acoustic-soundLevel": "Sound level",
+  "variable.acoustic-soundlevel": "Sound level"
 }

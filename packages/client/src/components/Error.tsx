@@ -24,7 +24,7 @@ export const Error: FC<{ className?: string; error?: Error }> = ({ className, er
       ) : (
         <div className={cx("container text-center col-4", className)}>
           <div className="row">
-            <h1>{t("common.error")}</h1>
+            <h1>{t("Common Error...")}</h1>
             <h2>{message}</h2>
           </div>
         </div>
