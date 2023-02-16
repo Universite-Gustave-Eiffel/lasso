@@ -46,19 +46,6 @@
       "paint": {"background-color": "rgb(12,12,12)"}
     },
     {
-      "id": "water",
-      "type": "fill",
-      "source": "openmaptiles",
-      "source-layer": "water",
-      "filter": [
-        "all",
-        ["==", "$type", "Polygon"],
-        ["!=", "brunnel", "tunnel"]
-      ],
-      "layout": {"visibility": "visible"},
-      "paint": {"fill-antialias": false, "fill-color": "rgba(4, 4, 17, 1)"}
-    },
-    {
       "id": "landcover_ice_shelf",
       "type": "fill",
       "source": "openmaptiles",
@@ -147,6 +134,32 @@
       "paint": {"fill-color": "rgb(32,32,32)"}
     },
     {
+      "id": "building",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "building",
+      "minzoom": 12,
+      "filter": ["==", "$type", "Polygon"],
+      "paint": {
+        "fill-antialias": true,
+        "fill-color": "rgb(10,10,10)",
+        "fill-outline-color": "rgb(27 ,27 ,29)"
+      }
+    },
+    {
+      "id": "water",
+      "type": "fill",
+      "source": "openmaptiles",
+      "source-layer": "water",
+      "filter": [
+        "all",
+        ["==", "$type", "Polygon"],
+        ["!=", "brunnel", "tunnel"]
+      ],
+      "layout": {"visibility": "visible"},
+      "paint": {"fill-antialias": false, "fill-color": "rgba(4, 4, 17, 1)"}
+    },
+    {
       "id": "waterway",
       "type": "line",
       "source": "openmaptiles",
@@ -172,19 +185,6 @@
       "paint": {
         "text-color": "hsla(0, 0%, 0%, 0.7)",
         "text-halo-color": "hsl(0, 0%, 27%)"
-      }
-    },
-    {
-      "id": "building",
-      "type": "fill",
-      "source": "openmaptiles",
-      "source-layer": "building",
-      "minzoom": 12,
-      "filter": ["==", "$type", "Polygon"],
-      "paint": {
-        "fill-antialias": true,
-        "fill-color": "rgb(10,10,10)",
-        "fill-outline-color": "rgb(27 ,27 ,29)"
       }
     },
     {
