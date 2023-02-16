@@ -21,7 +21,7 @@
     {
       "id": "Grid2_bird",
       "name": "Bird from Grid2",
-      "basemapStyle": "../dark_matter_PA.json",
+      "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_birds",
@@ -59,7 +59,7 @@
     {
       "id": "Grid2_traf",
       "name": "Trafic",
-      "basemapStyle": "../dark_matter_PA.json",
+      "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_trafic",
@@ -71,7 +71,7 @@
           "type": "fill",
           "paint": {
             "fill-color": [
-              "interpolate",
+              "interpolate-hcl",
               [
                 "linear"
               ],

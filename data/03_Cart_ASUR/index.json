@@ -125,7 +125,7 @@
     {
       "id": "pleasant",
       "name": "Pleasant",
-      "basemapStyle": "../dark_matter_PA.json",
+      "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "emotion_pleasant",
@@ -207,7 +207,7 @@
     {
       "id": "eventful",
       "name": "EventFul",
-      "basemapStyle": "../dark_matter_PA.json",
+      "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "emotion_eventful",
@@ -289,7 +289,7 @@
     {
       "id": "birds",
       "name": "Birds",
-      "basemapStyle": "../dark_matter_PA.json",
+      "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_birds",
@@ -366,7 +366,7 @@
     {
       "id": "trafic",
       "name": "Trafic",
-      "basemapStyle": "../dark_matter_PA.json",
+      "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_trafic",
@@ -443,7 +443,7 @@
     {
       "id": "voices",
       "name": "Voices",
-      "basemapStyle": "../dark_matter_PA.json",
+      "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_voices",
@@ -520,7 +520,7 @@
     {
       "id": "soundlevel",
       "name": "Sound Level",
-      "basemapStyle": "../dark_matter_PA.json",
+      "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_soundlevel",

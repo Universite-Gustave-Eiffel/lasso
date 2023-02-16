@@ -37,15 +37,9 @@
   },
   "maps": [
     {
-      "id": "osm_bati",
-      "name": "Fond de carte avec bati",
-      "basemapStyle": "../dark_matter_PA.json",
-      "layers": []
-    },
-    {
       "id": "GeoAll.birds",
       "name": "birds in GeoAll",
-      "basemapStyle": "../dark_matter_PA.json",
+      "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_birds",
@@ -56,7 +50,7 @@
           },
           "type": "circle",
           "paint": {
-            "circle-radius": 5,
+            "circle-radius": 10,
             "circle-color": [
               "interpolate",
               [
@@ -84,7 +78,7 @@
     {
       "id": "Grid.birds",
       "name": "birds in Grid",
-      "basemapStyle": "../dark_matter_PA.json",
+      "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "emotion_pleasant",
@@ -95,7 +89,7 @@
           },
           "type": "circle",
           "paint": {
-            "circle-radius": 5,
+            "circle-radius": 10,
             "circle-color": [
               "interpolate",
               [
