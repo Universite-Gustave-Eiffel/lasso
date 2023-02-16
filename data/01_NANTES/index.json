@@ -44,7 +44,7 @@
         {
           "id": "acoustic_birds",
           "source": "GeoAll",
-          "beforeId": "building",
+          "beforeId": "bati",
           "metadata": {
             "interactive": true
           },
