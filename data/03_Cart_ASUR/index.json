@@ -130,6 +130,7 @@
         {
           "id": "emotion_pleasant",
           "source": "Cart_ASUR",
+          "beforeId": "bati",
           "metadata": {
             "interactive": true
           },
@@ -206,11 +207,12 @@
     {
       "id": "eventful",
       "name": "EventFul",
-      "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+      "basemapStyle": "./dark_matter.style.json",
       "layers": [
         {
           "id": "emotion_eventful",
           "source": "Cart_ASUR",
+          "beforeId": "bati",
           "metadata": {
             "interactive": true
           },
@@ -287,11 +289,12 @@
     {
       "id": "birds",
       "name": "Birds",
-      "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+      "basemapStyle": "./dark_matter.style.json",
       "layers": [
         {
           "id": "acoustic_birds",
           "source": "Cart_ASUR",
+          "beforeId": "bati",
           "metadata": {
             "interactive": true
           },
@@ -363,11 +366,12 @@
     {
       "id": "trafic",
       "name": "Trafic",
-      "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+      "basemapStyle": "./dark_matter.style.json",
       "layers": [
         {
           "id": "acoustic_trafic",
           "source": "Cart_ASUR",
+          "beforeId": "bati",
           "metadata": {
             "interactive": true
           },
@@ -439,11 +443,12 @@
     {
       "id": "voices",
       "name": "Voices",
-      "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+      "basemapStyle": "./dark_matter.style.json",
       "layers": [
         {
           "id": "acoustic_voices",
           "source": "Cart_ASUR",
+          "beforeId": "bati",
           "metadata": {
             "interactive": true
           },
@@ -515,11 +520,12 @@
     {
       "id": "soundlevel",
       "name": "Sound Level",
-      "basemapStyle": "https://openmaptiles.geo.data.gouv.fr/styles/osm-bright/style.json",
+      "basemapStyle": "./dark_matter.style.json",
       "layers": [
         {
           "id": "acoustic_soundlevel",
           "source": "Cart_ASUR",
+          "beforeId": "bati",
           "metadata": {
             "interactive": true
           },

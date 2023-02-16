@@ -50,6 +50,7 @@
         {
           "id": "acoustic_birds",
           "source": "GeoAll",
+          "beforeId": "bati",
           "metadata": {
             "interactive": true
           },
