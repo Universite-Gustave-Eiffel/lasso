@@ -50,7 +50,7 @@
         {
           "id": "acoustic_birds",
           "source": "GeoAll",
-          "beforeId": "road_area_pier",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
@@ -89,7 +89,7 @@
         {
           "id": "emotion_pleasant",
           "source": "Grid3857",
-          "beforeId": "road_area_pier",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
