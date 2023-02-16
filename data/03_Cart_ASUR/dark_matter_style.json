@@ -24,6 +24,16 @@
     "openmaptiles": {
       "type": "vector",
       "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=068609TFFGab65LoBPb5"
+    },
+    "BDTOPO": {
+      "type": "vector",
+      "tiles": [
+        "https://wxs.ign.fr/topographie/geoportail/tms/1.0.0/BDTOPO/{z}/{x}/{y}.pbf"
+      ],
+      "minZoom": 0,
+      "maxZoom": 14,
+      "minzoom": 4,
+      "maxzoom": 19
     }
   },
   "sprite": "https://openmaptiles.github.io/dark-matter-gl-style/sprite",
@@ -962,6 +972,30 @@
         "text-color": "rgb(101,101,101)",
         "text-halo-color": "rgba(0,0,0,0.7)",
         "text-halo-width": 1.4
+      }
+    },
+    {
+      "id": "bati",
+      "type": "fill-extrusion",
+      "source": "BDTOPO",
+      "source-layer": "batiment",
+      "paint": {
+        "fill-extrusion-height": {
+          "property": "hauteur",
+          "stops": [
+            [0, 2],
+            [2, 5],
+            [5, 10],
+            [10, 20],
+            [20, 40],
+            [40, 60],
+            [60, 80],
+            [80, 100],
+            [100, 200]
+          ]
+        },
+        "fill-extrusion-base": 0,
+        "fill-extrusion-color": "#4a4a4a"
       }
     }
   ],
