@@ -2,7 +2,7 @@
   "id": "cense",
   "name": "ANR CENSE",
   "description": {
-    "en": "The soundscape maps present the results of a survey of the inhabitants of the study area (Lorient city centre).",
+    "en": "The CENSE project aims to propose a new methodology for the production of more realistic noise maps, based on the assimilation of simulated and measured data through a dense network of low-cost sensors. Beyond the production of physical indicators, the project also focuses on the perceptual characterization of sound environments. The soundscape maps present the results of a survey of the inhabitants of the study area (Lorient city centre).",
     "fr": "Les cartes de paysages sonores présentent les résultats d'une enquête réalisée auprès d'habitants du centre ville de Lorient."
   },
   "image": "logo.jpeg",

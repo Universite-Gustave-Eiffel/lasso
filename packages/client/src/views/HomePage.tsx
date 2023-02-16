@@ -17,7 +17,7 @@ export const HomePage: FC = () => {
     <Layout heading={t("LASSO Plateform")}>
       <div className="row">
         <div className="col-12">
-          <Markdown content={t("Welcome to the LASSO platform.<br> The platform aims to highlight datasets related to the perception of sound environments and contrast them with standardized noise maps. The datasets were collected in several projects described below.<br> Enjoy your visit!")} />
+          <Markdown content={t("<center><br>Welcome to the LASSO platform. <br><br> This platform aims to highlight datasets related to the perception of sound environments and contrast them with standardized noise maps. <br> The datasets were collected in several projects described below.<br> <br> Enjoy your visit!</center>")} />
         </div>
       </div>
 
