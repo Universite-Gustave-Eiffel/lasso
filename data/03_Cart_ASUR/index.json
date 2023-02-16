@@ -525,7 +525,7 @@
         {
           "id": "acoustic_soundlevel",
           "source": "Cart_ASUR",
-          "beforeId": "bati",
+          "beforeId": ["highway_name_other", "bati"],
           "metadata": {
             "interactive": true
           },
