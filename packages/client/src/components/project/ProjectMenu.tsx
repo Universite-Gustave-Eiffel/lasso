@@ -40,7 +40,7 @@ export const ProjectMenu: FC<ProjectMenuProps> = ({ id, className, style, projec
           className={cx("nav-link", currentProjectPage === "maps" && "active")}
           title={project.name}
         >
-          {t(`page.maps`)}
+          {t(``)}
         </Link>
       </li>
       {Object.keys(project.pages).map((pageKey) => (
