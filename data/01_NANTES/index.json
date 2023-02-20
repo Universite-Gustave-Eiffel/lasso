@@ -24,7 +24,8 @@
         },
         "acoustic_trafic": "Road",
         "acoustic_birds": "Bird",
-        "acoustic_voices": "ExVo"
+        "acoustic_voices": "CaVo",
+        "acoustic_soundlevel" : "Nois"
       }
     },
     "Grid3857": {
@@ -37,8 +38,172 @@
   },
   "maps": [
     {
-      "id": "GeoAll.birds",
-      "name": "birds in GeoAll",
+      "id": "pleasant",
+      "name": "Pleasant",
+      "basemapStyle": "../bright_matter_PA.json",
+      "layers": [
+        {
+          "id": "emotion_pleasant",
+          "source": "GeoAll",
+          "beforeId": "bati",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "circle",
+          "paint": {
+            "circle-radius": 10,
+            "circle-stroke-width": [
+              "case",
+              [
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
+              ],
+              0,
+              [
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
+              ],
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "emotion_pleasant"
+                ],
+                null
+              ],
+              [
+                "to-color",
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "emotion_pleasant"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#d4322c"
+                ],
+                5,
+                [
+                  "to-color",
+                  "#f2f0eb"
+                ],
+                10,
+                [
+                  "to-color",
+                  "#22964f"
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "eventful",
+      "name": "EventFul",
+      "basemapStyle": "../bright_matter_PA.json",
+      "layers": [
+        {
+          "id": "emotion_eventful",
+          "source": "GeoAll",
+          "beforeId": "bati",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "circle",
+          "paint": {
+            "circle-radius": 10,
+            "circle-stroke-width": [
+              "case",
+              [
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
+              ],
+              0,
+              [
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
+              ],
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "emotion_eventful"
+                ],
+                null
+              ],
+              [
+                "to-color",
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "emotion_eventful"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#151aaf"
+                ],
+                5,
+                [
+                  "to-color",
+                  "#f2f0eb"
+                ],
+                10,
+                [
+                  "to-color",
+                  "#dee401"
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "birds",
+      "name": "Birds",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -50,25 +215,67 @@
           },
           "type": "circle",
           "paint": {
-            "circle-radius": 10,
-            "circle-color": [
-              "interpolate",
+            "circle-radius": [
+              "interpolate", ["linear"], ["zoom"],
+              5, 1,
+              10, 5
+          ],
+            "circle-stroke-width": [
+              "case",
               [
-                "linear"
-              ],
-              [
-                "get",
-                "acoustic_birds"
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
               ],
               0,
               [
-                "to-color",
-                "#edf8e9"
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
               ],
-              7,
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "acoustic_birds"
+                ],
+                null
+              ],
               [
                 "to-color",
-                "#006d2c"
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_birds"
+                ],
+                1,
+                [
+                  "to-color",
+                  "#E7F4E4"
+                ],
+                11,
+                [
+                  "to-color",
+                  "#004529"
+                ]
               ]
             ]
           }
@@ -76,38 +283,230 @@
       ]
     },
     {
-      "id": "Grid.birds",
-      "name": "birds in Grid",
+      "id": "trafic",
+      "name": "Trafic",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
-          "id": "emotion_pleasant",
-          "source": "Grid3857",
-          "beforeId": "building",
+          "id": "acoustic_trafic",
+          "source": "GeoAll",
+          "beforeId": "bati",
           "metadata": {
             "interactive": true
           },
           "type": "circle",
           "paint": {
             "circle-radius": 10,
-            "circle-color": [
-              "interpolate",
+            "circle-stroke-width": [
+              "case",
               [
-                "linear"
-              ],
-              [
-                "get",
-                "emotion_pleasant"
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
               ],
               0,
               [
-                "to-color",
-                "#f8e9ed"
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
               ],
-              7,
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "acoustic_trafic"
+                ],
+                null
+              ],
               [
                 "to-color",
-                "#6d2c00"
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_trafic"
+                ],
+                1,
+                [
+                  "to-color",
+                  "#F2EFE9"
+                ],
+                11,
+                [
+                  "to-color",
+                  "#0B0B0B"
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "voices",
+      "name": "Voices",
+      "basemapStyle": "../bright_matter_PA.json",
+      "layers": [
+        {
+          "id": "acoustic_voices",
+          "source": "GeoAll",
+          "beforeId": "bati",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "circle",
+          "paint": {
+            "circle-radius": 10,
+            "circle-stroke-width": [
+              "case",
+              [
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
+              ],
+              0,
+              [
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
+              ],
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "acoustic_voices"
+                ],
+                null
+              ],
+              [
+                "to-color",
+                "#DDD"
+              ],
+              [
+                "interpolate-hcl",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_voices"
+                ],
+                1,
+                [
+                  "to-color",
+                  "#FFF8DC"
+                ],
+                11,
+                [
+                  "to-color",
+                  "#8B4513"
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "soundlevel",
+      "name": "Sound Level",
+      "basemapStyle": "../bright_matter_PA.json",
+      "layers": [
+        {
+          "id": "acoustic_soundlevel",
+          "source": "GeoAll",
+          "beforeId": "bati",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "circle",
+          "paint": {
+            "circle-radius": 10,
+            "circle-stroke-width": [
+              "case",
+              [
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
+              ],
+              0,
+              [
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
+              ],
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "acoustic_soundlevel"
+                ],
+                null
+              ],
+              [
+                "to-color",
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_soundlevel"
+                ],
+                1,
+                [
+                  "to-color",
+                  "#32a852"
+                ],
+                11,
+                [
+                  "to-color",
+                  "#ba0010"
+                ]
               ]
             ]
           }
