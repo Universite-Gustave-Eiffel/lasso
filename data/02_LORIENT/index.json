@@ -15,9 +15,56 @@
         "acoustic_birds": "meanBrd",
         "acoustic_trafic": "meanTra"
       }
+    },
+    "LdenMap": {
+      "attribution": "Lorient Agglomeration - PPBE 2017",
+      "type": "geojson",
+      "data": "./layers/Lden_4326.geojson",
+      "variables": {
+        "low_lden": "DB_LO",
+        "high_lden": "DB_HI"
+      }
     }
   },
   "maps": [
+    {
+      "id": "Lden",
+      "name": "Lden",
+      "basemapStyle": "../bright_matter_PA.json",
+      "layers": [
+        {
+          "id": "low_lden",
+          "source": "LdenMap",
+          "beforeId": "building",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "fill",
+          "paint": {
+            "fill-color": [
+              "interpolate",
+              [
+                "linear"
+              ],
+              [
+                "get",
+                "low_lden"
+              ],
+              0,
+              [
+                "to-color",
+                "#edf8e9"
+              ],
+              7,
+              [
+                "to-color",
+                "#006d2c"
+              ]
+            ]
+          }
+        }
+      ]
+    },
     {
       "id": "Grid2_bird",
       "name": "Bird from Grid2",
