@@ -115,68 +115,25 @@
           },
           "type": "fill",
           "paint": {
-            "circle-stroke-width": [
-              "case",
-              [
-                "==",
-                [
-                  "feature-state",
-                  "selected"
-                ],
-                null
-              ],
-              0,
-              [
-                "boolean",
-                [
-                  "feature-state",
-                  "selected"
-                ],
-                true
-              ],
-              5,
-              0
-            ],
-            "circle-stroke-color": "grey",
             "fill-color": [
-              "case",
-              [
-                "==",
-                [
-                  "get",
-                  "emotion_pleasant"
-                ],
-                null
-              ],
-              [
-                "to-color",
-                "#DDD"
-              ],
-              [
-                "interpolate",
+              "interpolate",
                 [
                   "linear"
                 ],
                 [
                   "get",
-                  "emotion_pleasant"
+                  "acoustic_birds"
                 ],
                 0,
                 [
                   "to-color",
-                  "#d4322c"
+                  "#edf8e9"
                 ],
-                5,
+                7,
                 [
                   "to-color",
-                  "#f2f0eb"
-                ],
-                10,
-                [
-                  "to-color",
-                  "#22964f"
+                  "#006d2c"
                 ]
-              ]
             ]
           }
         }
