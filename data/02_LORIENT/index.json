@@ -18,7 +18,8 @@
           "origin": "model"
         },
         "emotion_eventful": {
-          "propertyName": "Even",
+          "propertyName": "meanAni",
+          "type": "quantitative",
           "origin": "model"
         },
         "acoustic_trafic": "meanTra",
