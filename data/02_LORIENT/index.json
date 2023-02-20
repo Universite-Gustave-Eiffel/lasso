@@ -109,7 +109,7 @@
         {
           "id": "emotion_pleasant",
           "source": "Geo2",
-          "beforeId": "bati",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
@@ -147,75 +147,31 @@
         {
           "id": "emotion_eventful",
           "source": "Geo2",
-          "beforeId": "bati",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
-          "type": "circle",
+          "type": "fill",
           "paint": {
-            "circle-radius": 10,
-            "circle-stroke-width": [
-              "case",
-              [
-                "==",
-                [
-                  "feature-state",
-                  "selected"
-                ],
-                null
-              ],
-              0,
-              [
-                "boolean",
-                [
-                  "feature-state",
-                  "selected"
-                ],
-                true
-              ],
-              5,
-              0
-            ],
-            "circle-stroke-color": "grey",
-            "circle-color": [
-              "case",
-              [
-                "==",
-                [
-                  "get",
-                  "emotion_eventful"
-                ],
-                null
-              ],
-              [
-                "to-color",
-                "#DDD"
-              ],
-              [
-                "interpolate",
+            "fill-color": [
+              "interpolate",
                 [
                   "linear"
                 ],
                 [
                   "get",
-                  "emotion_eventful"
+                  "acoustic_birds"
                 ],
                 0,
                 [
                   "to-color",
-                  "#151aaf"
+                  "#edf8e9"
                 ],
-                5,
+                7,
                 [
                   "to-color",
-                  "#f2f0eb"
-                ],
-                10,
-                [
-                  "to-color",
-                  "#dee401"
+                  "#006d2c"
                 ]
-              ]
             ]
           }
         }
@@ -229,56 +185,14 @@
         {
           "id": "acoustic_birds",
           "source": "Geo2",
-          "beforeId": "bati",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
-          "type": "circle",
+          "type": "fill",
           "paint": {
-            "circle-radius": [
-              "interpolate", ["linear"], ["zoom"],
-              5, 15,
-              17, 5
-          ],
-            "circle-stroke-width": [
-              "case",
-              [
-                "==",
-                [
-                  "feature-state",
-                  "selected"
-                ],
-                null
-              ],
-              0,
-              [
-                "boolean",
-                [
-                  "feature-state",
-                  "selected"
-                ],
-                true
-              ],
-              5,
-              0
-            ],
-            "circle-stroke-color": "grey",
-            "circle-color": [
-              "case",
-              [
-                "==",
-                [
-                  "get",
-                  "acoustic_birds"
-                ],
-                null
-              ],
-              [
-                "to-color",
-                "#DDD"
-              ],
-              [
-                "interpolate",
+            "fill-color": [
+              "interpolate",
                 [
                   "linear"
                 ],
@@ -286,17 +200,16 @@
                   "get",
                   "acoustic_birds"
                 ],
-                1,
+                0,
                 [
                   "to-color",
-                  "#E7F4E4"
+                  "#edf8e9"
                 ],
-                11,
+                7,
                 [
                   "to-color",
-                  "#004529"
+                  "#006d2c"
                 ]
-              ]
             ]
           }
         }
@@ -304,76 +217,37 @@
     },
     {
       "id": "trafic",
-      "name": "Trafic",
+      "name": "Traffic - Perceived time presence - Interpolated Questionnaires - light to dark Black",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_trafic",
           "source": "Geo2",
-          "beforeId": "bati",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
-          "type": "circle",
+          "type": "fill",
           "paint": {
-            "circle-radius": 10,
-            "circle-stroke-width": [
-              "case",
-              [
-                "==",
-                [
-                  "feature-state",
-                  "selected"
-                ],
-                null
-              ],
-              0,
-              [
-                "boolean",
-                [
-                  "feature-state",
-                  "selected"
-                ],
-                true
-              ],
-              5,
-              0
-            ],
-            "circle-stroke-color": "grey",
-            "circle-color": [
-              "case",
-              [
-                "==",
-                [
-                  "get",
-                  "acoustic_trafic"
-                ],
-                null
-              ],
-              [
-                "to-color",
-                "#DDD"
-              ],
-              [
-                "interpolate",
+            "fill-color": [
+              "interpolate",
                 [
                   "linear"
                 ],
                 [
                   "get",
-                  "acoustic_trafic"
+                  "acoustic_birds"
                 ],
-                1,
+                0,
                 [
                   "to-color",
-                  "#F2EFE9"
+                  "#edf8e9"
                 ],
-                11,
+                7,
                 [
                   "to-color",
-                  "#0B0B0B"
+                  "#006d2c"
                 ]
-              ]
             ]
           }
         }
@@ -387,70 +261,31 @@
         {
           "id": "acoustic_voices",
           "source": "Geo2",
-          "beforeId": "bati",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
-          "type": "circle",
+          "type": "fill",
           "paint": {
-            "circle-radius": 10,
-            "circle-stroke-width": [
-              "case",
-              [
-                "==",
-                [
-                  "feature-state",
-                  "selected"
-                ],
-                null
-              ],
-              0,
-              [
-                "boolean",
-                [
-                  "feature-state",
-                  "selected"
-                ],
-                true
-              ],
-              5,
-              0
-            ],
-            "circle-stroke-color": "grey",
-            "circle-color": [
-              "case",
-              [
-                "==",
-                [
-                  "get",
-                  "acoustic_voices"
-                ],
-                null
-              ],
-              [
-                "to-color",
-                "#DDD"
-              ],
-              [
-                "interpolate-hcl",
+            "fill-color": [
+              "interpolate",
                 [
                   "linear"
                 ],
                 [
                   "get",
-                  "acoustic_voices"
+                  "acoustic_birds"
                 ],
-                1,
+                0,
                 [
                   "to-color",
-                  "#FFF8DC"
+                  "#edf8e9"
                 ],
-                11,
+                7,
                 [
                   "to-color",
-                  "#8B4513"
+                  "#006d2c"
                 ]
-              ]
             ]
           }
         }
