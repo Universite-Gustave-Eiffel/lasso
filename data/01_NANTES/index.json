@@ -217,8 +217,8 @@
           "paint": {
             "circle-radius": [
               "interpolate", ["linear"], ["zoom"],
-              5, 5,
-              15, 40
+              5, 15,
+              17, 5
           ],
             "circle-stroke-width": [
               "case",
