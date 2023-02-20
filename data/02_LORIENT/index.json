@@ -8,12 +8,22 @@
   "image": "logo.jpeg",
   "sources": {
     "Geo2": {
-      "attribution": "Pierre",
+      "attribution": "Pierre Aumond, ANR CENSE Project",
       "type": "geojson",
       "data": "./layers/resultGrid2.geojson",
       "variables": {
+        "emotion_pleasant": {
+          "propertyName": "meanAgr",
+          "type": "quantitative",
+          "origin": "model"
+        },
+        "emotion_eventful": {
+          "propertyName": "Even",
+          "origin": "model"
+        },
+        "acoustic_trafic": "meanTra",
         "acoustic_birds": "meanBrd",
-        "acoustic_trafic": "meanTra"
+        "acoustic_voices": "meanCaV"
       }
     },
     "LdenMap": {
@@ -29,7 +39,7 @@
   "maps": [
     {
       "id": "Lden",
-      "name": "Lden",
+      "name": "LDEN - dB(A) - Standard Noise Map - Beate ColorScheme",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -91,37 +101,81 @@
       ]
     },
     {
-      "id": "Grid2_bird",
-      "name": "Bird from Grid2",
+      "id": "pleasant",
+      "name": "Pleasant",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
-          "id": "acoustic_birds",
+          "id": "emotion_pleasant",
           "source": "Geo2",
-          "beforeId": "building",
+          "beforeId": "bati",
           "metadata": {
             "interactive": true
           },
-          "type": "fill",
+          "type": "circle",
           "paint": {
-            "fill-color": [
-              "interpolate",
+            "circle-radius": 10,
+            "circle-stroke-width": [
+              "case",
               [
-                "linear"
-              ],
-              [
-                "get",
-                "acoustic_birds"
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
               ],
               0,
               [
-                "to-color",
-                "#edf8e9"
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
               ],
-              7,
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "emotion_pleasant"
+                ],
+                null
+              ],
               [
                 "to-color",
-                "#006d2c"
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "emotion_pleasant"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#d4322c"
+                ],
+                5,
+                [
+                  "to-color",
+                  "#f2f0eb"
+                ],
+                10,
+                [
+                  "to-color",
+                  "#22964f"
+                ]
               ]
             ]
           }
@@ -129,37 +183,316 @@
       ]
     },
     {
-      "id": "Grid2_traf",
+      "id": "eventful",
+      "name": "EventFul",
+      "basemapStyle": "../bright_matter_PA.json",
+      "layers": [
+        {
+          "id": "emotion_eventful",
+          "source": "Geo2",
+          "beforeId": "bati",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "circle",
+          "paint": {
+            "circle-radius": 10,
+            "circle-stroke-width": [
+              "case",
+              [
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
+              ],
+              0,
+              [
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
+              ],
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "emotion_eventful"
+                ],
+                null
+              ],
+              [
+                "to-color",
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "emotion_eventful"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#151aaf"
+                ],
+                5,
+                [
+                  "to-color",
+                  "#f2f0eb"
+                ],
+                10,
+                [
+                  "to-color",
+                  "#dee401"
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "birds",
+      "name": "Birds - Perceived time presence - Interpolated Questionnaires - light to dark Green",
+      "basemapStyle": "../bright_matter_PA.json",
+      "layers": [
+        {
+          "id": "acoustic_birds",
+          "source": "Geo2",
+          "beforeId": "bati",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "circle",
+          "paint": {
+            "circle-radius": [
+              "interpolate", ["linear"], ["zoom"],
+              5, 15,
+              17, 5
+          ],
+            "circle-stroke-width": [
+              "case",
+              [
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
+              ],
+              0,
+              [
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
+              ],
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "acoustic_birds"
+                ],
+                null
+              ],
+              [
+                "to-color",
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_birds"
+                ],
+                1,
+                [
+                  "to-color",
+                  "#E7F4E4"
+                ],
+                11,
+                [
+                  "to-color",
+                  "#004529"
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "trafic",
       "name": "Trafic",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_trafic",
           "source": "Geo2",
-          "beforeId": "building",
+          "beforeId": "bati",
           "metadata": {
             "interactive": true
           },
-          "type": "fill",
+          "type": "circle",
           "paint": {
-            "fill-color": [
-              "interpolate-hcl",
+            "circle-radius": 10,
+            "circle-stroke-width": [
+              "case",
               [
-                "linear"
-              ],
-              [
-                "get",
-                "acoustic_trafic"
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
               ],
               0,
               [
-                "to-color",
-                "#FFDDDD"
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
               ],
-              7,
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "acoustic_trafic"
+                ],
+                null
+              ],
               [
                 "to-color",
-                "#F22"
+                "#DDD"
+              ],
+              [
+                "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_trafic"
+                ],
+                1,
+                [
+                  "to-color",
+                  "#F2EFE9"
+                ],
+                11,
+                [
+                  "to-color",
+                  "#0B0B0B"
+                ]
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "voices",
+      "name": "Voices - Perceived time presence - Interpolated Questionnaires - Beige to Orange",
+      "basemapStyle": "../bright_matter_PA.json",
+      "layers": [
+        {
+          "id": "acoustic_voices",
+          "source": "Geo2",
+          "beforeId": "bati",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "circle",
+          "paint": {
+            "circle-radius": 10,
+            "circle-stroke-width": [
+              "case",
+              [
+                "==",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                null
+              ],
+              0,
+              [
+                "boolean",
+                [
+                  "feature-state",
+                  "selected"
+                ],
+                true
+              ],
+              5,
+              0
+            ],
+            "circle-stroke-color": "grey",
+            "circle-color": [
+              "case",
+              [
+                "==",
+                [
+                  "get",
+                  "acoustic_voices"
+                ],
+                null
+              ],
+              [
+                "to-color",
+                "#DDD"
+              ],
+              [
+                "interpolate-hcl",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_voices"
+                ],
+                1,
+                [
+                  "to-color",
+                  "#FFF8DC"
+                ],
+                11,
+                [
+                  "to-color",
+                  "#8B4513"
+                ]
               ]
             ]
           }

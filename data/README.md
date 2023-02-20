@@ -44,7 +44,7 @@ Please consult this [full example](./project_index_example.json) while reading t
 
 Here the first section of the `index.json` file which describe your project identity:
 
-- id: a unique slug which will be used to build the project url `https://ouestware.github.io/lasso/project/{id]` (must be alphanumeric + \_)
+- id: a unique slug which will be used to build the project url `https://Universite-Gustave-Eiffel.github.io/lasso/project/{id]` (must be alphanumeric + \_)
 - name: the project name in full text
 - description: a short text which will present the project in the home page. Descriptions must be language specific by using different language ISO alpha-2 codes as keys.
 - image: filename of an image representing the project. This file must be added in the `/data/project_name/` folder. This image will be used in the home page project's presentation card.
@@ -127,7 +127,7 @@ You must provide a `timeseries` configuration to define discrete time steps from
 First you must indicate the `timestampPropertyName`: name of the geojson property where to find the timestamp.
 
 Then you can indicate the time steps for the months, days of the week and hours appropriate for you data.
-/!\ hours needs to be contiguous and [min,max]. For now you can't do something like [23,7] to go over midnight. It might be possible in a close future see https://github.com/ouestware/lasso/issues/9
+/!\ hours needs to be contiguous and [min,max]. For now you can't do something like [23,7] to go over midnight. It might be possible in a close future see https://github.com/Universite-Gustave-Eiffel/lasso/issues/9
 
 A complete example of timeseries specification
 
