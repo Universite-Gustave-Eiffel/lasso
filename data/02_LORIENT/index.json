@@ -113,9 +113,8 @@
           "metadata": {
             "interactive": true
           },
-          "type": "circle",
+          "type": "fill",
           "paint": {
-            "circle-radius": 10,
             "circle-stroke-width": [
               "case",
               [
@@ -139,7 +138,7 @@
               0
             ],
             "circle-stroke-color": "grey",
-            "circle-color": [
+            "fill-color": [
               "case",
               [
                 "==",
