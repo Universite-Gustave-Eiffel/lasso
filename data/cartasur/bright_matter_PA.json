@@ -11,6 +11,10 @@
   "bearing": 0,
   "pitch": 0,
   "sources": {
+    "terrainSource": {
+      "type": "raster-dem",
+      "url": "https://api.maptiler.com/tiles/terrain-rgb/tiles.json?key=068609TFFGab65LoBPb5"
+    },
     "maptiler_planet": {
       "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=068609TFFGab65LoBPb5",
       "type": "vector"
@@ -31,6 +35,9 @@
     }
   },
   "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=068609TFFGab65LoBPb5",
+  "terrain": {
+          "source": "terrainSource"
+          },
   "layers": [
     {
       "id": "background",
