@@ -202,7 +202,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
               <Layer key={l.id} {...(l as AnyLayer)} />
             ))}
 
-            <NavigationControl showCompass={false} />
+            <NavigationControl visualizePitch= {true} showZoom= {true} showCompass= {true} />
             <FullscreenControl />
             <AttributionControl position="top-left" compact />
             {selectedFeature && selectedMapFeature && project && (
