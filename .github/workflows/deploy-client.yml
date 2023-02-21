@@ -3,10 +3,10 @@ on:
   workflow_run:
     workflows: [CI-TEST]
     types: [completed]
-    branches: [main-fork]
+    branches: [main]
   push:
     branches:
-      - main-fork
+      - main
     paths:
       - "packages/client/**"
 
