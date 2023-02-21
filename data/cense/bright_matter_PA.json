@@ -35,16 +35,22 @@
     }
   },
   "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=068609TFFGab65LoBPb5",
-  "terrain": {
-          "source": "terrainSource"
-          },
+  
   "layers": [
+    
     {
       "id": "background",
       "type": "background",
       "layout": {"visibility": "visible"},
       "paint": {"background-color": "hsl(30,25%,98%)", "background-opacity": 1}
     },
+    {
+      "id": "hills",
+      "type": "hillshade",
+      "source": "terrainSource",
+      "layout": { "visibility": "visible" },
+      "paint": { "hillshade-shadow-color": "#473B24" }
+      },
     {
       "id": "residential",
       "type": "fill",
@@ -1600,5 +1606,8 @@
       }
     }
   ],
-  "id": "dataviz"
+  "terrain": {
+    "source": "terrainSource"
+    },
+     "id": "dataviz"
 }
