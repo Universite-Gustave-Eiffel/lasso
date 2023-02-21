@@ -1605,5 +1605,10 @@
         "fill-extrusion-color": "rgba(255, 255, 255, 1)"
       }
     }
-  ],"id": "dataviz"
+  ],
+  "terrain": {
+    "source": "terrainSource",
+    "exaggeration": 1
+    },
+    "id": "dataviz"
 }
