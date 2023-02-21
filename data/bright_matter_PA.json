@@ -12,8 +12,8 @@
   "pitch": 0,
   "sources": {
     "terrainSource": {
-      "type": "raster-dem",
-      "url": "https://api.maptiler.com/tiles/terrain-rgb/tiles.json?key=068609TFFGab65LoBPb5"
+      "url": "https://api.maptiler.com/tiles/terrain-rgb/tiles.json?key=068609TFFGab65LoBPb5",
+      "type": "raster-dem"
     },
     "maptiler_planet": {
       "url": "https://api.maptiler.com/tiles/v3/tiles.json?key=068609TFFGab65LoBPb5",
@@ -44,13 +44,7 @@
       "layout": {"visibility": "visible"},
       "paint": {"background-color": "hsl(30,25%,98%)", "background-opacity": 1}
     },
-    {
-      "id": "hills",
-      "type": "hillshade",
-      "source": "terrainSource",
-      "layout": { "visibility": "visible" },
-      "paint": { "hillshade-shadow-color": "#473B24" }
-      },
+    
     {
       "id": "residential",
       "type": "fill",
