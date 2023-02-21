@@ -150,7 +150,13 @@
                     },
                     "type": "circle",
                     "paint": {
-                        "circle-radius": 10,
+                        "circle-radius": [
+                            "interpolate",
+                            ["exponential",2],
+                            ["zoom"],               
+                                2,1,
+                                21,750
+                          ],
                         "circle-stroke-width": [
                             "case",
                             [
@@ -232,7 +238,13 @@
                     },
                     "type": "circle",
                     "paint": {
-                        "circle-radius": 10,
+                        "circle-radius": [
+                            "interpolate",
+                            ["exponential",2],
+                            ["zoom"],               
+                                2,1,
+                                21,750
+                          ],
                         "circle-stroke-width": [
                             "case",
                             [
@@ -313,7 +325,13 @@
                     },
                     "type": "circle",
                     "paint": {
-                        "circle-radius": 10,
+                        "circle-radius": [
+                            "interpolate",
+                            ["exponential",2],
+                            ["zoom"],               
+                                2,1,
+                                21,750
+                          ],
                         "circle-stroke-width": [
                             "case",
                             [
@@ -389,7 +407,13 @@
                     },
                     "type": "circle",
                     "paint": {
-                        "circle-radius": 10,
+                        "circle-radius": [
+                            "interpolate",
+                            ["exponential",2],
+                            ["zoom"],               
+                                2,1,
+                                21,750
+                          ],
                         "circle-stroke-width": [
                             "case",
                             [
@@ -465,7 +489,13 @@
                     },
                     "type": "circle",
                     "paint": {
-                        "circle-radius": 10,
+                        "circle-radius": [
+                            "interpolate",
+                            ["exponential",2],
+                            ["zoom"],               
+                                2,1,
+                                21,750
+                          ],
                         "circle-stroke-width": [
                             "case",
                             [
@@ -541,7 +571,13 @@
                     },
                     "type": "circle",
                     "paint": {
-                        "circle-radius": 10,
+                        "circle-radius": [
+                            "interpolate",
+                            ["exponential",2],
+                            ["zoom"],               
+                                2,1,
+                                21,750
+                          ],
                         "circle-stroke-width": [
                             "case",
                             [
