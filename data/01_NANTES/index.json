@@ -11,9 +11,9 @@
       "attribution": "Pierre Aumond, ANR CENSE Project",
       "type": "geojson",
       "data": "./layers/GeoAllInterp4326.geojson",
-        "acoustic_trafic": "Birds",
-        "acoustic_birds": "Birds",
-        "acoustic_voices": "Birds"
+      "variables": {
+        "acoustic_birds": "Birds"
+      }
     },
     "GeoAll": {
       "attribution": "Pierre",
@@ -145,7 +145,7 @@
                   "to-color",
                   "#E7F4E4"
                 ],
-                7,
+                10,
                 [
                   "to-color",
                   "#004529"
