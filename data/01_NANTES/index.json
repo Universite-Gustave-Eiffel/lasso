@@ -7,6 +7,14 @@
   },
   "image": "logo.jpeg",
   "sources": {
+    "GeoAllInterp": {
+      "attribution": "Pierre Aumond, ANR CENSE Project",
+      "type": "geojson",
+      "data": "./layers/GeoAllInterp4326.geojson",
+        "acoustic_trafic": "Birds",
+        "acoustic_birds": "Birds",
+        "acoustic_voices": "Birds"
+    },
     "GeoAll": {
       "attribution": "Pierre",
       "type": "geojson",
@@ -104,6 +112,44 @@
                 "to-color",
                 "#430A4A"
               ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "birdsinterp",
+      "name": "Birds - Perceived time presence - Interpolated Questionnaires - light to dark Green",
+      "basemapStyle": "../bright_matter_PA.json",
+      "layers": [
+        {
+          "id": "acoustic_birds",
+          "source": "GeoAllInterp",
+          "beforeId": "building",
+          "metadata": {
+            "interactive": true
+          },
+          "type": "fill",
+          "paint": {
+            "fill-color": [
+              "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_birds"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#E7F4E4"
+                ],
+                7,
+                [
+                  "to-color",
+                  "#004529"
+                ]
             ]
           }
         }
