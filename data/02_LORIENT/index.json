@@ -122,17 +122,22 @@
                 ],
                 [
                   "get",
-                  "acoustic_birds"
+                  "emotion_pleasant"
                 ],
                 0,
                 [
                   "to-color",
-                  "#edf8e9"
+                  "#d4322c"
+                ],
+                3.5,
+                [
+                  "to-color",
+                  "#f2f0eb"
                 ],
                 7,
                 [
                   "to-color",
-                  "#006d2c"
+                  "#22964f"
                 ]
             ]
           }
@@ -160,17 +165,22 @@
                 ],
                 [
                   "get",
-                  "acoustic_birds"
+                  "emotion_eventful"
                 ],
                 0,
                 [
                   "to-color",
-                  "#edf8e9"
+                  "#151aaf"
+                ],
+                3.5,
+                [
+                  "to-color",
+                  "#f2f0eb"
                 ],
                 7,
                 [
                   "to-color",
-                  "#006d2c"
+                  "#dee401"
                 ]
             ]
           }
@@ -203,12 +213,12 @@
                 0,
                 [
                   "to-color",
-                  "#edf8e9"
+                  "#E7F4E4"
                 ],
                 7,
                 [
                   "to-color",
-                  "#006d2c"
+                  "#004529"
                 ]
             ]
           }
@@ -236,17 +246,17 @@
                 ],
                 [
                   "get",
-                  "acoustic_birds"
+                  "acoustic_trafic"
                 ],
                 0,
                 [
                   "to-color",
-                  "#edf8e9"
+                  "#F2EFE9"
                 ],
                 7,
                 [
                   "to-color",
-                  "#006d2c"
+                  "#0B0B0B"
                 ]
             ]
           }
@@ -274,17 +284,17 @@
                 ],
                 [
                   "get",
-                  "acoustic_birds"
+                  "acoustic_voices"
                 ],
                 0,
                 [
                   "to-color",
-                  "#edf8e9"
+                  "#FFF8DC"
                 ],
                 7,
                 [
                   "to-color",
-                  "#006d2c"
+                  "#8B4513"
                 ]
             ]
           }
