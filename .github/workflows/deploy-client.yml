@@ -26,11 +26,10 @@ jobs:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Fix Node version
-        run: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-          nvm install 16
-          nvm use 16
+      - name: Fix node version
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
 
       - name: Install
         run: npm install
