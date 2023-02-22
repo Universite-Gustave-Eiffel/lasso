@@ -28,8 +28,9 @@ jobs:
 
       - name: Fix Node version
         run: |
-          curl -L https://bit.ly/n-install | bash
-          n 16
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+          nvm install 16
+          nvm use 16
 
       - name: Install
         run: npm install
