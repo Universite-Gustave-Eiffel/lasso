@@ -1593,7 +1593,7 @@
           ]
         },
         "fill-extrusion-base": 0,
-        "fill-extrusion-color": "rgba(255, 255, 255, 1)"
+        "fill-extrusion-color": "hsl(0, 0%, 92%)"
       }
     }
   ],
