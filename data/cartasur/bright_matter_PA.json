@@ -35,9 +35,7 @@
     }
   },
   "glyphs": "https://api.maptiler.com/fonts/{fontstack}/{range}.pbf?key=068609TFFGab65LoBPb5",
-  
   "layers": [
-    
     {
       "id": "background",
       "type": "background",
@@ -69,7 +67,7 @@
       "filter": ["any", ["in", "class", "wood", "grass"]],
       "layout": {"visibility": "visible"},
       "paint": {
-        "fill-color": "hsl(96, 44%, 79%)",
+        "fill-color": "rgba(228, 228, 228, 0.9)",
         "fill-opacity": {"stops": [[8, 0.2], [9, 0.25], [11, 0.35]]},
         "fill-antialias": false
       }
@@ -94,10 +92,10 @@
       "filter": ["any", ["in", "class", "stadium", "pitch"]],
       "layout": {"visibility": "visible"},
       "paint": {
-        "fill-color": "hsl(86,57%,88%)",
+        "fill-color": "rgba(236, 236, 236, 1)",
         "fill-opacity": {"stops": [[10, 0.25], [14, 0.55]]},
         "fill-antialias": true,
-        "fill-outline-color": "hsl(85,26%,77%)"
+        "fill-outline-color": "rgba(224, 224, 224, 1)"
       }
     },
     {
@@ -1598,5 +1596,6 @@
         "fill-extrusion-color": "rgba(255, 255, 255, 1)"
       }
     }
-  ], "id": "dataviz"
+  ],
+  "id": "dataviz"
 }
