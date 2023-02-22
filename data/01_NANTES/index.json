@@ -39,11 +39,7 @@
     "LdenMap": {
       "attribution": "Nantes Agglomeration - PPBE 2017",
       "type": "geojson",
-      "data": "./layers/DEN4326.geojson",
-      "variables": {
-        "low_lden": "DB_Low",
-        "high_lden": "DB_High"
-      }
+      "data": "./layers/DEN4326.geojson"
     },
     "Grid3857": {
       "type": "geojson",
@@ -64,7 +60,7 @@
           "source": "LdenMap",
           "beforeId": "building",
           "metadata": {
-            "interactive": true
+            "interactive": false
           },
           "type": "fill",
           "paint": {
@@ -75,7 +71,7 @@
               ],
               [
                 "get",
-                "low_lden"
+                "DB_Low"
               ],
               50,
               [
