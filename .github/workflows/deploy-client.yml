@@ -26,6 +26,11 @@ jobs:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
+      - name: Fix Node version
+        run: |
+          npm install -g n
+          n 16
+
       - name: Install
         run: npm install
 
