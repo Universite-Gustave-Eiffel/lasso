@@ -28,7 +28,7 @@ jobs:
 
       - name: Fix Node version
         run: |
-          npm install -g n
+          curl -L https://bit.ly/n-install | bash
           n 16
 
       - name: Install
