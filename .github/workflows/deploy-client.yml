@@ -18,7 +18,7 @@ jobs:
       PUBLIC_URL: "/lasso"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Cache node_modules
         uses: actions/cache@v3
@@ -33,7 +33,7 @@ jobs:
         run: npm run build
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: packages/client/build # The folder the action should deploy.
