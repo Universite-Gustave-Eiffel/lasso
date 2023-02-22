@@ -45,6 +45,13 @@
       "paint": {"background-color": "hsl(30,25%,98%)", "background-opacity": 1}
     },
     {
+      "id": "hills",
+      "type": "hillshade",
+      "source": "terrainSource",
+      "layout": { "visibility": "visible" },
+      "paint": { "hillshade-shadow-color": "#473B24" }
+      },
+    {
       "id": "residential",
       "type": "fill",
       "source": "maptiler_planet",
