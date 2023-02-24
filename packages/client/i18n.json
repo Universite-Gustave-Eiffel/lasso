@@ -1,6 +1,7 @@
 {
   "page.project": "Project",
   "page.sponsors": "Sponsors",
+  "page.dataset": "Dataset",
   "page.bibliography": "Bibliography",
   "variable.acoustic-birds": "Birds",
   "variable.acoustic-voices": "Voices",

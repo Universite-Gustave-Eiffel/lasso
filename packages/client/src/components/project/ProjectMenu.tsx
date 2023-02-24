@@ -25,7 +25,7 @@ export interface ProjectMenuProps {
   /**
    * current project page id
    */
-  currentProjectPage?: string; //"maps" | "project" | "sponsors" | "bibliography"
+  currentProjectPage?: string; //"maps" | "project" | "dataset" | "sponsors" | "bibliography"
 }
 
 export const ProjectMenu: FC<ProjectMenuProps> = ({ id, className, style, project, currentProjectPage }) => {

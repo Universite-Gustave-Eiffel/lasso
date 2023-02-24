@@ -14,7 +14,7 @@ interface LayoutProps {
   fullPage?: boolean;
   project?: Project;
   heading?: string | JSX.Element;
-  currentProjectPage?: string; //"maps" | "project" | "sponsors" | "bibliography"
+  currentProjectPage?: string; //"maps" | "project" | "dataset" |  "sponsors" | "bibliography"
 }
 export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
   project,

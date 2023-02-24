@@ -20,6 +20,7 @@ Finally you can add context to your project by adding markdown files in the proj
 
 - `project.md`: about page
 - `sponsors.md`: sponsors page
+- `dataset.md`: dataset page
 - `bibliography.md`: references page
 
 Those contents will be rendered as web pages accessible from the project page menu.

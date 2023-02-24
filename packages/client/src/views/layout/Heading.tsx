@@ -7,7 +7,7 @@ import { ProjectMenu } from "../../components/project/ProjectMenu";
 export const Heading: FC<{
   heading?: string | JSX.Element;
   project?: Project;
-  currentProjectPage?: string; //"maps" | "project" | "sponsors" | "bibliography"
+  currentProjectPage?: string; //"maps" | "project" | "dataset" |  "sponsors" | "bibliography"
 }> = ({ heading, project, currentProjectPage }) => {
   if (!heading && !project) return null;
   return (

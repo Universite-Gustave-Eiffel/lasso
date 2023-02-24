@@ -102,14 +102,22 @@ export async function exportProject(project: InternalProject): Promise<Project> 
   // TODO: change urls to images
   const pages = { project: `${projectUrl}project.md` } as Project["pages"];
   await fsu.writeFile(path.resolve(projectFolder, "project.md"), project.pages.project);
+  
+  if (project.pages.dataset) {
+    await fsu.writeFile(path.resolve(projectFolder, "dataset.md"), project.pages.dataset);
+    pages.dataset = `${projectUrl}dataset.md`;
+  }
+
   if (project.pages.sponsors) {
     await fsu.writeFile(path.resolve(projectFolder, "sponsors.md"), project.pages.sponsors);
     pages.sponsors = `${projectUrl}sponsors.md`;
   }
+
   if (project.pages.bibliography) {
     await fsu.writeFile(path.resolve(projectFolder, "bibliography.md"), project.pages.bibliography);
     pages.bibliography = `${projectUrl}bibliography.md`;
   }
+  
 
   // Create geojson files if needed
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
