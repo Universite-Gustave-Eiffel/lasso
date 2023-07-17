@@ -14,13 +14,15 @@ export const Header: FC<PropsWithChildren & { project?: Project }> = ({ project,
       <div className="py-1 px-3 d-flex flex-column flex-md-row align-items-center">
         <Link to="/" title={t("page.home")} className="navbar-brand fs-2">
           <span>LASSO</span>
-          {project ? (
-            <>
-              <BsChevronRight size="1.5rem" />
-              <span>{project.name}</span>
-            </>
-          ) : null}
         </Link>
+        {project ? (
+          <>
+            <BsChevronRight size="1.5rem" />
+            <Link to={`/project/${project.id}`} title={project.name} className="navbar-brand fs-2">
+              <span>{project.name}</span>
+            </Link>
+          </>
+        ) : null}
 
         {children}
 
