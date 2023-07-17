@@ -27,7 +27,7 @@ export interface ProjectMapsProps {
 
 export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style }) => {
   const t = useT();
-  const project = useCurrentProject();
+  const { project } = useCurrentProject();
 
   const htmlProps = { id, className: cx(className, "d-flex flex-grow-1"), style };
 

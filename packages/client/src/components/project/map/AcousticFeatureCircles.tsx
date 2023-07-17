@@ -39,7 +39,7 @@ const AcousticCircle: FC<{
 };
 
 export const AcousticFeatureCircles: FC<{ feature: Feature }> = ({ feature }) => {
-  const project = useCurrentProject();
+  const { project } = useCurrentProject();
   const t = useT();
   //TODO
   // - sound level as background centered circle

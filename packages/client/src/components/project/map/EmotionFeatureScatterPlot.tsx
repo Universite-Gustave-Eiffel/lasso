@@ -13,7 +13,7 @@ export const EmotionFeatureScatterPlot: FC<{ feature: Feature; variables: LassoS
   feature,
   variables,
 }) => {
-  const project = useCurrentProject();
+  const { project } = useCurrentProject();
   const t = useT();
   const notEmpty =
     feature && feature.properties && feature.properties.emotion_pleasant && feature.properties.emotion_eventful;

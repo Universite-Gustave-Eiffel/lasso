@@ -99,7 +99,7 @@ export const DonutDay: FC<DonutDayProps> = ({
   currentTimeKey,
   layerId,
 }) => {
-  const project = useCurrentProject();
+  const { project } = useCurrentProject();
 
   const timelineHoursKeys = timeSpecification.hoursLabels
     ? sortBy(

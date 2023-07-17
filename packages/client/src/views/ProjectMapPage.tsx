@@ -8,17 +8,19 @@ import { Layout } from "./layout";
 
 export const ProjectMapPage: FC = () => {
   const { id } = useParams<"id">();
-
-  const project = useCurrentProject(id);
+  const { project, loading } = useCurrentProject(id);
   return (
     <>
-      {project ? (
-        <Layout project={project} heading={project.name} fullPage={true} currentProjectPage={"maps"}>
-          <ProjectMaps />
-        </Layout>
-      ) : (
-        <NotFoundPage />
-      )}
+      <Layout
+        loading={loading}
+        project={project ?? undefined}
+        heading={project?.name}
+        fullPage={true}
+        currentProjectPage={"maps"}
+      >
+        <ProjectMaps />
+      </Layout>
+      {!loading && !project && <NotFoundPage />}
     </>
   );
 };

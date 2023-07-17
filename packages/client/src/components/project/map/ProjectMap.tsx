@@ -27,8 +27,8 @@ export interface ProjectMapProps {
 }
 
 export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bounds, center, isLeft }) => {
-  //project
-  const project = useCurrentProject();
+  // project
+  const { project } = useCurrentProject();
   // map lifecycle
   const { [mapId]: map } = useMap();
   const [projectMap, setProjectMap] = useState<IProjectMap | undefined>();
