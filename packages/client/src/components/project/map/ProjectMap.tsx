@@ -4,6 +4,7 @@ import Map, {
   LngLatBoundsLike,
   FullscreenControl,
   AttributionControl,
+  Marker,
   useMap,
   Source,
   Layer,
@@ -38,6 +39,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
   // Feature selection
   // feature id is used as maplibre have issues with feature provided in click event (nested properties as string and missing feature ID)
   const [selectedMapFeature, setSelectedMapFeature] = useState<{
+    clickedAt: { lng: number; lat: number };
     source: string;
     featureId: string;
     layerId: string;
@@ -153,6 +155,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
                     { selected: true },
                   );
                   setSelectedMapFeature({
+                    clickedAt: e.lngLat,
                     source: selectedFeature.layer.source,
                     featureId: selectedFeature.properties.id,
                     layerId: selectedFeature.layer.id,
@@ -206,22 +209,25 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
             <FullscreenControl />
             <AttributionControl position="top-left" compact />
             {selectedFeature && selectedMapFeature && project && (
-              <FeatureDataPanel
-                isLeft={isLeft}
-                feature={selectedFeature}
-                timeSpecification={project.sources[selectedMapFeature.source].timeSeries}
-                variables={project.sources[selectedMapFeature.source].variables}
-                layerId={selectedMapFeature.layerId}
-                currentTimeKey={currentTimeKey}
-                setCurrentTimeKey={setCurrentTimeKey}
-                onClose={() => {
-                  map?.setFeatureState(
-                    { ...selectedMapFeature, id: selectedMapFeature.featureId },
-                    { selected: false },
-                  );
-                  setSelectedMapFeature(null);
-                }}
-              />
+              <>
+                <FeatureDataPanel
+                  isLeft={isLeft}
+                  feature={selectedFeature}
+                  timeSpecification={project.sources[selectedMapFeature.source].timeSeries}
+                  variables={project.sources[selectedMapFeature.source].variables}
+                  layerId={selectedMapFeature.layerId}
+                  currentTimeKey={currentTimeKey}
+                  setCurrentTimeKey={setCurrentTimeKey}
+                  onClose={() => {
+                    map?.setFeatureState(
+                      { ...selectedMapFeature, id: selectedMapFeature.featureId },
+                      { selected: false },
+                    );
+                    setSelectedMapFeature(null);
+                  }}
+                />
+                <Marker longitude={selectedMapFeature.clickedAt.lng} latitude={selectedMapFeature.clickedAt.lat} />
+              </>
             )}
           </Map>
         </>

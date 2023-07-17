@@ -18,7 +18,6 @@ export const FeatureDataPanel: FC<{
   isLeft?: boolean;
   onClose: () => void;
 }> = ({ feature, setCurrentTimeKey, currentTimeKey, timeSpecification, layerId, isLeft, onClose, variables }) => {
-  console.log(variables);
   return (
     <div className={`map-point-data ${isLeft ? "is-left" : ""}`}>
       {feature && (
