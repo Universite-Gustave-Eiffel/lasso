@@ -4,6 +4,9 @@ services:
     build:
       context: ./project
       dockerfile: ./Dockerfile
+      args:
+        USER_ID: ${USER_ID}
+        GROUP_ID: ${GROUP_ID}
     restart: ${RESTART_POLICY}
     ports:
       - ${HOST_HTTP_PORT}:80
