@@ -1,5 +1,7 @@
 import { FC, PropsWithChildren } from "react";
 import cx from "classnames";
+import { Helmet } from "react-helmet";
+import { isString } from "lodash";
 
 import { Project } from "@lasso/dataprep";
 import { Notifications } from "../../core/notifications";
@@ -26,6 +28,10 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
 }) => {
   return (
     <div id="app-root">
+      <Helmet>
+        <title>{`Lasso - ${project ? project.name : isString(heading) ? heading : ""}`}</title>
+      </Helmet>
+
       <Header project={project}>
         <Heading project={project} currentProjectPage={currentProjectPage} />
       </Header>
