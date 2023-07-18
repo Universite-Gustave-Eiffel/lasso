@@ -21,9 +21,6 @@ const AcousticCircle: FC<{
       <div
         className={`acoustic-circle`}
         style={{
-          // width: circleSize,
-          // height: circleSize,
-          // borderRadius: circleSize,
           backgroundColor: symbolSpec?.colorStyleExpression?.evaluate({ zoom: 14 }, feature) || "lightgrey",
         }}
         title={`${t(`variable.acoustic-${variable}`)} - ${value}`}

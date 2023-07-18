@@ -29,7 +29,7 @@ export interface IProjectMap {
   /**
    * Name of the map
    */
-  name: string;
+  name: string | { [key: string]: string };
   /**
    * Mapgl style specification to boostrap the map with
    */

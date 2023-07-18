@@ -34,6 +34,7 @@ export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style }) => {
   const [rightMapProjectId, setRightMapProjectId] = useState<string | undefined>(project?.maps[0].id);
   const [leftMapProjectId, setLeftMapProjectId] = useState<string | undefined>(project?.maps[0].id);
   const [mode, setMode] = useState<SyncMapsModes>("side-by-side");
+
   useEffect(() => {
     if (project) {
       setRightMapProjectId(project?.maps[0].id);
@@ -63,7 +64,7 @@ export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style }) => {
                 <LayerSelector
                   setProjectMapId={setLeftMapProjectId}
                   projectMapId={leftMapProjectId}
-                  maps={project.maps}
+                  project={project}
                 />
                 <ProjectMap id="leftMap" projectMapId={leftMapProjectId}></ProjectMap>
               </div>
@@ -83,11 +84,7 @@ export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style }) => {
             className={cx("d-flex flex-column flex-grow-1")}
             style={{ width: mode === "single" ? "calc(100% - 2em)" : "calc(50% - 1em)" }}
           >
-            <LayerSelector
-              maps={project.maps}
-              setProjectMapId={setRightMapProjectId}
-              projectMapId={rightMapProjectId}
-            />
+            <LayerSelector project={project} setProjectMapId={setRightMapProjectId} projectMapId={rightMapProjectId} />
             <ProjectMap id="rightMap" projectMapId={rightMapProjectId} bounds={project.bbox}></ProjectMap>
           </div>
         </MapProvider>

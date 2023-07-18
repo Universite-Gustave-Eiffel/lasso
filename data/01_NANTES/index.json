@@ -52,7 +52,10 @@
   "maps": [
     {
       "id": "Lden",
-      "name": "LDEN - dB(A) - Standard Noise Map - Beate ColorScheme",
+      "name": {
+        "fr": "LDEN - dB(A) - Carte de bruit standard  - Beate ColorScheme",
+        "en": "LDEN - dB(A) - Standard Noise Map - Beate ColorScheme"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
