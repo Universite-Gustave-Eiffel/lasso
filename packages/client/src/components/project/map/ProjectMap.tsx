@@ -15,9 +15,10 @@ import { AnyLayer } from "mapbox-gl";
 import { FeatureCollection, Feature } from "geojson";
 
 import { IProjectMap } from "@lasso/dataprep";
+import { useCurrentProject } from "../../../hooks/useProject";
 import { Loader } from "../../Loader";
 import { FeatureDataPanel } from "./FeatureDataPanel";
-import { useCurrentProject } from "../../../hooks/useProject";
+import { ResetControl } from "./ResetControl";
 
 export interface ProjectMapProps {
   id: string;
@@ -207,6 +208,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
 
             <NavigationControl visualizePitch={true} showZoom={true} showCompass={true} />
             <FullscreenControl />
+            <ResetControl point={selectedFeature && selectedMapFeature ? selectedMapFeature.clickedAt : undefined} />
             <AttributionControl position="top-left" compact />
             {selectedFeature && selectedMapFeature && project && (
               <>
