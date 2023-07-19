@@ -1,4 +1,5 @@
 import { sortBy } from "lodash";
+import * as path from "path";
 
 import { config } from "./config";
 import * as fsu from "./utils/files";
@@ -17,6 +18,16 @@ export {
 } from "./types";
 
 async function run(): Promise<void> {
+  // Export/copy about markdown files
+  const mdFiles = await fsu.listFolder(config.importPath, { extension: ".md" });
+  await Promise.all(
+    mdFiles.map(async (file) => {
+      console.log(file);
+      const filename = path.basename(file);
+      await fsu.copy(file, path.resolve(config.exportPath, filename));
+    }),
+  );
+
   // List project folders in the import folder
   const folders = await fsu.listFolder(config.importPath, {
     onlyFolder: true,

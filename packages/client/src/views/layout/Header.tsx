@@ -1,6 +1,6 @@
 import { Project } from "@lasso/dataprep";
 import { FC, PropsWithChildren } from "react";
-import { BsChevronRight } from "react-icons/bs";
+import { BsChevronRight, BsQuestionCircle } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useT, useLocale } from "@transifex/react";
 
@@ -30,10 +30,10 @@ export const Header: FC<PropsWithChildren & { project?: Project }> = ({ project,
 
         <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto navbar navbar-expand-lg">
           <div className="container-fluid">
-            <Link to="/about" title={t("About")} className="me-1">
-              {t("About")}
-            </Link>
             <LanguagePicker />
+            <Link to="/about" title={t("About")} className="ms-3">
+              <BsQuestionCircle size="1.5rem" />
+            </Link>
           </div>
         </nav>
       </div>
