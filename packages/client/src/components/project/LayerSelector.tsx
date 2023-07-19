@@ -5,7 +5,7 @@ import { useLocale } from "@transifex/react";
 
 import { IProjectMap, Project } from "@lasso/dataprep";
 // import { getMapProjectVariables } from "../../utils/project";
-import { getI18NText } from "../../utils/string";
+import { getI18NText } from "../../utils/i18n";
 
 const ProjectMapOption: FC<{ project: Project; map: IProjectMap }> = ({ map }) => {
   // console.log(getMapProjectVariables(project, map));

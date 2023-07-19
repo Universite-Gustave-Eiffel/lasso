@@ -1,10 +1,10 @@
+import { useLocale, useT } from "@transifex/react";
 import { FC, CSSProperties } from "react";
 import { Link } from "react-router-dom";
 import cx from "classnames";
 
 import { Project } from "@lasso/dataprep";
-import { useLocale, useT } from "@transifex/react";
-import { values } from "lodash";
+import { getI18NText } from "../../utils/i18n";
 
 export interface ProjectCardProps {
   /**
@@ -33,20 +33,18 @@ export const ProjectCard: FC<ProjectCardProps> = ({ id, className, style, projec
     <div {...htmlProps}>
       {project.image && (
         <div className="card-image">
-          <Link to={`/project/${project.id}`} title={project.name}>
-            <img className="card-img-top" src={project.image} alt={project.name} />
+          <Link to={`/project/${project.id}`} title={getI18NText(locale, project.name)}>
+            <img className="card-img-top" src={project.image} alt={getI18NText(locale, project.name)} />
           </Link>
         </div>
       )}
       <div className="card-body">
-        <h4 className="card-title">{project.name}</h4>
+        <h4 className="card-title">{getI18NText(locale, project.name)}</h4>
 
-        {project.description !== undefined && (
-          <p className="card-text">{project.description[locale] || values(project.description)[0]}</p>
-        )}
+        {project.description !== undefined && <p className="card-text">{getI18NText(locale, project.description)}</p>}
         <div className="w-100 text-end">
-          <Link className="btn btn-primary" to={`/project/${project.id}`} title={project.name}>
-            {t("Go to ")} {project.name}
+          <Link className="btn btn-primary" to={`/project/${project.id}`} title={getI18NText(locale, project.name)}>
+            {t("Go to ")} {getI18NText(locale, project.name)}
           </Link>
         </div>
       </div>

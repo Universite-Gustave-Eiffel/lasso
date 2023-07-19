@@ -1,7 +1,16 @@
-import { LayerSpecification, SourceSpecification } from "maplibre-gl";
+import {
+  LayerSpecification,
+  VectorSourceSpecification,
+  RasterSourceSpecification,
+  RasterDEMSourceSpecification,
+  GeoJSONSourceSpecification,
+} from "maplibre-gl";
 import { Style } from "mapbox-gl";
 
 export type BBOX = [[number, number], [number, number]];
+
+// can be a string (used for every locales) or an object with local/text
+export type StringI18n = string | { [key: string]: string };
 
 // TODO: featureIdentifier doesn't need to be a complex variable only a string.
 // also we might want to allow random variables on top of specific ones
@@ -29,7 +38,7 @@ export interface IProjectMap {
   /**
    * Name of the map
    */
-  name: string | { [key: string]: string };
+  name: StringI18n;
   /**
    * Mapgl style specification to boostrap the map with
    */
@@ -94,7 +103,15 @@ export interface TimeSpecification {
 
 export type LassoSourceVariables = Partial<Record<SOUNDSCAPE_VARIABLES_TYPES, LayerVariable>>;
 
+type SourceSpecification =
+  | VectorSourceSpecification
+  | RasterSourceSpecification
+  | RasterDEMSourceSpecification
+  | GeoJSONSourceSpecification;
+
 export type LassoSource = SourceSpecification & {
+  type: "vector" | "geojson" | "raster" | "raster-dem";
+  attribution?: StringI18n;
   variables?: LassoSourceVariables;
   timeSeries?: TimeSpecification;
 };
@@ -107,12 +124,12 @@ interface IProject {
   /**
    * Name of the project.
    */
-  name: string;
+  name: StringI18n;
   /**
    * A short description of the project in text only.
    * Will be used for the project's card.
    */
-  description?: Record<string, string>;
+  description?: StringI18n;
   /**
    * Image of the project that will be used to create the project card.
    * It's a relative path to the image.
@@ -143,7 +160,7 @@ interface IProject {
 }
 
 type IProjectFull = IProject & {
-  pages: { [key: string]: string };
+  pages: { [key: string]: StringI18n };
 };
 
 export type ImportProject = IProject;

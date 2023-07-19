@@ -13,9 +13,11 @@ import maplibregl, { GeoJSONSourceSpecification } from "maplibre-gl";
 import { Dictionary, mapValues, omit, omitBy, toPairs } from "lodash";
 import { AnyLayer } from "mapbox-gl";
 import { FeatureCollection, Feature } from "geojson";
+import { useLocale } from "@transifex/react";
 
 import { IProjectMap } from "@lasso/dataprep";
 import { useCurrentProject } from "../../../hooks/useProject";
+import { getI18NText } from "../../../utils/i18n";
 import { Loader } from "../../Loader";
 import { FeatureDataPanel } from "./FeatureDataPanel";
 import { ResetControl } from "./ResetControl";
@@ -29,6 +31,7 @@ export interface ProjectMapProps {
 }
 
 export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bounds, center, isLeft }) => {
+  const locale = useLocale();
   // project
   const { project } = useCurrentProject();
   // map lifecycle
@@ -191,11 +194,13 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
             {toPairs(project.sources).map(([sourceId, source]) => {
               return (
                 <Source
-                  key={sourceId}
+                  key={`${locale}-${sourceId}`}
                   id={sourceId}
+                  type={source.type}
                   {...{
                     // removing Lasso specific properties
-                    ...omit(source, ["variables", "timeSeries"]),
+                    ...omit(source, ["variables", "timeSeries", "type", "attribution"]),
+                    attribution: source.attribution ? getI18NText(locale, source.attribution) : "",
                     // data used are in priority the time-aware ones or the original ones
                     data: source.type === "geojson" ? timedSourcesData[sourceId] || source.data : undefined,
                   }}
@@ -203,7 +208,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
               );
             })}
             {projectMap.layers.map((l) => (
-              <Layer key={l.id} {...(l as AnyLayer)} />
+              <Layer key={`${locale}-${l.id}`} {...(l as AnyLayer)} />
             ))}
 
             <NavigationControl visualizePitch={true} showZoom={true} showCompass={true} />

@@ -1,6 +1,9 @@
 {
   "id": "nantes",
-  "name": "Paysages Sonores Nantais",
+  "name": {
+    "en": "Nantes noise landscape",
+    "fr": "Paysages Sonores Nantais"
+  },
   "description": {
     "en":"First-year Geography students at the University of Nantes spent a week outside of class to explore Nantes' soundscapes in 2019 and 2020. In groups of five, they collected physical and subjective data on 20 listening points per group, totaling 650 points. They used the NoiseCapture app to measure LAeq and LA90 for three minutes at each point, and some students completed perception questionnaires about their feelings, sound source presence, and sound environnement temporal structure.",
     "fr": "Les étudiants de première année de la Faculté de Géographie de l'Université de Nantes sont invités à passer une semaine hors de la salle de classe dans le cadre de leur programme pédagogique. En 2019 et 2020, le thème était la découverte des paysages sonores de Nantes. Chaque mois de mars de ces années-là, environ 120 étudiants se sont rendus sur le terrain en groupes de 5 pendant 3 après-midis. L'après-midi du mardi était consacrée à la collecte de données physiques et subjectives sur 20 points d'écoute par groupe, situés sur le réseau piétonnier et routier. Au total, 650 points d'écoute ont été étudiés. Pour chacun de ces points, 3 minutes de mesures (L Aeq et L A90 ont été calculés) ont été effectuées à l'aide de l'application NoiseCapture. De plus, de 1 à 5 étudiants ont rempli des questionnaires sur leur perception de l'environnement sonore (cercle circumplexe d'affect, temps de présence des sources sonores, structure temporelle de l'environnement sonore, etc.)."
@@ -8,7 +11,10 @@
   "image": "logo.jpeg",
   "sources": {
     "GeoAllInterp": {
-      "attribution": "Pierre Aumond, ANR CENSE Project",
+      "attribution": {
+        "fr":"Pierre Aumond, Projet ANR CENSE",
+        "en":"Pierre Aumond, ANR CENSE Project"
+      },
       "type": "geojson",
       "data": "./layers/GeoAllInterp4326.geojson",
       "variables": {

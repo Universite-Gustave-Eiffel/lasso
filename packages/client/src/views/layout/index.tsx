@@ -2,11 +2,13 @@ import { FC, PropsWithChildren } from "react";
 import cx from "classnames";
 import { Helmet } from "react-helmet";
 import { isString } from "lodash";
+import { useLocale } from "@transifex/react";
 
 import { Project } from "@lasso/dataprep";
 import { Notifications } from "../../core/notifications";
 import { Modals } from "../../core/modals";
 import { Loader } from "../../components/Loader";
+import { getI18NText } from "../../utils/i18n";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { Heading } from "./Heading";
@@ -26,10 +28,11 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = ({
   children,
   currentProjectPage,
 }) => {
+  const locale = useLocale();
   return (
     <div id="app-root">
       <Helmet>
-        <title>{`Lasso - ${project ? project.name : isString(heading) ? heading : ""}`}</title>
+        <title>{`Lasso - ${project ? getI18NText(locale, project.name) : isString(heading) ? heading : ""}`}</title>
       </Helmet>
 
       <Header project={project}>

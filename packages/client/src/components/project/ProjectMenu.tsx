@@ -1,9 +1,10 @@
 import { FC, CSSProperties } from "react";
 import cx from "classnames";
 import { Link } from "react-router-dom";
-import { useT } from "@transifex/react";
+import { useLocale, useT } from "@transifex/react";
 
 import { Project } from "@lasso/dataprep";
+import { getI18NText } from "../../utils/i18n";
 
 export interface ProjectMenuProps {
   /**
@@ -31,6 +32,7 @@ export interface ProjectMenuProps {
 export const ProjectMenu: FC<ProjectMenuProps> = ({ id, className, style, project, currentProjectPage }) => {
   const htmlProps = { id, className: cx("flex-row nav", className), style };
   const t = useT();
+  const locale = useLocale();
 
   return (
     <ul {...htmlProps}>
@@ -38,7 +40,7 @@ export const ProjectMenu: FC<ProjectMenuProps> = ({ id, className, style, projec
         <Link
           to={`/project/${project.id}`}
           className={cx("nav-link", currentProjectPage === "maps" && "active")}
-          title={project.name}
+          title={getI18NText(locale, project.name)}
         >
           {t(``)}
         </Link>

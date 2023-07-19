@@ -228,3 +228,12 @@ When writing those specification it's important to keep in mind that:
 3. not to worry about time it will be handled automatically for you. Note that data value ranges must cover all time steps cases
 4. the `feature-state` will contain a `{"selected":true}` when selected
 5. the color scales your are defining in those specifications will be automatically reused to adapt the selected feature panel which acts as a legend.
+
+# I18N
+
+For markdown file (like project.md, dataset.md, ...) you can localize them by creating one file per locale, where the filename must follow this pattern : `filename.[locale].md` (ex: `project.en.md`, `project.fr.md`, ...)
+
+For label inside the `project.json` (like `description`, `name`, `attribution`), instead or just specify a string, you can create a map of key/value where keys are the locale and value the localized content.
+
+The application will take the content of the locale defined by the user.
+If the content does'nt exist, we take the english per default, and if there is no english version defined, we take the first one.

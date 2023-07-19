@@ -1,5 +1,6 @@
 import * as path from "path";
 import { GeoJSON } from "geojson";
+import { isString } from "lodash";
 
 import { config } from "../config";
 import { ImportProject, InternalProject, LassoSource, Project } from "../types";
@@ -22,16 +23,31 @@ export async function importProjectFromPath(projectFolderPath: string): Promise<
 
   // List md files for static pages
   const markdownFiles = await fsu.listFolder(projectFolderPath, { extension: ".md" });
-  if (!markdownFiles.find((p) => p.endsWith("/project.md")))
-    throw new Error(`Project page is missing for ${project.name}`);
+  const filenameRegex = /([^.]*)(\.([a-zA-Z]{2}))?/;
   const pages = (
     await Promise.all(
-      markdownFiles.map(async (f) => ({
-        name: fsu.getFilenameFromPath(f),
-        content: await readMarkdownFile(f),
-      })),
+      markdownFiles.map(async (f) => {
+        const filename = fsu.getFilenameFromPath(f);
+        const content = await readMarkdownFile(f);
+
+        const groups = filename.match(filenameRegex);
+        if (groups) {
+          const name = groups?.length > 3 ? groups[1] : filename;
+          const locale = groups?.length > 3 && groups[3] ? groups[3] : "default";
+          return { name, content, locale };
+        }
+        return { name: filename, content, locale: "default" };
+      }),
     )
-  ).reduce((acc, curr) => ({ ...acc, [curr.name]: curr.content }), {} as { [key: string]: string });
+  ).reduce((acc, curr) => {
+    return {
+      ...acc,
+      [curr.name]: {
+        ...(acc[curr.name] || {}),
+        [curr.locale]: curr.content,
+      },
+    };
+  }, {} as { [key: string]: { [key: string]: string } });
 
   // change relative local map style path to absolute path
   const maps = await Promise.all(
@@ -70,7 +86,6 @@ export async function importProjectFromPath(projectFolderPath: string): Promise<
         }),
       ),
     ),
-
     pages,
   };
 }
@@ -99,25 +114,29 @@ export async function exportProject(project: InternalProject): Promise<Project> 
 
   // Create markdown files
   // ~~~~~~~~~~~~~~~~~~~~~
-  // TODO: change urls to images
-  const pages = { project: `${projectUrl}project.md` } as Project["pages"];
-  await fsu.writeFile(path.resolve(projectFolder, "project.md"), project.pages.project);
-  
-  if (project.pages.dataset) {
-    await fsu.writeFile(path.resolve(projectFolder, "dataset.md"), project.pages.dataset);
-    pages.dataset = `${projectUrl}dataset.md`;
-  }
+  const pages: Project["pages"] = {};
 
-  if (project.pages.sponsors) {
-    await fsu.writeFile(path.resolve(projectFolder, "sponsors.md"), project.pages.sponsors);
-    pages.sponsors = `${projectUrl}sponsors.md`;
-  }
+  await Promise.all(
+    ["project", "dataset", "sponsors", "bibliography"].map(async (name: string) => {
+      const page = project.pages[name];
 
-  if (project.pages.bibliography) {
-    await fsu.writeFile(path.resolve(projectFolder, "bibliography.md"), project.pages.bibliography);
-    pages.bibliography = `${projectUrl}bibliography.md`;
-  }
-  
+      if (page) {
+        if (isString(page)) {
+          await fsu.writeFile(path.resolve(projectFolder, `${name}.md`), page);
+          pages[name] = { default: `${name}.md` };
+        } else {
+          pages[name] = (
+            await Promise.all(
+              Object.keys(page).map(async (locale) => {
+                await fsu.writeFile(path.resolve(projectFolder, `${name}.${locale}.md`), page[locale]);
+                return { locale, url: `${name}.${locale}.md` };
+              }),
+            )
+          ).reduce((acc, current) => ({ ...acc, [current.locale]: current.url }), {} as { [key: string]: string });
+        }
+      }
+    }),
+  );
 
   // Create geojson files if needed
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

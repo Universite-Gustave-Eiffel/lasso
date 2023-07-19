@@ -14,7 +14,7 @@ export interface APIResult<T> {
 export function useHttpGet<
   P extends Record<string, string | number | boolean | null>,
   Q extends Record<string, string | number | boolean | null>,
-  R
+  R,
 >(variables: {
   path: string;
   pathParams: P;
