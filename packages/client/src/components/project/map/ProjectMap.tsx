@@ -23,6 +23,7 @@ import { Loader } from "../../Loader";
 import { FeatureDataPanel } from "./FeatureDataPanel";
 import { MapControl } from "../../MapControl";
 import { ResetControl } from "./ResetControl";
+import { ProjectMapBoundingBox } from "./ProjectMapBoundingBox";
 
 export interface ProjectMapProps {
   id: string;
@@ -263,6 +264,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
                 <Marker longitude={selectedMapFeature.clickedAt.lng} latitude={selectedMapFeature.clickedAt.lat} />
               </>
             )}
+            <ProjectMapBoundingBox project={project} type="border" />
           </Map>
         </>
       ) : (

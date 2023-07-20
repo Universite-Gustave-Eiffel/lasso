@@ -1,7 +1,7 @@
 import { isString, toPairs } from "lodash";
-import { Feature } from "geojson";
+import { Geometry, Feature } from "geojson";
 
-import { IProjectMap, LayerVariable, SOUNDSCAPE_VARIABLES_TYPES } from "@lasso/dataprep";
+import { Project, IProjectMap, LayerVariable, SOUNDSCAPE_VARIABLES_TYPES } from "@lasso/dataprep";
 import { LoadedProject } from "../hooks/useProject";
 
 export type ProjectLayerVariable = LayerVariable & {
@@ -77,4 +77,12 @@ export function getVariableColor(project: LoadedProject, variable: ProjectLayerV
     }
   }
   return "#FFF";
+}
+
+export function projectBboxToGeometry(project: Project): Geometry {
+  const bbox = project.bbox;
+  return {
+    type: "Polygon",
+    coordinates: [[bbox[1], [bbox[0][0], bbox[1][1]], bbox[0], [bbox[1][0], bbox[0][1]], bbox[1]]],
+  };
 }
