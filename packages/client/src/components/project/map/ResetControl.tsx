@@ -1,30 +1,15 @@
-import { FC, useCallback, useMemo } from "react";
-import { createPortal } from "react-dom";
+import { FC, useCallback } from "react";
 import { GrMapLocation } from "react-icons/gr";
 import { useT } from "@transifex/react";
-import { useMap, useControl } from "react-map-gl";
+import { useMap } from "react-map-gl";
 
 import { useCurrentProject } from "../../../hooks/useProject";
+import { MapControl } from "../../MapControl";
 
 export const ResetControl: FC<{ point?: { lat: number; lng: number } }> = ({ point }) => {
   const t = useT();
   const { current: map } = useMap();
   const { project } = useCurrentProject();
-
-  const container = useMemo(() => {
-    const div = document.createElement("div");
-    div.setAttribute("id", "map-control-reset");
-    return div;
-  }, []);
-
-  useControl(() => {
-    return {
-      onAdd: () => {
-        return container;
-      },
-      onRemove: () => {},
-    };
-  }, {});
 
   const onClick = useCallback(() => {
     if (project) {
@@ -33,16 +18,15 @@ export const ResetControl: FC<{ point?: { lat: number; lng: number } }> = ({ poi
     }
   }, [map, project, point]);
 
-  return createPortal(
-    <div className="maplibregl-ctrl maplibregl-ctrl-group mapboxgl-ctrl mapboxgl-ctrl-group">
+  return (
+    <MapControl id="reset">
       <button
         className="maplibregl-ctrl-fullscreen mapboxgl-ctrl-fullscreen"
         onClick={onClick}
-        title={t("map.control.reset")}
+        title={t("map.control.clockReset")}
       >
         <GrMapLocation size="1.8em" />
       </button>
-    </div>,
-    container,
+    </MapControl>
   );
 };

@@ -95,15 +95,7 @@
         display: flex;
         justify-content: start;
         align-items: center;
-        > .axis {
-          width:1px;
-          height: 0;;
-          border-style: solid;
-          border-left-width:0;
-          border-right-width: 0;
-          border-top-width: 2px;
-          border-bottom-width: 2px;
-        }
+        > 
 
         .arrow:first-of-type {
           border-top: 5px solid transparent;
@@ -171,4 +163,16 @@
 .arrow {
   width: 0;
   height: 0;
+}
+
+.axis {
+  width: 1px;
+  height: 0;
+  width: 1px;
+  height: 0;
+  border-style: solid;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
 }

@@ -29,7 +29,7 @@ export const EmotionFeatureScatterPlot: FC<{ mapVariable: ProjectLayerVariable |
         return "#ddd";
       };
     },
-    [feature, project],
+    [feature, project, mapVariable?.variable],
   );
 
   const projectVariables = useMemo(() => {

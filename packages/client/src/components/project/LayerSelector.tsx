@@ -22,7 +22,7 @@ const ProjectMapOption: FC<{ project: LoadedProject; map: IProjectMap }> = ({ pr
     <div className="d-flex justify-content-between align-items-center">
       <div>{getI18NText(locale, map.name)}</div>
       {mapVariable && project.legendSpecs[mapVariable.variable] && (
-        <div className="d-flex" style={{ width: "50px", height: "10px" }}>
+        <div className="d-flex" style={{ width: "50px" }}>
           <ColorAxis
             min={mapVariable?.minimumValue}
             max={mapVariable?.maximumValue}
