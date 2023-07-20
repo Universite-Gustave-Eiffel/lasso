@@ -101,7 +101,7 @@ export interface TimeSpecification {
   monthsLabels?: Record<string, { label: { fr: string; en: string }; months: Month[] }>;
 }
 
-export type LassoSourceVariables = Partial<Record<SOUNDSCAPE_VARIABLES_TYPES, LayerVariable>>;
+export type LassoSourceVariables = Partial<Record<SOUNDSCAPE_VARIABLES_TYPES, LayerVariable | string>>;
 
 type SourceSpecification =
   | VectorSourceSpecification

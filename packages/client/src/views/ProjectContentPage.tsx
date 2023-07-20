@@ -22,7 +22,6 @@ export const ProjectContentPage: FC = () => {
 
   useEffect(() => {
     if (page && project && project.pages[page]) {
-      console.log(project.pages[page], getI18NText(locale, project.pages[page]));
       fetch({
         pathParams: { id: project.id, page: getI18NText(locale, project.pages[page]) },
         queryParams: {},

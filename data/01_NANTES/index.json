@@ -27,15 +27,8 @@
       "data": "./layers/GeoAll.geojson",
       "promoteId": "PK",
       "variables": {
-        "emotion_pleasant": {
-          "propertyName": "Plea",
-          "type": "quantitative",
-          "origin": "model"
-        },
-        "emotion_eventful": {
-          "propertyName": "Even",
-          "origin": "model"
-        },
+        "emotion_pleasant": "Plea",
+        "emotion_eventful": "Even",
         "acoustic_trafic": "Road",
         "acoustic_birds": "Bird",
         "acoustic_voices": "CaVo",

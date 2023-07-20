@@ -1,26 +1,62 @@
-import { FC, CSSProperties } from "react";
+import { FC, CSSProperties, useMemo, useCallback } from "react";
 import Select, { OptionProps, SingleValueProps } from "react-select";
 import cx from "classnames";
 import { useLocale } from "@transifex/react";
 
-import { IProjectMap, Project } from "@lasso/dataprep";
-// import { getMapProjectVariables } from "../../utils/project";
+import { IProjectMap } from "@lasso/dataprep";
+import { getMapProjectMappedVariable } from "../../utils/project";
+import { LoadedProject } from "../../hooks/useProject";
 import { getI18NText } from "../../utils/i18n";
+import { ColorAxis } from "../ColorAxis";
 
-const ProjectMapOption: FC<{ project: Project; map: IProjectMap }> = ({ map }) => {
-  // console.log(getMapProjectVariables(project, map));
+const ProjectMapOption: FC<{ project: LoadedProject; map: IProjectMap }> = ({ project, map }) => {
   const locale = useLocale();
 
-  return <span>{getI18NText(locale, map.name)}</span>;
+  const mapVariable = useMemo(() => getMapProjectMappedVariable(project, map), [project, map]);
+  const getColor = useCallback(
+    (value: number) => {
+      if (mapVariable && mapVariable.featureExample) {
+        const legendMapVariable = project.legendSpecs[mapVariable?.variable];
+        if (legendMapVariable && legendMapVariable.colorStyleExpression) {
+          return legendMapVariable.colorStyleExpression.evaluate(
+            { zoom: 14 },
+            { ...mapVariable.featureExample, properties: { [mapVariable?.variable || ""]: value } },
+          );
+        }
+      }
+      return "#FFF";
+    },
+    [mapVariable, project],
+  );
+
+  return (
+    <div className="d-flex justify-content-between align-items-center">
+      <div>{getI18NText(locale, map.name)}</div>
+      {mapVariable && project.legendSpecs[mapVariable.variable] && (
+        <div className="d-flex" style={{ width: "50px", height: "10px" }}>
+          <ColorAxis
+            min={mapVariable?.minimumValue}
+            max={mapVariable?.maximumValue}
+            nbSteps={100}
+            getColorByValue={getColor}
+          />
+        </div>
+      )}
+    </div>
+  );
 };
 
-function getSingleValueComponent(project: Project) {
+function getSingleValueComponent(project: LoadedProject) {
   return ({ data }: SingleValueProps<IProjectMap>) => {
-    return <ProjectMapOption project={project} map={data} />;
+    return (
+      <div style={{ width: "100%" }}>
+        <ProjectMapOption project={project} map={data} />
+      </div>
+    );
   };
 }
 
-function getOptionComponent(project: Project) {
+function getOptionComponent(project: LoadedProject) {
   return ({ data, innerProps, className, isFocused }: OptionProps<IProjectMap, false>) => {
     return (
       <div
@@ -51,7 +87,7 @@ export interface LayerSelectorProps {
   /**
    * The project to display
    */
-  project: Project;
+  project: LoadedProject;
   /**
    * The map on which the component is linked
    */
@@ -69,6 +105,7 @@ export const LayerSelector: FC<LayerSelectorProps> = ({
   setProjectMapId,
 }) => {
   const htmlProps = { id, className: cx("layer-selector", className), style };
+
   return (
     <div {...htmlProps}>
       <Select<IProjectMap>

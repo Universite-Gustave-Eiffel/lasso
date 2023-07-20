@@ -24,7 +24,7 @@ export const FeatureDataPanel: FC<{
         <>
           <AcousticFeatureCircles feature={feature} />
           {variables && variables["emotion_pleasant"] !== undefined && variables["emotion_eventful"] !== undefined && (
-            <EmotionFeatureScatterPlot feature={feature} variables={variables} />
+            <EmotionFeatureScatterPlot feature={feature} />
           )}
           {timeSpecification && (
             <FeatureDataTimeline

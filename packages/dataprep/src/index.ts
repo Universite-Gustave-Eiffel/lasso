@@ -15,6 +15,7 @@ export {
   TimeSpecification,
   SOUNDSCAPE_VARIABLES_TYPES,
   LassoSourceVariables,
+  LayerVariable,
 } from "./types";
 
 async function run(): Promise<void> {

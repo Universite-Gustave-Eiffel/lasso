@@ -12,16 +12,8 @@
       "type": "geojson",
       "data": "./layers/resultGrid2.geojson",
       "variables": {
-        "emotion_pleasant": {
-          "propertyName": "meanAgr",
-          "type": "quantitative",
-          "origin": "model"
-        },
-        "emotion_eventful": {
-          "propertyName": "meanAni",
-          "type": "quantitative",
-          "origin": "model"
-        },
+        "emotion_pleasant": "meanAgr",
+        "emotion_eventful": "meanAni",
         "acoustic_trafic": "meanTra",
         "acoustic_birds": "meanBrd",
         "acoustic_voices": "meanCaV"
