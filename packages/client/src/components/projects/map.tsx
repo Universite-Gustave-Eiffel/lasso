@@ -1,9 +1,9 @@
 import { FC, useEffect, useState } from "react";
 import Map, { Source, Layer, MapRef } from "react-map-gl";
 import maplibregl from "maplibre-gl";
+import { Geometry } from "geojson";
 
 import { ExportedData, Project, BBOX } from "@lasso/dataprep";
-import { Geometry } from "geojson";
 
 interface MapProperties {
   bbox: ExportedData["bbox"];

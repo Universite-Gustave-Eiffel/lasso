@@ -1,12 +1,12 @@
 import { TimeSpecification } from "@lasso/dataprep";
 import { Dispatch, FC, SetStateAction } from "react";
+import { GrClose } from "react-icons/gr";
 import { Feature } from "geojson";
 
+import { LassoSourceVariables } from "@lasso/dataprep";
 import { FeatureDataTimeline } from "./FeatureDataTimeline";
 import { EmotionFeatureScatterPlot } from "./EmotionFeatureScatterPlot";
 import { AcousticFeatureCircles } from "./AcousticFeatureCircles";
-import { GrClose } from "react-icons/gr";
-import { LassoSourceVariables } from "@lasso/dataprep";
 
 export const FeatureDataPanel: FC<{
   feature?: Feature;

@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from "react";
-
 import { useMap, MapRef } from "react-map-gl";
 
 //TODO: simplify getting inspiration from https://github.com/visgl/react-map-gl/blob/7.0-release/examples/side-by-side/src/app.tsx

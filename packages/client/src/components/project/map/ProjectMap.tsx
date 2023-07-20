@@ -58,6 +58,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
 
   // find the chosen projetMap from id
   useEffect(() => {
+    setSelectedMapFeature(null);
     if (project && projectMapId) {
       setProjectMap(project.maps.find((m) => m.id === projectMapId));
     }

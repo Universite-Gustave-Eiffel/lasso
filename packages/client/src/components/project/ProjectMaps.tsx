@@ -1,14 +1,13 @@
 import { FC, CSSProperties, useState, useEffect } from "react";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
-
 import cx from "classnames";
 import { useT } from "@transifex/react";
 import { MapProvider } from "react-map-gl";
 
+import { useCurrentProject } from "../../hooks/useProject";
 import { ProjectMap } from "./map/ProjectMap";
 import { SyncMaps, SyncMapsModes } from "./map/SyncMaps";
 import { LayerSelector } from "./LayerSelector";
-import { useCurrentProject } from "../../hooks/useProject";
 
 export interface ProjectMapsProps {
   /**

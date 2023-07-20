@@ -1,9 +1,11 @@
-import { toPairs, values } from "lodash";
-import { TimeSpecification } from "@lasso/dataprep";
+import { toPairs } from "lodash";
 import { Dispatch, FC, SetStateAction } from "react";
 import { Feature } from "geojson";
-import { DonutDay } from "./DonutDay";
 import { useLocale, useT } from "@transifex/react";
+
+import { TimeSpecification } from "@lasso/dataprep";
+import { DonutDay } from "./DonutDay";
+import { getI18NText } from "../../../utils/i18n";
 
 interface FeatureDataTimelineProps {
   feature: Feature;
@@ -12,9 +14,6 @@ interface FeatureDataTimelineProps {
   currentTimeKey: string | null;
   layerId: string;
 }
-
-const translateLabel = (label: Record<"fr" | "en", string>, locale: any): string =>
-  ["fr", "en"].includes(locale) ? label[locale as "fr" | "en"] : values(label)[0];
 
 export const FeatureDataTimeline: FC<FeatureDataTimelineProps> = ({
   feature,
@@ -33,13 +32,12 @@ export const FeatureDataTimeline: FC<FeatureDataTimelineProps> = ({
         {toPairs(timeSpecification.monthsLabels).map(([monthKey, monthLabel]) => {
           return (
             <div className="season" key={monthKey}>
-              {/* TODO: retrieve current language in transiflex or context ? */}
-              <label>{translateLabel(monthLabel.label, locale)}</label>
+              <label>{getI18NText(locale, monthLabel.label)}</label>
               <div className="d-flex">
                 {toPairs(timeSpecification.daysLabels).map(([dayKey, dayLabel]) => {
                   return (
                     <div key={dayKey} className="timeline">
-                      <label>{translateLabel(dayLabel.label, locale)}</label>
+                      <label>{getI18NText(locale, dayLabel.label)}</label>
                       <DonutDay
                         timelineKey={`${monthKey}|${dayKey}`}
                         feature={feature}

@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { Feature } from "geojson";
+import { useT } from "@transifex/react";
 
 import { useCurrentProject } from "../../../hooks/useProject";
 import { LegendSpecType } from "../../../utils/legend";
-import { useT } from "@transifex/react";
 
 const AcousticCircle: FC<{
   variable: "birds" | "trafic" | "voices" | "soundlevel";

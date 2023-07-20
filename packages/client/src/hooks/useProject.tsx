@@ -58,7 +58,9 @@ export const useCurrentProject = (id?: string): { project: LoadedProject | null;
                   colorExpression = layer.paint["icon-color"];
                   break;
               }
+
               if (colorExpression) {
+                console.log(variableName, colorExpression);
                 const exp = expression.createExpression(colorExpression);
                 if (exp.result === "success") {
                   const legendSymbol: LegendSymbolSpec = { ...legend, colorStyleExpression: exp.value };
