@@ -31,7 +31,7 @@ export const ProjectContentPage: FC = () => {
 
   return (
     <>
-      {!(loading || loadingProject) && (!project || !data) ? (
+      {!loading && !loadingProject && !project && !data ? (
         <NotFoundPage />
       ) : (
         <Layout loading={loading || loadingProject} project={project ?? undefined} currentProjectPage={page || "maps"}>
