@@ -13,7 +13,7 @@ import maplibregl, { GeoJSONSourceSpecification } from "maplibre-gl";
 import { Dictionary, mapValues, omit, omitBy, toPairs } from "lodash";
 import { AnyLayer } from "mapbox-gl";
 import { FeatureCollection, Feature } from "geojson";
-import { useLocale } from "@transifex/react";
+import { useLocale, useT } from "@transifex/react";
 
 import { IProjectMap } from "@lasso/dataprep";
 import { useCurrentProject } from "../../../hooks/useProject";
@@ -32,6 +32,7 @@ export interface ProjectMapProps {
 
 export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bounds, center, isLeft }) => {
   const locale = useLocale();
+  const t = useT();
   // project
   const { project } = useCurrentProject();
   // map lifecycle
@@ -190,7 +191,6 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
               // see https://github.com/visgl/react-map-gl/issues/1618
               setMapLoaded(true);
             }}
-            attributionControl={false}
           >
             {toPairs(project.sources).map(([sourceId, source]) => {
               return (
@@ -215,7 +215,18 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
             <NavigationControl visualizePitch={true} showZoom={true} showCompass={true} />
             <FullscreenControl />
             <ResetControl point={selectedFeature && selectedMapFeature ? selectedMapFeature.clickedAt : undefined} />
-            <AttributionControl position="top-left" compact />
+            <AttributionControl
+              position="top-left"
+              compact
+              customAttribution={
+                project.pages.dataset
+                  ? `<a href="#/project/${project.id}/dataset/" title="${t("page.dataset")}">
+                      <span style="font-size:.8em;">&#9432;</span>
+                      ${t("page.dataset")}
+                    </a>`
+                  : undefined
+              }
+            />
             {selectedFeature && selectedMapFeature && project && (
               <>
                 <FeatureDataPanel
