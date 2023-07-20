@@ -12,6 +12,7 @@ export const ProjectMapPage: FC = () => {
   const { id } = useParams<"id">();
   const { project, loading } = useCurrentProject(id);
   const locale = useLocale;
+
   return (
     <>
       <Layout

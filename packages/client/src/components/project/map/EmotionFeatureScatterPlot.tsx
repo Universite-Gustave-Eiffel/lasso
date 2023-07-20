@@ -4,12 +4,15 @@ import { useT } from "@transifex/react";
 
 import { SOUNDSCAPE_VARIABLES_TYPES } from "@lasso/dataprep";
 import { useCurrentProject } from "../../../hooks/useProject";
-import { getProjectVariables } from "../../../utils/project";
+import { getProjectVariables, ProjectLayerVariable } from "../../../utils/project";
 import { ColorAxis } from "../../ColorAxis";
 
 const SQUARE_SIZE = 80;
 
-export const EmotionFeatureScatterPlot: FC<{ feature: Feature }> = ({ feature }) => {
+export const EmotionFeatureScatterPlot: FC<{ mapVariable: ProjectLayerVariable | null; feature: Feature }> = ({
+  mapVariable,
+  feature,
+}) => {
   const { project } = useCurrentProject();
   const t = useT();
   const notEmpty =
@@ -18,9 +21,12 @@ export const EmotionFeatureScatterPlot: FC<{ feature: Feature }> = ({ feature })
   const getColorFunctionForVariable = useCallback(
     (variable: SOUNDSCAPE_VARIABLES_TYPES) => {
       return (value: number) => {
-        const colorExp = project?.legendSpecs[variable]?.colorStyleExpression;
-        if (colorExp) return colorExp.evaluate({ zoom: 14 }, { ...feature, properties: { [variable]: value } });
-        return "#FFF";
+        if (variable === mapVariable?.variable) {
+          const colorExp = project?.legendSpecs[variable]?.colorStyleExpression;
+          if (colorExp) return colorExp.evaluate({ zoom: 14 }, { ...feature, properties: { [variable]: value } });
+          return "#FFF";
+        }
+        return "#ddd";
       };
     },
     [feature, project],
@@ -62,6 +68,7 @@ export const EmotionFeatureScatterPlot: FC<{ feature: Feature }> = ({ feature })
             )}
             <div className="x-axe">
               <ColorAxis
+                arrow
                 min={projectVariables["emotion_pleasant"].minimumValue}
                 max={projectVariables["emotion_pleasant"].maximumValue}
                 nbSteps={100}
@@ -70,6 +77,7 @@ export const EmotionFeatureScatterPlot: FC<{ feature: Feature }> = ({ feature })
             </div>
             <div className="y-axe">
               <ColorAxis
+                arrow
                 min={projectVariables["emotion_eventful"].minimumValue}
                 max={projectVariables["emotion_eventful"].maximumValue}
                 nbSteps={100}

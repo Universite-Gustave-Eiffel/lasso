@@ -1,14 +1,18 @@
 import { TimeSpecification } from "@lasso/dataprep";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useMemo } from "react";
 import { GrClose } from "react-icons/gr";
 import { Feature } from "geojson";
 
-import { LassoSourceVariables } from "@lasso/dataprep";
+import { LassoSourceVariables, IProjectMap } from "@lasso/dataprep";
 import { FeatureDataTimeline } from "./FeatureDataTimeline";
 import { EmotionFeatureScatterPlot } from "./EmotionFeatureScatterPlot";
 import { AcousticFeatureCircles } from "./AcousticFeatureCircles";
+import { LoadedProject } from "../../../hooks/useProject";
+import { getMapProjectMappedVariable } from "../../../utils/project";
 
 export const FeatureDataPanel: FC<{
+  project: LoadedProject;
+  map: IProjectMap;
   feature?: Feature;
   timeSpecification?: TimeSpecification;
   variables?: LassoSourceVariables;
@@ -17,15 +21,29 @@ export const FeatureDataPanel: FC<{
   layerId: string;
   isLeft?: boolean;
   onClose: () => void;
-}> = ({ feature, setCurrentTimeKey, currentTimeKey, timeSpecification, layerId, isLeft, onClose, variables }) => {
+}> = ({
+  project,
+  map,
+  feature,
+  setCurrentTimeKey,
+  currentTimeKey,
+  timeSpecification,
+  layerId,
+  isLeft,
+  onClose,
+  variables,
+}) => {
+  const mapVariable = useMemo(() => getMapProjectMappedVariable(project, map), [project, map]);
+
   return (
     <div className={`map-point-data ${isLeft ? "is-left" : ""}`}>
       {feature && (
         <>
           <AcousticFeatureCircles feature={feature} />
           {variables && variables["emotion_pleasant"] !== undefined && variables["emotion_eventful"] !== undefined && (
-            <EmotionFeatureScatterPlot feature={feature} />
+            <EmotionFeatureScatterPlot mapVariable={mapVariable} feature={feature} />
           )}
+
           {timeSpecification && (
             <FeatureDataTimeline
               feature={feature}

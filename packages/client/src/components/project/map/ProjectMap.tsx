@@ -230,6 +230,8 @@ export const ProjectMap: FC<ProjectMapProps> = ({ id: mapId, projectMapId, bound
             {selectedFeature && selectedMapFeature && project && (
               <>
                 <FeatureDataPanel
+                  project={project}
+                  map={projectMap}
                   isLeft={isLeft}
                   feature={selectedFeature}
                   timeSpecification={project.sources[selectedMapFeature.source].timeSeries}

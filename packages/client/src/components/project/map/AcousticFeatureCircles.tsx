@@ -1,56 +1,66 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
+import { toNumber } from "lodash";
 import { Feature } from "geojson";
 import { useT } from "@transifex/react";
 
-import { useCurrentProject } from "../../../hooks/useProject";
-import { LegendSpecType } from "../../../utils/legend";
+import { LoadedProject, useCurrentProject } from "../../../hooks/useProject";
+import { getProjectVariables, getVariableColor, ProjectLayerVariable } from "../../../utils/project";
 
 const AcousticCircle: FC<{
-  variable: "birds" | "trafic" | "voices" | "soundlevel";
+  project: LoadedProject;
+  variable: ProjectLayerVariable;
   feature: Feature;
-  legendSpec?: LegendSpecType;
-}> = ({ variable, feature, legendSpec }) => {
-  const symbolSpec = legendSpec && legendSpec[`acoustic_${variable}`];
+}> = ({ project, variable, feature }) => {
   const t = useT();
+
+  const symbolSpec = project.legendSpecs[variable.variable];
   const value =
-    feature?.properties && feature.properties[`acoustic_${variable}`]
-      ? (+feature.properties[`acoustic_${variable}`]).toFixed(2)
-      : "?";
+    feature?.properties && feature.properties[variable.variable]
+      ? toNumber(feature.properties[variable.variable])
+      : undefined;
+  const color = value ? getVariableColor(project, variable, value) : "#CCC";
+  const percent = value ? (value / variable.maximumValue) * 100 : 0;
+
   return (
     <div className="d-flex align-items-center p-1">
       <div
         className={`acoustic-circle`}
         style={{
-          backgroundColor: symbolSpec?.colorStyleExpression?.evaluate({ zoom: 14 }, feature) || "lightgrey",
+          backgroundImage: `linear-gradient(0deg, ${color} 0%, ${color} ${percent}%, rgba(255,255,255,0) ${percent}%)`,
         }}
-        title={`${t(`variable.acoustic-${variable}`)} - ${value}`}
+        title={`${t(`variable.${variable.variable}`)} - ${value}`}
       >
         {symbolSpec && symbolSpec.icon ? symbolSpec.icon({ className: "icon", size: "2em" }) : null}
       </div>
       <label className="d-flex flex-column ms-1">
-        <div>{t(`variable.acoustic-${variable}`)}</div>
-        <div>{value}</div>
+        <div>{t(`variable.${variable.variable}`)}</div>
+        <div>{value ? value.toFixed(2) : "?"}</div>
       </label>
     </div>
   );
 };
 
 export const AcousticFeatureCircles: FC<{ feature: Feature }> = ({ feature }) => {
-  const { project } = useCurrentProject();
   const t = useT();
-  //TODO
-  // - sound level as background centered circle
-  // - circle size according to value (we need to compute range at build time)
+  const { project } = useCurrentProject();
+
+  const variables = useMemo(() => {
+    if (project) return getProjectVariables(project);
+    return {};
+  }, [project]);
 
   return (
-    <div className="acoustic-panel">
-      <h6>{t("Perceiced Sound Sources")}</h6>
-      <div className="acoustic-circles">
-        <AcousticCircle variable="birds" feature={feature} legendSpec={project?.legendSpecs} />
-        <AcousticCircle variable="trafic" feature={feature} legendSpec={project?.legendSpecs} />
-        <AcousticCircle variable="voices" feature={feature} legendSpec={project?.legendSpecs} />
-        <AcousticCircle variable="soundlevel" feature={feature} legendSpec={project?.legendSpecs} />
-      </div>
-    </div>
+    <>
+      {project && (
+        <div className="acoustic-panel">
+          <h6>{t("Perceiced Sound Sources")}</h6>
+          <div className="acoustic-circles">
+            {["birds", "trafic", "voices", "soundlevel"].map((name) => (
+              <AcousticCircle key={name} project={project} variable={variables[`acoustic_${name}`]} feature={feature} />
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 };

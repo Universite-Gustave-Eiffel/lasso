@@ -4,7 +4,10 @@ import { Feature } from "geojson";
 import { IProjectMap, LayerVariable, SOUNDSCAPE_VARIABLES_TYPES } from "@lasso/dataprep";
 import { LoadedProject } from "../hooks/useProject";
 
-type ProjectLayerVariable = LayerVariable & { variable: SOUNDSCAPE_VARIABLES_TYPES; featureExample?: Feature };
+export type ProjectLayerVariable = LayerVariable & {
+  variable: SOUNDSCAPE_VARIABLES_TYPES;
+  featureExample?: Feature;
+};
 
 /**
  *
@@ -61,4 +64,17 @@ export function getMapProjectMappedVariable(project: LoadedProject, map: IProjec
   }
 
   return null;
+}
+
+export function getVariableColor(project: LoadedProject, variable: ProjectLayerVariable, value: number): string {
+  if (variable && variable.featureExample) {
+    const legendMapVariable = project.legendSpecs[variable?.variable];
+    if (legendMapVariable && legendMapVariable.colorStyleExpression) {
+      return legendMapVariable.colorStyleExpression.evaluate(
+        { zoom: 14 },
+        { ...variable.featureExample, properties: { [variable?.variable || ""]: value } },
+      );
+    }
+  }
+  return "#FFF";
 }

@@ -4,7 +4,7 @@ import cx from "classnames";
 import { useLocale } from "@transifex/react";
 
 import { IProjectMap } from "@lasso/dataprep";
-import { getMapProjectMappedVariable } from "../../utils/project";
+import { getMapProjectMappedVariable, getVariableColor } from "../../utils/project";
 import { LoadedProject } from "../../hooks/useProject";
 import { getI18NText } from "../../utils/i18n";
 import { ColorAxis } from "../ColorAxis";
@@ -14,18 +14,7 @@ const ProjectMapOption: FC<{ project: LoadedProject; map: IProjectMap }> = ({ pr
 
   const mapVariable = useMemo(() => getMapProjectMappedVariable(project, map), [project, map]);
   const getColor = useCallback(
-    (value: number) => {
-      if (mapVariable && mapVariable.featureExample) {
-        const legendMapVariable = project.legendSpecs[mapVariable?.variable];
-        if (legendMapVariable && legendMapVariable.colorStyleExpression) {
-          return legendMapVariable.colorStyleExpression.evaluate(
-            { zoom: 14 },
-            { ...mapVariable.featureExample, properties: { [mapVariable?.variable || ""]: value } },
-          );
-        }
-      }
-      return "#FFF";
-    },
+    (value: number) => (mapVariable ? getVariableColor(project, mapVariable, value) : "#FFF"),
     [mapVariable, project],
   );
 
