@@ -29,10 +29,10 @@ export const Header: FC<PropsWithChildren & { project?: Project }> = ({ project,
         {children}
 
         <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto navbar navbar-expand-lg">
-          <div className="container-fluid">
+          <div className="container-fluid p-0">
             <LanguagePicker />
-            <Link to="/about" title={t("About")} className="ms-3">
-              <BsQuestionCircle size="1.5rem" />
+            <Link to="/about" title={t("About")} className="ms-3 px-1">
+              <BsQuestionCircle size="1.4rem" />
             </Link>
           </div>
         </nav>
