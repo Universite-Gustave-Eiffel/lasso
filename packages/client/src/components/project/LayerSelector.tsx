@@ -28,6 +28,7 @@ const ProjectMapOption: FC<{ project: LoadedProject; map: IProjectMap }> = ({ pr
             max={mapVariable?.maximumValue}
             nbSteps={100}
             getColorByValue={getColor}
+            size="4px"
           />
         </div>
       )}

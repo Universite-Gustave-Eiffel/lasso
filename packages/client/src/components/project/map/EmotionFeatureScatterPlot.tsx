@@ -26,7 +26,7 @@ export const EmotionFeatureScatterPlot: FC<{ mapVariable: ProjectLayerVariable |
           if (colorExp) return colorExp.evaluate({ zoom: 14 }, { ...feature, properties: { [variable]: value } });
           return "#FFF";
         }
-        return "#ddd";
+        return "var(--lasso-gray)";
       };
     },
     [feature, project, mapVariable?.variable],
