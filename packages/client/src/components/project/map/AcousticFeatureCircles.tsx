@@ -2,6 +2,7 @@ import { FC, useMemo } from "react";
 import { toNumber } from "lodash";
 import { Feature } from "geojson";
 import { useT } from "@transifex/react";
+import cx from "classnames";
 
 import { LoadedProject, useCurrentProject } from "../../../hooks/useProject";
 import { getProjectVariables, getVariableColor, ProjectLayerVariable } from "../../../utils/project";
@@ -22,13 +23,13 @@ const AcousticCircle: FC<{
   const percent = value ? (value / variable.maximumValue) * 100 : 0;
 
   return (
-    <div className="d-flex align-items-center p-1">
+    <div className={cx("d-flex align-items-center p-1", !value && "opacity-25")}>
       <div
         className={`acoustic-circle`}
         style={{
           backgroundImage: `linear-gradient(0deg, ${color} 0%, ${color} ${percent}%, rgba(255,255,255,0) ${percent}%)`,
         }}
-        title={`${t(`variable.${variable.variable}`)} - ${value}`}
+        title={`${t(`variable.${variable.variable}`)} : ${value || t("no data")}`}
       >
         {symbolSpec && symbolSpec.icon ? symbolSpec.icon({ className: "icon", size: "2em" }) : null}
       </div>
