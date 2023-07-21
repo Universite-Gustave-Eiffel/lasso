@@ -13,7 +13,6 @@ const AcousticCircle: FC<{
   feature: Feature;
 }> = ({ project, variable, feature }) => {
   const t = useT();
-
   const symbolSpec = project.legendSpecs[variable.variable];
   const value =
     feature?.properties && feature.properties[variable.variable]
@@ -56,9 +55,16 @@ export const AcousticFeatureCircles: FC<{ feature: Feature }> = ({ feature }) =>
         <div className="acoustic-panel">
           <h6>{t("Perceiced Sound Sources")}</h6>
           <div className="acoustic-circles">
-            {["birds", "trafic", "voices", "soundlevel"].map((name) => (
-              <AcousticCircle key={name} project={project} variable={variables[`acoustic_${name}`]} feature={feature} />
-            ))}
+            {["birds", "trafic", "voices", "soundlevel"]
+              .filter((name) => variables[`acoustic_${name}`])
+              .map((name) => (
+                <AcousticCircle
+                  key={name}
+                  project={project}
+                  variable={variables[`acoustic_${name}`]}
+                  feature={feature}
+                />
+              ))}
           </div>
         </div>
       )}
