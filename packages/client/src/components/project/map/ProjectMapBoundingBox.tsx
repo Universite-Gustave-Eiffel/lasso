@@ -23,8 +23,9 @@ export const ProjectMapBoundingBox: FC<{ project: Project; type: "border" | "fil
             source={project.id}
             paint={{
               "line-color": ["get", "color"],
-              "line-width": 5,
+              "line-width": 2,
               "line-opacity": 0.4,
+              "line-offset": ["interpolate", ["linear"], ["zoom"], 10, 0, 24, -200],
             }}
           />
         )}
