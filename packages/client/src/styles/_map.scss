@@ -78,6 +78,8 @@
       position: relative;
       width: 100px;
       height: 100px;
+      background-size: 10px 10px;
+      background-image: radial-gradient(circle, $gray-500 1px, transparent 1px);
 
       .point {
         z-index: 1;
