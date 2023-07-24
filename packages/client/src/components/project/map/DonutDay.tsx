@@ -1,18 +1,19 @@
-import { Dispatch, FC, Fragment, SetStateAction } from "react";
+import { FC, Fragment } from "react";
 import { Feature } from "geojson";
 import { keys, round, sortBy } from "lodash";
 
-import { SOUNDSCAPE_VARIABLES_TYPES, TimeSpecification } from "@lasso/dataprep";
+import { TimeSpecification } from "@lasso/dataprep";
 import withSize, { SizeState } from "../../WithSize";
-import { useCurrentProject } from "../../../hooks/useProject";
+import { ProjectLayerVariable } from "../../../utils/project";
+import { useCurrentProject } from "../../../hooks/useCurrentProject";
 
 export interface DonutDayProps {
   timelineKey: string;
   timeSpecification: TimeSpecification;
   feature: Feature;
-  setCurrentTimeKey: Dispatch<SetStateAction<string | null>>;
-  currentTimeKey: string | null;
-  layerId: string;
+  setCurrentTimeKey: (timeKey?: string) => void;
+  currentTimeKey?: string;
+  mapVariable: ProjectLayerVariable;
 }
 
 const PRECISION = 4;
@@ -97,9 +98,10 @@ export const DonutDay: FC<DonutDayProps> = ({
   feature,
   setCurrentTimeKey,
   currentTimeKey,
-  layerId,
+  mapVariable,
 }) => {
   const { project } = useCurrentProject();
+  const variable = mapVariable.variable;
 
   const timelineHoursKeys = timeSpecification.hoursLabels
     ? sortBy(
@@ -112,13 +114,13 @@ export const DonutDay: FC<DonutDayProps> = ({
       const hoursKey = `${timelineKey}|${k}`;
       const hoursLabel = timeSpecification.hoursLabels && timeSpecification.hoursLabels[k];
 
-      const hoursValue = feature.properties && feature.properties[hoursKey] && feature.properties[hoursKey][layerId];
+      const hoursValue = feature.properties && feature.properties[hoursKey] && feature.properties[hoursKey][variable];
       const color =
         project &&
-        project.legendSpecs &&
-        project.legendSpecs[layerId as SOUNDSCAPE_VARIABLES_TYPES]?.colorStyleExpression?.evaluate(
+        project.data.legendSpecs &&
+        project.data.legendSpecs[variable]?.colorStyleExpression?.evaluate(
           { zoom: 14 },
-          { type: feature.type, geometry: feature.geometry, properties: { [layerId]: hoursValue } },
+          { type: feature.type, geometry: feature.geometry, properties: { [variable]: hoursValue } },
         );
 
       if (hoursLabel) {
@@ -144,7 +146,7 @@ export const DonutDay: FC<DonutDayProps> = ({
         wrapperClassName="donut-chart"
         segments={segments}
         onClick={(hoursKey: string) => {
-          setCurrentTimeKey((prev) => (prev === hoursKey ? null : hoursKey));
+          setCurrentTimeKey(currentTimeKey === hoursKey ? undefined : hoursKey);
         }}
       />
     </div>

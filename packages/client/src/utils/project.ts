@@ -2,7 +2,7 @@ import { isString, toPairs } from "lodash";
 import { Geometry, Feature } from "geojson";
 
 import { Project, IProjectMap, LayerVariable, SOUNDSCAPE_VARIABLES_TYPES } from "@lasso/dataprep";
-import { LoadedProject } from "../hooks/useProject";
+import { LoadedProject } from "../hooks/useLoadProject";
 
 export type ProjectLayerVariable = LayerVariable & {
   variable: SOUNDSCAPE_VARIABLES_TYPES;
@@ -54,7 +54,7 @@ export function getProjectVariables(
     }, {} as { [key: string]: ProjectLayerVariable });
 }
 
-export function getMapProjectMappedVariable(project: LoadedProject, map: IProjectMap): ProjectLayerVariable | null {
+export function getMapProjectVariable(project: LoadedProject, map: IProjectMap): ProjectLayerVariable | null {
   const projectVariables = getProjectVariables(project, map);
 
   // Find the first layer id that match an available variable

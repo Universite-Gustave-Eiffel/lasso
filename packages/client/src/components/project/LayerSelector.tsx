@@ -4,24 +4,25 @@ import cx from "classnames";
 import { useLocale } from "@transifex/react";
 
 import { IProjectMap } from "@lasso/dataprep";
-import { getMapProjectMappedVariable, getVariableColor } from "../../utils/project";
-import { LoadedProject } from "../../hooks/useProject";
+import { getMapProjectVariable, getVariableColor } from "../../utils/project";
 import { getI18NText } from "../../utils/i18n";
+import { useCurrentProject } from "../../hooks/useCurrentProject";
 import { ColorAxis } from "../ColorAxis";
 
-const ProjectMapOption: FC<{ project: LoadedProject; map: IProjectMap }> = ({ project, map }) => {
+const ProjectMapOption: FC<{ map: IProjectMap }> = ({ map }) => {
   const locale = useLocale();
+  const { project } = useCurrentProject();
 
-  const mapVariable = useMemo(() => getMapProjectMappedVariable(project, map), [project, map]);
+  const mapVariable = useMemo(() => getMapProjectVariable(project.data, map), [project, map]);
   const getColor = useCallback(
-    (value: number) => (mapVariable ? getVariableColor(project, mapVariable, value) : "#FFF"),
+    (value: number) => (mapVariable ? getVariableColor(project.data, mapVariable, value) : "#FFF"),
     [mapVariable, project],
   );
 
   return (
     <div className="d-flex justify-content-between align-items-center">
       <div>{getI18NText(locale, map.name)}</div>
-      {mapVariable && project.legendSpecs[mapVariable.variable] && (
+      {mapVariable && project.data.legendSpecs[mapVariable.variable] && (
         <div className="d-flex" style={{ width: "50px" }}>
           <ColorAxis
             min={mapVariable?.minimumValue}
@@ -36,30 +37,26 @@ const ProjectMapOption: FC<{ project: LoadedProject; map: IProjectMap }> = ({ pr
   );
 };
 
-function getSingleValueComponent(project: LoadedProject) {
-  return ({ data }: SingleValueProps<IProjectMap>) => {
-    return (
-      <div style={{ width: "100%" }}>
-        <ProjectMapOption project={project} map={data} />
-      </div>
-    );
-  };
-}
+const SingleValue = ({ data }: SingleValueProps<IProjectMap>) => {
+  return (
+    <div style={{ width: "100%" }}>
+      <ProjectMapOption map={data} />
+    </div>
+  );
+};
 
-function getOptionComponent(project: LoadedProject) {
-  return ({ data, innerProps, className, isFocused }: OptionProps<IProjectMap, false>) => {
-    return (
-      <div
-        {...innerProps}
-        className={cx(className, "m-1 hoverable cursor-pointer", isFocused && "bg-light")}
-        onMouseMove={undefined}
-        onMouseOver={undefined}
-      >
-        <ProjectMapOption project={project} map={data} />
-      </div>
-    );
-  };
-}
+const Option = ({ data, innerProps, className, isFocused }: OptionProps<IProjectMap, false>) => {
+  return (
+    <div
+      {...innerProps}
+      className={cx(className, "m-1 hoverable cursor-pointer", isFocused && "bg-light")}
+      onMouseMove={undefined}
+      onMouseOver={undefined}
+    >
+      <ProjectMapOption map={data} />
+    </div>
+  );
+};
 
 export interface LayerSelectorProps {
   /**
@@ -75,39 +72,27 @@ export interface LayerSelectorProps {
    */
   style?: CSSProperties;
   /**
-   * The project to display
+   * Map Id
    */
-  project: LoadedProject;
-  /**
-   * The map on which the component is linked
-   */
-  projectMapId?: string;
-  setProjectMapId: (projetMapId: string) => void;
+  mapId: "left" | "right";
 }
 
-//TODO: selected in url
-export const LayerSelector: FC<LayerSelectorProps> = ({
-  id,
-  className,
-  style,
-  project,
-  projectMapId,
-  setProjectMapId,
-}) => {
+export const LayerSelector: FC<LayerSelectorProps> = ({ id, className, style, mapId }) => {
   const htmlProps = { id, className: cx("layer-selector", className), style };
+  const { project, setProjectMap } = useCurrentProject();
 
   return (
     <div {...htmlProps}>
       <Select<IProjectMap>
-        options={project.maps}
+        options={project.data.maps}
         className="cursor-pointer"
-        value={project.maps.find((o) => o.id === projectMapId)}
+        value={project.maps[mapId].map}
         onChange={(e) => {
-          if (e) setProjectMapId(e.id);
+          if (e) setProjectMap(mapId, e);
         }}
         components={{
-          SingleValue: getSingleValueComponent(project),
-          Option: getOptionComponent(project),
+          SingleValue,
+          Option,
         }}
         styles={{
           menu: (styles) => ({ ...styles, borderRadius: 0 }),

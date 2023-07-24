@@ -3,7 +3,7 @@ import { GrMapLocation } from "react-icons/gr";
 import { useT } from "@transifex/react";
 import { useMap } from "react-map-gl";
 
-import { useCurrentProject } from "../../../hooks/useProject";
+import { useCurrentProject } from "../../../hooks/useCurrentProject";
 import { MapControl } from "../../MapControl";
 
 export const ResetControl: FC<{ point?: { lat: number; lng: number } }> = ({ point }) => {

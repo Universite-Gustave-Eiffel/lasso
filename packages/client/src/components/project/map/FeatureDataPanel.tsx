@@ -1,63 +1,55 @@
 import { TimeSpecification } from "@lasso/dataprep";
-import { Dispatch, FC, SetStateAction, useMemo } from "react";
-import { GrClose } from "react-icons/gr";
+import { FC } from "react";
 import { Feature } from "geojson";
 
-import { LassoSourceVariables, IProjectMap } from "@lasso/dataprep";
 import { FeatureDataTimeline } from "./FeatureDataTimeline";
 import { EmotionFeatureScatterPlot } from "./EmotionFeatureScatterPlot";
 import { AcousticFeatureCircles } from "./AcousticFeatureCircles";
-import { LoadedProject } from "../../../hooks/useProject";
-import { getMapProjectMappedVariable } from "../../../utils/project";
+import { useCurrentProject } from "../../../hooks/useCurrentProject";
 
 export const FeatureDataPanel: FC<{
-  project: LoadedProject;
-  map: IProjectMap;
+  mapId: string;
   feature?: Feature;
   timeSpecification?: TimeSpecification;
-  variables?: LassoSourceVariables;
-  setCurrentTimeKey: Dispatch<SetStateAction<string | null>>;
-  currentTimeKey: string | null;
-  layerId: string;
-  isLeft?: boolean;
   onClose: () => void;
-}> = ({
-  project,
-  map,
-  feature,
-  setCurrentTimeKey,
-  currentTimeKey,
-  timeSpecification,
-  layerId,
-  isLeft,
-  onClose,
-  variables,
-}) => {
-  const mapVariable = useMemo(() => getMapProjectMappedVariable(project, map), [project, map]);
+}> = ({ mapId, feature, timeSpecification, onClose }) => {
+  const { project, setProjectMapTime } = useCurrentProject();
+
+  const projectVariables = project.lassoVariables;
+  const mapVariable = project.maps[mapId].lassoVariable;
 
   return (
-    <div className={`map-point-data ${isLeft ? "is-left" : ""}`}>
+    <>
       {feature && (
-        <>
-          <AcousticFeatureCircles feature={feature} />
-          {variables && variables["emotion_pleasant"] !== undefined && variables["emotion_eventful"] !== undefined && (
-            <EmotionFeatureScatterPlot mapVariable={mapVariable} feature={feature} />
-          )}
+        <div className="map-point-data">
+          <button className="btn-close" onClick={() => onClose()}></button>
 
-          {timeSpecification && (
-            <FeatureDataTimeline
-              feature={feature}
-              layerId={layerId}
-              timeSpecification={timeSpecification}
-              currentTimeKey={currentTimeKey}
-              setCurrentTimeKey={setCurrentTimeKey}
-            />
-          )}
-          <button className="btn btn-icon close" onClick={() => onClose()}>
-            <GrClose />
-          </button>
-        </>
+          <div className="map-point-data-content">
+            <AcousticFeatureCircles feature={feature} currentTimeKey={project.maps[mapId].timeKey} />
+
+            {/* Display emotion plot only if variables are available in the project */}
+            {projectVariables["emotion_pleasant"] !== undefined &&
+              projectVariables["emotion_eventful"] !== undefined && (
+                <EmotionFeatureScatterPlot
+                  mapVariable={mapVariable}
+                  feature={feature}
+                  currentTimeKey={project.maps[mapId].timeKey}
+                />
+              )}
+
+            {/* Display time  plot only if variables are available in the project */}
+            {timeSpecification && mapVariable && (
+              <FeatureDataTimeline
+                mapVariable={mapVariable}
+                timeSpecification={timeSpecification}
+                currentTimeKey={project.maps[mapId].timeKey}
+                setCurrentTimeKey={(timeKey?: string) => setProjectMapTime(mapId, timeKey)}
+                feature={feature}
+              />
+            )}
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 };

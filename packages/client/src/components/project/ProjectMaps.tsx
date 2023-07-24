@@ -1,12 +1,11 @@
-import { FC, CSSProperties, useState, useEffect } from "react";
+import { FC, CSSProperties, useState } from "react";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import cx from "classnames";
 import { useT } from "@transifex/react";
 import { MapProvider } from "react-map-gl";
 
-import { useCurrentProject } from "../../hooks/useProject";
+import { useCurrentProject } from "../../hooks/useCurrentProject";
 import { ProjectMap } from "./map/ProjectMap";
-import { SyncMaps, SyncMapsModes } from "./map/SyncMaps";
 import { LayerSelector } from "./LayerSelector";
 
 export interface ProjectMapsProps {
@@ -27,25 +26,13 @@ export interface ProjectMapsProps {
 export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style }) => {
   const t = useT();
   const { project } = useCurrentProject();
-
   const htmlProps = { id, className: cx(className, "d-flex flex-grow-1"), style };
-
-  const [rightMapProjectId, setRightMapProjectId] = useState<string | undefined>(project?.maps[0].id);
-  const [leftMapProjectId, setLeftMapProjectId] = useState<string | undefined>(project?.maps[0].id);
-  const [mode, setMode] = useState<SyncMapsModes>("side-by-side");
-
-  useEffect(() => {
-    if (project) {
-      setRightMapProjectId(project?.maps[0].id);
-      setLeftMapProjectId(project?.maps[1].id);
-    }
-  }, [project, setRightMapProjectId, setLeftMapProjectId]);
+  const [mode, setMode] = useState<"side-by-side" | "single">("side-by-side");
 
   return (
     <div {...htmlProps}>
       {project && (
         <MapProvider>
-          <SyncMaps mode={mode} />
           {mode === "single" && (
             <div className="d-flex align-items-stretch justify-content-center bg-primary ml-0" style={{ width: "2em" }}>
               <button
@@ -60,12 +47,8 @@ export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style }) => {
           {mode === "side-by-side" && (
             <>
               <div className={cx("d-flex flex-column flex-grow-1")} style={{ width: "calc(50% - 1em)" }}>
-                <LayerSelector
-                  setProjectMapId={setLeftMapProjectId}
-                  projectMapId={leftMapProjectId}
-                  project={project}
-                />
-                <ProjectMap id="leftMap" projectMapId={leftMapProjectId}></ProjectMap>
+                <LayerSelector mapId="left" />
+                <ProjectMap mapId="left" />
               </div>
 
               <div className="d-flex align-items-stretch justify-content-center bg-primary" style={{ width: "2em" }}>
@@ -83,8 +66,8 @@ export const ProjectMaps: FC<ProjectMapsProps> = ({ id, className, style }) => {
             className={cx("d-flex flex-column flex-grow-1")}
             style={{ width: mode === "single" ? "calc(100% - 2em)" : "calc(50% - 1em)" }}
           >
-            <LayerSelector project={project} setProjectMapId={setRightMapProjectId} projectMapId={rightMapProjectId} />
-            <ProjectMap id="rightMap" projectMapId={rightMapProjectId} bounds={project.bbox}></ProjectMap>
+            <LayerSelector mapId="right" />
+            <ProjectMap mapId="right" />
           </div>
         </MapProvider>
       )}

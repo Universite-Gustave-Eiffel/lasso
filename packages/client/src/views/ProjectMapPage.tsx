@@ -2,7 +2,7 @@ import { FC } from "react";
 import { useParams } from "react-router-dom";
 import { useLocale } from "@transifex/react";
 
-import { useCurrentProject } from "../hooks/useProject";
+import { useLoadProject } from "../hooks/useLoadProject";
 import { getI18NText } from "../utils/i18n";
 import { ProjectMaps } from "../components/project/ProjectMaps";
 import { NotFoundPage } from "./NotFoundPage";
@@ -10,7 +10,7 @@ import { Layout } from "./layout";
 
 export const ProjectMapPage: FC = () => {
   const { id } = useParams<"id">();
-  const { project, loading } = useCurrentProject(id);
+  const { project, loading } = useLoadProject(id);
   const locale = useLocale;
 
   return (
@@ -22,7 +22,7 @@ export const ProjectMapPage: FC = () => {
         fullPage={true}
         currentProjectPage={"maps"}
       >
-        <ProjectMaps />
+        {project && <ProjectMaps />}
       </Layout>
       {!loading && !project && <NotFoundPage />}
     </>

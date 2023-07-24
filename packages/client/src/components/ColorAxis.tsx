@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react";
 import { range } from "lodash";
 
-interface ColorAxisProps {
+export interface ColorAxisProps {
   min: number;
   max: number;
   nbSteps: number;

@@ -6,165 +6,77 @@
 .map-point-data {
   position: absolute;
   bottom: 0;
-  max-height: 50%;
-  overflow-y: auto;
+  height: 50%;
   left: 0;
-  //width: fit-content;
   background-color: rgba(255, 255, 255, 0.9);
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  //width: 100%;
 
-  padding: 1rem;
-  > * {
-    margin-right: 0.7rem;
-    margin-bottom: 0.7rem;
-  }
-  > *:last-child {
-    margin: 0;
-  }
-  h6 {
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-  }
-
-  .close {
-    padding: 0.1rem;
-    position: absolute;
-    top: 0;
+  &.is-left {
     right: 0;
+    left: unset !important;
   }
-  // .acoustic-panel {
-  //   width: min-content;
-  // }
-  .acoustic-circles {
+
+  .btn-close {
+    top: 0.8em;
+    right: 0.8em;
+    position: absolute;
+  }
+
+
+  .map-point-data-content {
+    padding: 2em 1em 0 1em;
+    max-height: 100%;
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
+    overflow-y: auto;
 
-    .acoustic-circle {
-      width: 45px;
-      height: 45px;
-      border-radius: 100%;
-      border: 3px solid $lasso-gray;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .icon {
-        color: $lasso-gray;
+    >* {
+        margin-right: 0.7rem;
+        margin-bottom: 0.7rem;
       }
-    }
+    
+      >*:last-child {
+        margin: 0;
+      }
+    
+      h6 {
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
   }
+}
 
-  .emotions-scatter-plot {
-    min-width: fit-content;
+//
+// Acoustic circles
+// ==========================
+//
+.acoustic-circles {
+  display: flex;
+  flex-wrap: wrap;
+
+  .acoustic-circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+    border: 3px solid $lasso-gray;
     display: flex;
     justify-content: center;
     align-items: center;
-    // hack vertical line margin issue
-    margin: 0 0.8rem;
-    &.empty {
-      opacity: 0.4;
-    }
 
-    .scatter-plot-row {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-    }
-    .scatter-plot {
-      flex-grow: 0;
-      flex-shrink: 0;
-      position: relative;
-      width: 100px;
-      height: 100px;
-      background-size: 10px 10px;
-      background-image: radial-gradient(circle, $gray-500 1px, transparent 1px);
-
-      .point {
-        z-index: 1;
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        border: 2px solid black;
-      }
-      .x-axe {
-        position: absolute;
-        bottom: 50%;
-        left: 0;
-        width: 100%;
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        > 
-
-        .arrow:first-of-type {
-          border-top: 5px solid transparent;
-          border-bottom: 5px solid transparent;
-          border-right: 5px solid $lasso-gray;
-        }
-
-        .arrow:last-of-type {
-          border-top: 5px solid transparent;
-          border-bottom: 5px solid transparent;
-          border-left: 5px solid $lasso-gray;
-        }
-      }
-      .y-axe {
-        position: absolute;
-        left: 50%;
-        top: 0;
-        height: 100%;
-        display: flex;
-        flex-direction: column-reverse;
-        justify-content: start;
-        align-items: center;
-        > .axis {
-            width: 0;
-            height: 1px;
-            border-style: solid;
-            border-left-width:2px;
-            border-right-width: 2px;
-            border-top-width:0;
-            border-bottom-width: 0;
-          }
-
-        .arrow:first-of-type {
-          border-left: 5px solid transparent;
-          border-right: 5px solid transparent;
-          border-top: 5px solid $lasso-gray;
-        }
-        .arrow:last-of-type {
-          border-left: 5px solid transparent;
-          border-right: 5px solid transparent;
-          border-bottom: 5px solid $lasso-gray;
-        }
-      }
-    }
-    label {
-      display: block;
-      font-size: 0.8rem;
-      // hack vertical line margin issue
-      line-height: 0.8rem;
-      &.min-x-label,
-      &.max-x-label {
-        writing-mode: vertical-rl;
-        text-orientation: mixed;
-      }
+    .icon {
+      color: $lasso-gray;
     }
   }
 }
 
-// left map align data panle on the right
-.map-point-data.is-left {
-  right: 0;
-  left: unset !important;
-}
-
+//
+// Axis
+// =======================
+//
 .arrow {
   width: 0;
   height: 0;
+  position: absolute;
 }
 
 .axis {
@@ -177,4 +89,122 @@
   border-right-width: 0;
   border-top-width: 2px;
   border-bottom-width: 2px;
+}
+
+//
+// Emotion scatter plot
+// =================================
+//
+$axis-size: 2px;
+$arrow-size: 5px;
+
+.emotions-scatter-plot {
+  min-width: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // hack vertical line margin issue
+  margin: 0 0.8rem;
+
+  &.empty {
+    opacity: 0.4;
+  }
+
+  .scatter-plot-row {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .scatter-plot {
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin: $arrow-size;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    background-size: 10px 10px;
+    background-image: radial-gradient(circle at center, $gray-500 1px, transparent 1px);
+
+    .point {
+      z-index: 1;
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid black;
+    }
+
+    .x-axe {
+      position: absolute;
+      bottom: calc(50% - #{$axis-size});
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+
+      >.arrow:first-of-type {
+        left: -$arrow-size;
+        border-top: $arrow-size solid transparent;
+        border-bottom: $arrow-size solid transparent;
+        border-right: $arrow-size solid $lasso-gray;
+      }
+
+      .arrow:last-of-type {
+        right: -$arrow-size;
+        border-top: $arrow-size solid transparent;
+        border-bottom: $arrow-size solid transparent;
+        border-left: $arrow-size solid $lasso-gray;
+      }
+    }
+
+    .y-axe {
+      position: absolute;
+      left: calc(50% - #{$axis-size});
+      top: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: start;
+      align-items: center;
+
+      >.axis {
+        width: 0;
+        height: 1px;
+        border-style: solid;
+        border-left-width: $axis-size;
+        border-right-width: $axis-size;
+        border-top-width: 0;
+        border-bottom-width: 0;
+      }
+
+      .arrow:first-of-type {
+        bottom: -$arrow-size;
+        border-left: $arrow-size solid transparent;
+        border-right: $arrow-size solid transparent;
+        border-top: $arrow-size solid $lasso-gray;
+      }
+
+      .arrow:last-of-type {
+        top: -$arrow-size;
+        border-left: $arrow-size solid transparent;
+        border-right: $arrow-size solid transparent;
+        border-bottom: $arrow-size solid $lasso-gray;
+      }
+    }
+  }
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    // hack vertical line margin issue
+    line-height: 0.8rem;
+
+    &.min-x-label,
+    &.max-x-label {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+  }
 }

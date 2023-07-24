@@ -4,7 +4,7 @@ import { useLocale } from "@transifex/react";
 
 import { config } from "../config";
 import { getI18NText } from "../utils/i18n";
-import { useCurrentProject } from "../hooks/useProject";
+import { useLoadProject } from "../hooks/useLoadProject";
 import { useLazyHttpGet } from "../hooks/useLazyHttpGet";
 import { Markdown } from "../components/Markdown";
 import { Error } from "../components/Error";
@@ -14,7 +14,7 @@ import { NotFoundPage } from "./NotFoundPage";
 export const ProjectContentPage: FC = () => {
   const { id, page } = useParams<"id" | "page">();
   const locale = useLocale();
-  const { project, loading: loadingProject } = useCurrentProject(id);
+  const { project, loading: loadingProject } = useLoadProject(id);
 
   const { loading, data, error, fetch } = useLazyHttpGet({
     path: `${config.data_path}/{id}/{page}`,

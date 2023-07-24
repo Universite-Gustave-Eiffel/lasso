@@ -1,18 +1,19 @@
 import { toPairs } from "lodash";
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 import { Feature } from "geojson";
 import { useLocale, useT } from "@transifex/react";
 
 import { TimeSpecification } from "@lasso/dataprep";
-import { DonutDay } from "./DonutDay";
 import { getI18NText } from "../../../utils/i18n";
+import { ProjectLayerVariable } from "../../../utils/project";
+import { DonutDay } from "./DonutDay";
 
 interface FeatureDataTimelineProps {
   feature: Feature;
   timeSpecification: TimeSpecification;
-  setCurrentTimeKey: Dispatch<SetStateAction<string | null>>;
-  currentTimeKey: string | null;
-  layerId: string;
+  setCurrentTimeKey: (timeKey?: string) => void;
+  currentTimeKey?: string;
+  mapVariable: ProjectLayerVariable;
 }
 
 export const FeatureDataTimeline: FC<FeatureDataTimelineProps> = ({
@@ -20,10 +21,11 @@ export const FeatureDataTimeline: FC<FeatureDataTimelineProps> = ({
   timeSpecification,
   setCurrentTimeKey,
   currentTimeKey,
-  layerId,
+  mapVariable,
 }) => {
   const t = useT();
   const locale = useLocale();
+
   return (
     <div className="timelines-panel">
       <h6>{t("viz-panel.time")}</h6>
@@ -44,7 +46,7 @@ export const FeatureDataTimeline: FC<FeatureDataTimelineProps> = ({
                         timeSpecification={timeSpecification}
                         setCurrentTimeKey={setCurrentTimeKey}
                         currentTimeKey={currentTimeKey}
-                        layerId={layerId}
+                        mapVariable={mapVariable}
                       />
                     </div>
                   );
