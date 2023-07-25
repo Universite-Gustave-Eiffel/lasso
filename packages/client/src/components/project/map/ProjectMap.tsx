@@ -14,15 +14,14 @@ import { mapValues, omit, omitBy, toPairs } from "lodash";
 import { AnyLayer } from "mapbox-gl";
 import { FeatureCollection } from "geojson";
 import { useLocale, useT } from "@transifex/react";
-import { TbClockX } from "react-icons/tb";
+import { useSearchParams } from "react-router-dom";
 
 import { useCurrentProject } from "../../../hooks/useCurrentProject";
 import { getI18NText } from "../../../utils/i18n";
 import { FeatureDataPanel } from "./FeatureDataPanel";
-import { MapControl } from "../../MapControl";
 import { ResetControl } from "./ResetControl";
 import { ProjectMapBoundingBox } from "./ProjectMapBoundingBox";
-import { useSearchParams } from "react-router-dom";
+import { TimeSelectorControl } from "./TimeSelectorControl";
 
 export interface ProjectMapProps {
   mapId: "right" | "left";
@@ -38,7 +37,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
   const [searchParam] = useSearchParams();
 
   // project
-  const { project, setProjectMapTime, setProjectMapSelection } = useCurrentProject();
+  const { project, setProjectMapSelection } = useCurrentProject();
   const projectMap = useMemo(() => project.maps[mapId], [project.maps, mapId]);
 
   /**
@@ -205,16 +204,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
       <NavigationControl visualizePitch={true} showZoom={true} showCompass={true} />
       <FullscreenControl />
       <ResetControl point={projectMap.selected ? projectMap.selected.clickedAt : undefined} />
-      {projectMap.timeKey && (
-        <MapControl id="time-reset">
-          <button
-            title={`${t("Remove time selection")} : ${projectMap.timeKey}`}
-            onClick={() => setProjectMapTime(mapId, undefined)}
-          >
-            <TbClockX className="text-danger" size="1.8em" />
-          </button>
-        </MapControl>
-      )}
+      <TimeSelectorControl mapId={mapId} />
 
       {/* Add map attribution */}
       <AttributionControl

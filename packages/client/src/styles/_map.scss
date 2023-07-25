@@ -47,6 +47,10 @@
   }
 }
 
+.maplibregl-map{
+  display: flex;
+}
+
 //
 // Acoustic circles
 // ==========================
@@ -208,4 +212,28 @@ $arrow-size: 5px;
       text-orientation: mixed;
     }
   }
+}
+
+.parent-overlay {
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.5);
+  position: relative;
+  flex-grow:1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .parent-popin {
+    background-color: $white;
+    border-radius: 1em;
+    border: 1px solid hsl(0, 0%, 70%);
+    padding: 1em;
+    position: relative;
+
+    .btn-close {
+      position: absolute;
+      right: 10px;
+    }
+  }
+
 }

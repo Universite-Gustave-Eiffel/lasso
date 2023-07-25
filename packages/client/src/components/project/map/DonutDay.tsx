@@ -49,12 +49,26 @@ export const DonutChart = withSize<{ segments: DonutSegment[]; onClick: (key: st
         <g transform={`translate(${height / 2} ${height / 2}) scale(-1 1)`}>
           {segments.map((segment) => (
             <Fragment key={segment.key}>
+              {segment.selected && (
+                <path
+                  style={{ cursor: "pointer" }}
+                  key={`${segment.key}-selected`}
+                  d={getCircleSlicePath(radius, segment.angleSize, segment.anglePosition)}
+                  stroke={"var(--bs-warning)"}
+                  strokeWidth={15}
+                  strokeLinejoin="miter"
+                  fill={"transparent"}
+                  onClick={() => onClick(segment.key)}
+                >
+                  <title>{segment.label}</title>
+                </path>
+              )}
               <path
                 style={{ cursor: "pointer" }}
                 key={segment.key}
                 d={getCircleSlicePath(radius, segment.angleSize, segment.anglePosition)}
                 stroke={segment.color}
-                strokeWidth={segment.selected ? 15 : 8}
+                strokeWidth={8}
                 fill={"transparent"}
                 onClick={() => onClick(segment.key)}
               >

@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, createContext, useState, useEffect } from "react
 import { useNavigate } from "react-router-dom";
 import { Feature } from "geojson";
 
-import { ExportedData, IProjectMap, BBOX } from "@lasso/dataprep";
+import { ExportedData, IProjectMap, BBOX, TimeSpecification } from "@lasso/dataprep";
 import { ProjectLayerVariable } from "../utils/project";
 import { NotificationState } from "./notifications";
 import { ModalRequest } from "./modals";
@@ -27,6 +27,7 @@ export interface AppContextType {
         // boolean to know which map is active, ie who is leading the move
         map: IProjectMap;
         lassoVariable: ProjectLayerVariable | null;
+        timeSpecification?: TimeSpecification;
         timeKey?: string | null;
         selected?: {
           feature: Feature;

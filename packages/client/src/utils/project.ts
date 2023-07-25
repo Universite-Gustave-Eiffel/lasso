@@ -1,7 +1,7 @@
-import { isString, toPairs } from "lodash";
+import { head, isString, toPairs } from "lodash";
 import { Geometry, Feature } from "geojson";
 
-import { Project, IProjectMap, LayerVariable, SOUNDSCAPE_VARIABLES_TYPES } from "@lasso/dataprep";
+import { Project, IProjectMap, LayerVariable, SOUNDSCAPE_VARIABLES_TYPES, TimeSpecification } from "@lasso/dataprep";
 import { LoadedProject } from "../hooks/useLoadProject";
 
 export type ProjectLayerVariable = LayerVariable & {
@@ -64,6 +64,19 @@ export function getMapProjectVariable(project: LoadedProject, map: IProjectMap):
   }
 
   return null;
+}
+
+export function getMapProjectTimeSpec(project: LoadedProject, map: IProjectMap): TimeSpecification | undefined {
+  const mapSources = map?.layers
+    .map((l) => (l.type !== "background" ? l.source : null))
+    .filter((l): l is string => l !== null);
+
+  const sourceWithSpec = head(
+    toPairs(project.sources)
+      .filter((source) => mapSources.includes(source[0]) && source[1].timeSeries)
+      .map((s) => s[1].timeSeries),
+  );
+  return sourceWithSpec;
 }
 
 export function getVariableColor(project: LoadedProject, variable: ProjectLayerVariable, value: number): string {

@@ -4,7 +4,7 @@ import { useCallback, useEffect } from "react";
 import center from "@turf/center";
 
 import { IProjectMap } from "@lasso/dataprep";
-import { getMapProjectVariable } from "../utils/project";
+import { getMapProjectTimeSpec, getMapProjectVariable } from "../utils/project";
 import { updateQueryParam } from "../utils/url";
 import { useAppContext } from "./useAppContext";
 
@@ -30,6 +30,7 @@ export const useCurrentProject = () => {
                   ...prev.current.maps[mapId],
                   map,
                   lassoVariable: getMapProjectVariable(prev.current.data, map),
+                  timeSpecification: getMapProjectTimeSpec(prev.current.data, map),
                   selected: undefined,
                 },
               },
@@ -47,6 +48,7 @@ export const useCurrentProject = () => {
    */
   const setProjectMapTime = useCallback(
     (mapId: string, timeKey?: string) => {
+      console.log("setProjectMapTime", mapId, timeKey);
       setContext((prev) => ({
         ...prev,
         current: prev.current
@@ -126,7 +128,6 @@ export const useCurrentProject = () => {
           else {
             // for the case of the default layer
             if (!layerParam && context.current?.maps[mapId].map.id) {
-              console.log("layer", mapId, layerParam, context.current?.maps[mapId].map.id);
               updateQueryParam(
                 setSearchParam,
                 searchParam,

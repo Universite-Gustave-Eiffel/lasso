@@ -8,7 +8,7 @@ import { expression } from "@mapbox/mapbox-gl-style-spec";
 
 import { Project } from "@lasso/dataprep";
 import { defaultLegendSpecs, LegendSpecType, LegendSymbolSpec } from "../utils/legend";
-import { getMapProjectVariable, getProjectVariables } from "../utils/project";
+import { getMapProjectVariable, getProjectVariables, getMapProjectTimeSpec } from "../utils/project";
 import { useAppContext } from "./useAppContext";
 
 export type LoadedProject = Project & { legendSpecs: LegendSpecType; featureIndex: { [key: string]: Feature } };
@@ -157,6 +157,7 @@ export const useLoadProject = (id?: string): { project: LoadedProject | null; lo
                 id: mapId,
                 content: {
                   map: map,
+                  timeSpecification: getMapProjectTimeSpec(project, map),
                   lassoVariable: getMapProjectVariable(project, map),
                 },
               };

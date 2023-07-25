@@ -23,7 +23,7 @@ export const ResetControl: FC<{ point?: { lat: number; lng: number } }> = ({ poi
       <button
         className="maplibregl-ctrl-fullscreen mapboxgl-ctrl-fullscreen"
         onClick={onClick}
-        title={t("map.control.clockReset")}
+        title={t("map.control.bboxReset")}
       >
         <GrMapLocation size="1.8em" />
       </button>
