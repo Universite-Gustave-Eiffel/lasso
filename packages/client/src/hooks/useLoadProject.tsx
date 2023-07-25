@@ -127,7 +127,6 @@ export const useLoadProject = (id?: string): { project: LoadedProject | null; lo
                 },
               },
             }));
-            console.log(loadedProject);
 
             return loadedProject;
           }
@@ -150,31 +149,30 @@ export const useLoadProject = (id?: string): { project: LoadedProject | null; lo
     loadProject(id || "")
       .then((project) => {
         if (!project) throw Error("Project not found");
-        setAppContext((prev) => ({
-          ...prev,
-          current: {
-            data: project,
-            bbox: project.bbox,
-            lassoVariables: getProjectVariables(project),
-            viewState: {
-              latitude: 0,
-              longitude: 0,
-              bearing: 0,
-              pitch: 0,
-              zoom: 0,
+        setAppContext((prev) => {
+          const maps = ["right", "left"]
+            .map((mapId, index) => {
+              const map = project.maps[index];
+              return {
+                id: mapId,
+                content: {
+                  map: map,
+                  lassoVariable: getMapProjectVariable(project, map),
+                },
+              };
+            })
+            .reduce((acc, curr) => ({ ...acc, [curr.id]: curr.content }), {});
+
+          return {
+            ...prev,
+            current: {
+              data: project,
+              bbox: project.bbox,
+              lassoVariables: getProjectVariables(project),
+              maps,
             },
-            maps: {
-              right: {
-                map: project.maps[0],
-                lassoVariable: getMapProjectVariable(project, project.maps[0]),
-              },
-              left: {
-                map: project.maps[1],
-                lassoVariable: getMapProjectVariable(project, project.maps[1]),
-              },
-            },
-          },
-        }));
+          };
+        });
       })
       .catch(() => {
         setAppContext((prev) => ({
@@ -182,6 +180,7 @@ export const useLoadProject = (id?: string): { project: LoadedProject | null; lo
           current: undefined,
         }));
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, setAppContext, loadProject]);
 
   const project = useMemo(

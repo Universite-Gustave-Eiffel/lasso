@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import Map, {
   NavigationControl,
   LngLatBoundsLike,
@@ -22,9 +22,10 @@ import { FeatureDataPanel } from "./FeatureDataPanel";
 import { MapControl } from "../../MapControl";
 import { ResetControl } from "./ResetControl";
 import { ProjectMapBoundingBox } from "./ProjectMapBoundingBox";
+import { useSearchParams } from "react-router-dom";
 
 export interface ProjectMapProps {
-  mapId: string;
+  mapId: "right" | "left";
   bounds?: LngLatBoundsLike;
   center?: [number, number];
 }
@@ -33,92 +34,83 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
   const locale = useLocale();
   const t = useT();
   const { [mapId]: map } = useMap();
+  const [mapLoaded, setMapLoaded] = useState<boolean>(false);
+  const [searchParam] = useSearchParams();
 
   // project
-  const { project, setViewState, setProjectMapTime, setProjectMapSelection } = useCurrentProject();
-  const projectMap = useMemo(() => project.maps[mapId], [project, mapId]);
+  const { project, setProjectMapTime, setProjectMapSelection } = useCurrentProject();
+  const projectMap = useMemo(() => project.maps[mapId], [project.maps, mapId]);
 
   /**
-   * When project bbox changed
-   * => zoom on it
+   * When map is mounted
+   * => zoom on the project bbox or on the query params
    */
   useEffect(() => {
-    if (map && mapId === "right") {
-      map.fitBounds(project.bbox);
+    if (map) {
+      const viewString = searchParam.get("view");
+      if (!viewString) {
+        map.fitBounds(project.bbox);
+      }
     }
-  }, [mapId, map, project.bbox]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, mapId, mapLoaded]);
 
   // interactive layer (on which we can click)
-  const interactiveLayerIds = useMemo(
-    () =>
-      projectMap.map.layers
-        .filter((l) => "metadata" in l && (l.metadata as { interactive?: boolean }).interactive)
-        .map((l) => l.id),
-    [projectMap],
-  );
+  const interactiveLayerIds = useMemo(() => {
+    return projectMap.map.layers
+      .filter((l) => "metadata" in l && (l.metadata as { interactive?: boolean }).interactive)
+      .map((l) => l.id);
+  }, [projectMap.map.layers]);
 
   // adapt source data based on currentTime state
   const timedSourcesData = useMemo(() => {
     let sourcesData: Record<string, FeatureCollection | null> = {};
-    if (projectMap && project) {
-      sourcesData = omitBy(
-        mapValues(project.data.sources, (source) => {
-          if (
-            source.timeSeries && // only time based source
-            source.variables && // only filter source wich have variables
-            source.type === "geojson" && // only concernes geojson sources
-            typeof source.data !== "string" // should be always true because unsured by dataprep
-          ) {
-            return {
-              type: "FeatureCollection",
-              features: (source.data as FeatureCollection).features.map((f) => {
-                return {
-                  ...f,
-                  properties: {
-                    ...f.properties,
-                    ...mapValues(
-                      source.variables,
-                      (_, variable) =>
-                        // for each decalred variable we pick the value index at the time selected key
-                        variable &&
-                        f.properties &&
-                        (projectMap.timeKey && f.properties[projectMap.timeKey]
-                          ? f.properties[projectMap.timeKey][variable]
-                          : f.properties[variable]),
-                    ),
-                  },
-                };
-              }),
-            } as FeatureCollection;
-          } else return null;
-        }),
-        (sd) => sd === null, // unfiltered data source are not stored since we already have them in projectMap
-      );
-    }
+    sourcesData = omitBy(
+      mapValues(project.data.sources, (source) => {
+        if (
+          source.timeSeries && // only time based source
+          source.variables && // only filter source wich have variables
+          source.type === "geojson" && // only concernes geojson sources
+          typeof source.data !== "string" // should be always true because unsured by dataprep
+        ) {
+          return {
+            type: "FeatureCollection",
+            features: (source.data as FeatureCollection).features.map((f) => {
+              return {
+                ...f,
+                properties: {
+                  ...f.properties,
+                  ...mapValues(
+                    source.variables,
+                    (_, variable) =>
+                      // for each decalred variable we pick the value index at the time selected key
+                      variable &&
+                      f.properties &&
+                      (projectMap.timeKey && f.properties[projectMap.timeKey]
+                        ? f.properties[projectMap.timeKey][variable]
+                        : f.properties[variable]),
+                  ),
+                },
+              };
+            }),
+          } as FeatureCollection;
+        } else return null;
+      }),
+      (sd) => sd === null, // unfiltered data source are not stored since we already have them in projectMap
+    );
     return sourcesData;
-  }, [projectMap, project]);
-
-  // // pick and refresh the selected feature
-  // useEffect(() => {
-  //   // when changing selection or time, refresh selectedFeature
-  //   if (selectedMapFeature && project) {
-  //     // use timedSource in priority of original data
-  //     const sf = (
-  //       timedSourcesData[selectedMapFeature.source] ||
-  //       ((project.sources[selectedMapFeature.source] as GeoJSONSourceSpecification).data as FeatureCollection)
-  //     ).features.find((f) => f.properties?.id === selectedMapFeature.featureId);
-  //     setSelectedFeature(sf);
-  //   } else {
-  //     setSelectedFeature(undefined);
-  //   }
-  // }, [selectedMapFeature, timedSourcesData, project]);
+  }, [projectMap.timeKey, project.data.sources]);
 
   /**
    * When the selected item changed
    * => set its state on the map
    */
   useEffect(() => {
-    if (projectMap.selected) {
+    if (
+      mapLoaded &&
+      projectMap.selected &&
+      map?.getFeatureState({ id: projectMap.selected?.feature?.id, source: projectMap.selected.source })
+    ) {
       map?.setFeatureState(
         { id: projectMap.selected?.feature.id, source: projectMap.selected.source },
         { selected: true },
@@ -132,26 +124,53 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
         );
       }
     };
-  }, [projectMap.selected, map]);
+  }, [projectMap.selected, map, mapLoaded]);
+
+  // render sources
+  const sources = useMemo(() => {
+    return toPairs(project.data.sources).map(([sourceId, source]) => {
+      return (
+        <Source
+          key={`${locale}-${sourceId}`}
+          id={sourceId}
+          type={source.type}
+          {...({
+            // removing Lasso specific properties
+            ...omit(source, ["variables", "timeSeries", "type", "attribution"]),
+            attribution: source.attribution ? getI18NText(locale, source.attribution) : "",
+            // data used are in priority the time-aware ones or the original ones
+            ...(source.type === "geojson" ? { data: timedSourcesData[sourceId] || source.data } : {}),
+          } as any)}
+        />
+      );
+    });
+  }, [project.data.sources, timedSourcesData, locale]);
+
+  // render layout
+  const layers = useMemo(() => {
+    return project.maps[mapId].map.layers.map((l) => <Layer key={`${locale}-${l.id}`} {...(l as AnyLayer)} />);
+  }, [project.maps, mapId, locale]);
 
   return (
     <Map
       id={mapId}
-      {...project.viewState}
       mapLib={maplibregl}
       mapStyle={projectMap.map.basemapStyle}
       interactiveLayerIds={interactiveLayerIds}
-      onMove={(e) => setViewState(e.viewState)}
+      onLoad={() => {
+        setMapLoaded(true);
+      }}
       onClick={(e) => {
         if (e.features?.length) {
           const selectedFeature = e.features[0];
           if (
             selectedFeature.layer.source &&
             typeof selectedFeature.layer.source === "string" &&
-            selectedFeature.properties
+            selectedFeature.properties &&
+            selectedFeature.properties.id
           ) {
             // get the feature in the index by its id
-            const f = project.data.featureIndex[`${selectedFeature.id}`];
+            const f = project.data.featureIndex[`${selectedFeature.properties.id}`];
             if (f)
               setProjectMapSelection(mapId, {
                 clickedAt: e.lngLat,
@@ -177,27 +196,10 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
       <ProjectMapBoundingBox project={project.data} type="border" />
 
       {/* Include all the project sources */}
-      {toPairs(project.data.sources).map(([sourceId, source]) => {
-        return (
-          <Source
-            key={`${locale}-${sourceId}`}
-            id={sourceId}
-            type={source.type}
-            {...({
-              // removing Lasso specific properties
-              ...omit(source, ["variables", "timeSeries", "type", "attribution"]),
-              attribution: source.attribution ? getI18NText(locale, source.attribution) : "",
-              // data used are in priority the time-aware ones or the original ones
-              ...(source.type === "geojson" ? { data: timedSourcesData[sourceId] || source.data } : {}),
-            } as any)}
-          />
-        );
-      })}
+      {sources}
 
       {/* Include all the map's project layers */}
-      {project.maps[mapId].map.layers.map((l) => (
-        <Layer key={`${locale}-${l.id}`} {...(l as AnyLayer)} />
-      ))}
+      {layers}
 
       {/* Add map controllers */}
       <NavigationControl visualizePitch={true} showZoom={true} showCompass={true} />

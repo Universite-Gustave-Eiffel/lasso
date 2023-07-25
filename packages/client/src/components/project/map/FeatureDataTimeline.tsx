@@ -12,7 +12,7 @@ interface FeatureDataTimelineProps {
   feature: Feature;
   timeSpecification: TimeSpecification;
   setCurrentTimeKey: (timeKey?: string) => void;
-  currentTimeKey?: string;
+  currentTimeKey?: string | null;
   mapVariable: ProjectLayerVariable;
 }
 

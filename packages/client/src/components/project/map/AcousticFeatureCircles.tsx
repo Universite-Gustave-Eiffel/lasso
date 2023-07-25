@@ -7,7 +7,7 @@ import { getVariableColor } from "../../../utils/project";
 import { useCurrentProject } from "../../../hooks/useCurrentProject";
 import { AcousticCircle } from "../../AcousticCircle";
 
-export const AcousticFeatureCircles: FC<{ feature: Feature; currentTimeKey?: string }> = ({
+export const AcousticFeatureCircles: FC<{ feature: Feature; currentTimeKey?: string | null }> = ({
   feature,
   currentTimeKey,
 }) => {

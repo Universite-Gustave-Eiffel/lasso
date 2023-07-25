@@ -11,7 +11,7 @@ import { EmotionScatterPlot } from "../../EmotionScatterPlot";
 interface EmotionFeatureScatterPlotProps {
   mapVariable: ProjectLayerVariable | null;
   feature: Feature;
-  currentTimeKey?: string;
+  currentTimeKey?: string | null;
 }
 export const EmotionFeatureScatterPlot: FC<EmotionFeatureScatterPlotProps> = ({
   mapVariable,
@@ -61,25 +61,29 @@ export const EmotionFeatureScatterPlot: FC<EmotionFeatureScatterPlotProps> = ({
   }, [feature, currentTimeKey]);
 
   return (
-    <div>
-      <h6>{t("viz-panel.emotions")}</h6>
-      <EmotionScatterPlot
-        evenfulAxis={{
-          arrow: true,
-          min: project.lassoVariables["emotion_eventful"].minimumValue,
-          max: project.lassoVariables["emotion_eventful"].maximumValue,
-          nbSteps: 100,
-          getColorByValue: getColorFunctionForVariable("emotion_eventful"),
-        }}
-        pleasantAxis={{
-          arrow: true,
-          min: project.lassoVariables["emotion_pleasant"].minimumValue,
-          max: project.lassoVariables["emotion_pleasant"].maximumValue,
-          nbSteps: 100,
-          getColorByValue: getColorFunctionForVariable("emotion_pleasant"),
-        }}
-        value={value}
-      />
-    </div>
+    <>
+      {value.eventful !== undefined && value.pleasant !== undefined && (
+        <div>
+          <h6>{t("viz-panel.emotions")}</h6>
+          <EmotionScatterPlot
+            evenfulAxis={{
+              arrow: true,
+              min: project.lassoVariables["emotion_eventful"].minimumValue,
+              max: project.lassoVariables["emotion_eventful"].maximumValue,
+              nbSteps: 100,
+              getColorByValue: getColorFunctionForVariable("emotion_eventful"),
+            }}
+            pleasantAxis={{
+              arrow: true,
+              min: project.lassoVariables["emotion_pleasant"].minimumValue,
+              max: project.lassoVariables["emotion_pleasant"].maximumValue,
+              nbSteps: 100,
+              getColorByValue: getColorFunctionForVariable("emotion_pleasant"),
+            }}
+            value={value}
+          />
+        </div>
+      )}
+    </>
   );
 };

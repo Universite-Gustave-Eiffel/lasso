@@ -12,7 +12,7 @@ export interface DonutDayProps {
   timeSpecification: TimeSpecification;
   feature: Feature;
   setCurrentTimeKey: (timeKey?: string) => void;
-  currentTimeKey?: string;
+  currentTimeKey?: string | null;
   mapVariable: ProjectLayerVariable;
 }
 
