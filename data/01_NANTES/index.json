@@ -19,13 +19,16 @@
       "data": "./layers/GeoAllInterp4326.geojson",
       "variables": {
         "acoustic_birds": "Birds"
+      },
+      "images": {
+        "csv":  "./layers/GeoAllInterp4326_images.csv",
+        "field":"fid"
       }
     },
     "GeoAll": {
       "attribution": "Pierre",
       "type": "geojson",
       "data": "./layers/GeoAll.geojson",
-      "promoteId": "PK",
       "variables": {
         "emotion_pleasant": "Plea",
         "emotion_eventful": "Even",
