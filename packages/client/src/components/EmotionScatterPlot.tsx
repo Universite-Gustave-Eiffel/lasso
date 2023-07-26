@@ -1,6 +1,7 @@
 import { FC } from "react";
 import cx from "classnames";
 import { useT } from "@transifex/react";
+import { isNil } from "lodash";
 
 import { ColorAxis, ColorAxisProps } from "./ColorAxis";
 
@@ -17,6 +18,10 @@ interface EmotionScatterPlotProps {
 export const EmotionScatterPlot: FC<EmotionScatterPlotProps> = ({ value, pleasantAxis, evenfulAxis }) => {
   const t = useT();
 
+  // compute value on a range of [0,1]
+  const pleasantValue = value.pleasant ? (value.pleasant - pleasantAxis.min) / pleasantAxis.max : undefined;
+  const evenfulValue = value.eventful ? (value.eventful - evenfulAxis.min) / evenfulAxis.max : undefined;
+
   return (
     <div className={cx("emotions-scatter-plot", (!value.eventful || !value.pleasant) && "empty")}>
       <label className="min-x-label">{t("variable.unpleasant")}</label>
@@ -24,15 +29,15 @@ export const EmotionScatterPlot: FC<EmotionScatterPlotProps> = ({ value, pleasan
         <label>{t("variable.eventful")}</label>
 
         <div className={`scatter-plot`}>
-          {value.eventful && value.pleasant && (
+          {!isNil(pleasantValue) && !isNil(evenfulValue) && (
             <div
               className="point"
-              title={`${t("variable.emotion-pleasant")}: ${value.pleasant} ${t("variable.emotion-eventful")}: ${
-                value.eventful
-              }`}
+              title={`${t("variable.emotion-pleasant")}: ${(pleasantValue * 10 - 5).toFixed(2)} ${t(
+                "variable.emotion-eventful",
+              )}: ${(evenfulValue * 10 - 5).toFixed(2)}`}
               style={{
-                left: `${(SQUARE_SIZE * (value.pleasant - pleasantAxis.min)) / pleasantAxis.max}px`,
-                bottom: `${(SQUARE_SIZE * (value.eventful - evenfulAxis.min)) / evenfulAxis.max}px`,
+                left: `${SQUARE_SIZE * pleasantValue}px`,
+                bottom: `${SQUARE_SIZE * evenfulValue}px`,
               }}
             />
           )}
