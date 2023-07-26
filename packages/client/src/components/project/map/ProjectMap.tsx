@@ -4,7 +4,6 @@ import Map, {
   LngLatBoundsLike,
   FullscreenControl,
   AttributionControl,
-  Marker,
   useMap,
   Source,
   Layer,
@@ -18,10 +17,10 @@ import { useSearchParams } from "react-router-dom";
 
 import { useCurrentProject } from "../../../hooks/useCurrentProject";
 import { getI18NText } from "../../../utils/i18n";
-import { FeatureDataPanel } from "./FeatureDataPanel";
 import { ResetControl } from "./ResetControl";
 import { ProjectMapBoundingBox } from "./ProjectMapBoundingBox";
 import { TimeSelectorControl } from "./TimeSelectorControl";
+import { Selected } from "./Selected";
 
 export interface ProjectMapProps {
   mapId: "right" | "left";
@@ -135,7 +134,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
           type={source.type}
           {...({
             // removing Lasso specific properties
-            ...omit(source, ["variables", "timeSeries", "type", "attribution"]),
+            ...omit(source, ["variables", "timeSeries", "type", "attribution", "images"]),
             attribution: source.attribution ? getI18NText(locale, source.attribution) : "",
             // data used are in priority the time-aware ones or the original ones
             ...(source.type === "geojson" ? { data: timedSourcesData[sourceId] || source.data } : {}),
@@ -221,19 +220,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
       />
 
       {/* Selected feature : display a marker and the data panel */}
-      {projectMap.selected !== undefined && (
-        <>
-          <FeatureDataPanel
-            mapId={mapId}
-            feature={projectMap.selected.feature}
-            timeSpecification={project.data.sources[projectMap.selected.source].timeSeries}
-            onClose={() => {
-              setProjectMapSelection(mapId, undefined);
-            }}
-          />
-          <Marker longitude={projectMap.selected.clickedAt.lng} latitude={projectMap.selected.clickedAt.lat} />
-        </>
-      )}
+      <Selected mapId={mapId} />
     </Map>
   );
 };

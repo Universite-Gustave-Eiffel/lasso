@@ -16,6 +16,7 @@ export {
   SOUNDSCAPE_VARIABLES_TYPES,
   LassoSourceVariables,
   LayerVariable,
+  LassoSourceImage,
 } from "./types";
 
 async function run(): Promise<void> {
@@ -33,11 +34,14 @@ async function run(): Promise<void> {
     onlyFolder: true,
   });
 
-  // For all projects sorted by their name, we parse them
-  const projects = await Promise.all(sortBy(folders).map((p) => importProjectFromPath(p)));
-
-  // Export each project
-  const projectsExport = await Promise.all(projects.map((p) => exportProject(p)));
+  const projectsExport = await Promise.all(
+    sortBy(folders).map(async (folder) => {
+      // parse the project
+      const project = await importProjectFromPath(folder);
+      // export it
+      return await exportProject(project, folder);
+    }),
+  );
 
   const exportObj: ExportedData = {
     bbox: metaBbox(projectsExport.map((p) => p.bbox)),

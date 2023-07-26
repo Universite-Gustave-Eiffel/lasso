@@ -195,6 +195,33 @@ A complete example of timeseries specification
 }
 ```
 
+#### Images
+
+You can add images to your geojson, by specifying a CSV file with those columns : `id, path, description`
+
+Where :
+
+- `id` : is the identifier in the geojson of the element
+- `path` : is the path to the image, relative to the project's `assets` folder
+- `description` (optional) : the description of the image
+
+You can define many rows with the same id, the application will do a gallery.
+If you want to localized the description, you can do it by adding column like `description_fr` for the french version.
+
+Then, you have to defined in the source the attributes `images` like that :
+
+```json
+"images": {
+  "csv":  "./layers/GeoAllInterp4326_images.csv",
+  "field": "fid"
+}
+```
+
+Where :
+
+- `csv` is the path to the CSV file, relative to the project's folder.
+- `field` : is the name of the field which is used to do the mapping with the `id` column of the CSV
+
 ### maps
 
 The maps section list the different maps a user can explore using lasso in your project.

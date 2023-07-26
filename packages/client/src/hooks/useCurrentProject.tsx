@@ -32,6 +32,7 @@ export const useCurrentProject = () => {
                   lassoVariable: getMapProjectVariable(prev.current.data, map),
                   timeSpecification: getMapProjectTimeSpec(prev.current.data, map),
                   selected: undefined,
+                  timeKey: undefined,
                 },
               },
             }
@@ -39,6 +40,8 @@ export const useCurrentProject = () => {
       }));
 
       updateQueryParam(setSearchParam, searchParam, `${mapId[0]}-layer`, map.id);
+      updateQueryParam(setSearchParam, searchParam, `${mapId[0]}-select`, undefined, true);
+      updateQueryParam(setSearchParam, searchParam, `${mapId[0]}-time`, undefined, true);
     },
     [setContext, setSearchParam, searchParam],
   );

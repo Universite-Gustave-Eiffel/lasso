@@ -36,8 +36,8 @@ export const EmotionScatterPlot: FC<EmotionScatterPlotProps> = ({ value, pleasan
                 "variable.emotion-eventful",
               )}: ${(evenfulValue * 10 - 5).toFixed(2)}`}
               style={{
-                left: `${SQUARE_SIZE * pleasantValue}px`,
-                bottom: `${SQUARE_SIZE * evenfulValue}px`,
+                left: `${SQUARE_SIZE * pleasantValue + 5}px`, // +5 is for the margin
+                bottom: `${SQUARE_SIZE * evenfulValue + 5}px`,
               }}
             />
           )}

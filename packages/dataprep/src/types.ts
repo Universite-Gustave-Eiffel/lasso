@@ -122,6 +122,10 @@ export type LassoSource = SourceSpecification & {
   attribution?: StringI18n;
   variables?: LassoSourceVariables;
   timeSeries?: TimeSpecification;
+  images?: {
+    csv: string;
+    field: string;
+  };
 };
 
 interface IProject {
@@ -178,4 +182,9 @@ export type Project = IProjectFull & { bbox: BBOX; color: string };
 export interface ExportedData {
   bbox: BBOX;
   projects: Array<Project>;
+}
+
+export interface LassoSourceImage {
+  path: string;
+  description?: StringI18n;
 }

@@ -2,6 +2,8 @@ import Ajv, { Schema } from "ajv";
 import { promises as fsp } from "fs";
 import * as fs from "fs";
 import * as path from "path";
+import { decodeStream } from "iconv-lite";
+import papa from "papaparse";
 
 /**
  * Create a folder at the specified location.
@@ -107,8 +109,31 @@ export async function readJson<T>(file: string, schema?: Schema, stopOnErrors?: 
   }
 }
 
+export async function readCsv<T>(file: string, delimiter = ","): Promise<Array<T>> {
+  if (!(await checkExists(file))) throw new Error(`File ${file} is missing, can't read it`);
+  return new Promise((resolve, reject) => {
+    // ensure decoding see https://github.com/mholt/PapaParse/issues/908
+    const streamDecoder = decodeStream("UTF8");
+    const fileStream = fs.createReadStream(path.resolve(file)).pipe(streamDecoder);
+    papa.parse<T>(fileStream, {
+      delimiter,
+      header: true,
+      encoding: "utf-8",
+      skipEmptyLines: true,
+      error: (e) => reject(e),
+      complete: (results) => {
+        if (results.errors && results.errors.length > 0) {
+          reject(`Failed to parse CSV file ${file} : ${results.errors.map((e) => e.message).join(", ")}`);
+        }
+        resolve(results.data);
+      },
+    });
+  });
+}
+
 export async function copy(source: string, target: string): Promise<void> {
-  await fsp.copyFile(source, target);
+  if (fs.lstatSync(source).isDirectory()) await fsp.cp(source, target, { recursive: true });
+  else await fsp.copyFile(source, target);
 }
 
 export function getFilenameFromPath(filePath: string): string {
