@@ -43,10 +43,13 @@ export interface IProjectMap {
    * Mapgl style specification to boostrap the map with
    */
   basemapStyle?: string | Style;
+
   /**
    * List of ordered layers IDS for the map
    * Layers will be drawn one of top oth the other folowwing the order (first = bottom).
    * If a style is provided the extra layers listed in this variable will be drawn on top of the style layers.
+   *
+   * @items { "type":"object", "additionalProperties": true, "properties": { "id": { "type":"string"  }, "beforeId": { "type":"string"  } }, "required":["id", "beforeId"] }
    */
   layers: Array<LayerSpecification & { beforeId: string }>;
 }
@@ -94,6 +97,9 @@ export interface TimeSeriesGeoJSONProperty {
 }
 [];
 
+/**
+ * @additionalProperties false
+ */
 export interface TimeSpecification {
   timestampPropertyName: string;
   hoursLabels?: Record<string, { label: { fr: string; en: string }; hours: [number, number] }>;
@@ -101,16 +107,18 @@ export interface TimeSpecification {
   monthsLabels?: Record<string, { label: { fr: string; en: string }; months: Month[] }>;
 }
 
+/**
+ * @additionalProperties false
+ */
 export type LassoSourceVariables = Partial<Record<SOUNDSCAPE_VARIABLES_TYPES, LayerVariable | string>>;
 
 type SourceSpecification =
-  | VectorSourceSpecification
-  | RasterSourceSpecification
-  | RasterDEMSourceSpecification
-  | GeoJSONSourceSpecification;
+  | Omit<GeoJSONSourceSpecification, "attribution">
+  | Omit<VectorSourceSpecification, "attribution">
+  | Omit<RasterSourceSpecification, "attribution">
+  | Omit<RasterDEMSourceSpecification, "attribution">;
 
 export type LassoSource = SourceSpecification & {
-  type: "vector" | "geojson" | "raster" | "raster-dem";
   attribution?: StringI18n;
   variables?: LassoSourceVariables;
   timeSeries?: TimeSpecification;

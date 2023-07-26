@@ -16,10 +16,7 @@ import { fromPairs, toPairs, values } from "lodash";
  */
 export async function importProjectFromPath(projectFolderPath: string): Promise<InternalProject> {
   // Read the index.json file and validate it
-  const project = await fsu.readJson<ImportProject>(`${projectFolderPath}/index.json`, {
-    ...schema,
-    ["$ref"]: "#/definitions/ImportProject",
-  });
+  const project = await fsu.readJson<ImportProject>(`${projectFolderPath}/index.json`, schema);
 
   // List md files for static pages
   const markdownFiles = await fsu.listFolder(projectFolderPath, { extension: ".md" });
@@ -96,7 +93,6 @@ export async function exportProject(project: InternalProject): Promise<Project> 
   const projectFolder = path.resolve(config.exportPath, project.id);
   await fsu.createFolder(projectFolder);
   const projectUrl = path.join(process.env.PUBLIC_URL || "", "/", path.basename(config.exportPath), project.id);
-  //`${projectFolder.replace(path.resolve(config.exportPath), ".")}/`
 
   // Copy asset folder if needed
   if (await fsu.checkExists(path.resolve(config.importPath, "assets"))) {
@@ -187,7 +183,7 @@ export async function exportProject(project: InternalProject): Promise<Project> 
     }),
   );
 
-  // Calculate BBOx from GeoJson
+  // Calculate BBOX from GeoJson
   const bbox =
     project.bbox ||
     outerBbox(

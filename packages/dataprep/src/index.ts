@@ -23,7 +23,6 @@ async function run(): Promise<void> {
   const mdFiles = await fsu.listFolder(config.importPath, { extension: ".md" });
   await Promise.all(
     mdFiles.map(async (file) => {
-      console.log(file);
       const filename = path.basename(file);
       await fsu.copy(file, path.resolve(config.exportPath, filename));
     }),
@@ -51,5 +50,8 @@ async function run(): Promise<void> {
 
 console.log("Starting dataprep");
 run()
-  .then(() => console.log("Success", config.exportPath))
+  .then(() => {
+    console.log(`Success !`);
+    console.log(`Files have been generated in ${config.exportPath}`);
+  })
   .catch((e) => console.log("Error", e));

@@ -12,8 +12,7 @@
     "geojson": "^0.5.0",
     "nodemon": "^2.0.19",
     "shorthash2": "^1.0.3",
-    "ts-json-schema-generator": "^1.1.2",
-    "typescript-json-schema": "^0.54.0"
+    "typescript-json-schema": "^0.59.0"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.10"
@@ -22,10 +21,10 @@
     "clean": "rimraf lib/",
     "lint": "esw --ext .ts ./src",
     "compile": "tsc -b",
-    "generate:jsonschema": "ts-json-schema-generator -e all --no-ref-encode -p ./src/types.ts --no-type-check --out src/json-schema.json",
+    "generate:jsonschema": "typescript-json-schema --skipLibCheck ./src/types.ts ImportProject --out ./src/json-schema.json",
     "test": "mocha --recursive --fail-zero 'false' --require ts-node/register 'test/**/*.ts' ",
     "build": "npm run clean && npm run lint && npm run generate:jsonschema && npm run compile",
-    "start": "concurrently -n lint,compile,exec \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"nodemon --watch ./lib --watch ../../data --exec npm run exec\"",
+    "start": "concurrently -n lint,compile,exec \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"nodemon --watch ./lib --watch ../../data --ignore validation_errors.json --exec npm run exec\"",
     "exec": "ts-node ./src/index.ts"
   }
 }

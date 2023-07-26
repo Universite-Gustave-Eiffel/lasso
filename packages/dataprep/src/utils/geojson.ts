@@ -16,8 +16,6 @@ export async function readGeoJsonFile(file: string): Promise<GeoJSON> {
   }
 }
 
-//const isEmpty = (value: null | undefined | unknown): boolean => [null, undefined].some((empty) => empty === value);
-//const DEFAULT_FEATURE_ID_PROPERTY_NAME = "PK";
 export async function checkGeoJsonSource(source: LassoSource, projectFolderPath: string): Promise<GeoJSON> {
   if (source.type === "geojson") {
     const geojson =
@@ -27,11 +25,6 @@ export async function checkGeoJsonSource(source: LassoSource, projectFolderPath:
 
     const validGeoJson = { ...geojson };
     if (validGeoJson.type === "FeatureCollection" && source.variables !== undefined) {
-      // let idPropertyName = DEFAULT_FEATURE_ID_PROPERTY_NAME;
-
-      // if (source.promoteId)
-      //   idPropertyName = typeof source.promoteId === "string" ? source.promoteId : DEFAULT_FEATURE_ID_PROPERTY_NAME;
-
       const filterTransformProperties = (properties: Record<string, unknown>): Record<string, unknown> => {
         const newProperties: Record<string, unknown> = {};
         toPairs(source.variables).forEach(([variableName, v]) => {
@@ -53,20 +46,6 @@ export async function checkGeoJsonSource(source: LassoSource, projectFolderPath:
                 nbFeaturesByVariables[variableName] = (nbFeaturesByVariables[variableName] || 0) + 1;
             }),
           );
-          // TODO: refacto the id check
-          //  // check or generate id in properties
-          //  if (aggregatedFeature.properties && isEmpty(aggregatedFeature.properties[idPropertyName])) {
-          // if (idPropertyName === DEFAULT_FEATURE_ID_PROPERTY_NAME)
-          //   aggregatedFeature.properties[idPropertyName] = shortHash(JSON.stringify(aggregatedFeature.geometry));
-          // else
-          //   throw new Error(
-          //     `The identifier ${idPropertyName} is missing in one feature property set ${JSON.stringify(
-          //       aggregatedFeature.properties,
-          //       null,
-          //       2,
-          //     )}`,
-          //   );
-          // }
 
           const aggregatedFeature: Feature<Geometry, GeoJsonProperties> = {
             id: key,
@@ -127,9 +106,6 @@ export async function checkGeoJsonSource(source: LassoSource, projectFolderPath:
               ...propertiesInTime,
             };
           } else {
-            if (features.length > 1) {
-              console.warn("Duplicated feature with the same geometry");
-            }
             aggregatedFeature.properties = { id: key, ...filterTransformProperties(features[0].properties || {}) };
           }
 
