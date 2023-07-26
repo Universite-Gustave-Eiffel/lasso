@@ -48,7 +48,6 @@ export const useCurrentProject = () => {
    */
   const setProjectMapTime = useCallback(
     (mapId: string, timeKey?: string) => {
-      console.log("setProjectMapTime", mapId, timeKey);
       setContext((prev) => ({
         ...prev,
         current: prev.current
