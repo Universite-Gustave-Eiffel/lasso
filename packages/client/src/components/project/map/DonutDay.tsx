@@ -8,7 +8,7 @@ import { ProjectLayerVariable } from "../../../utils/project";
 import { useCurrentProject } from "../../../hooks/useCurrentProject";
 
 export interface DonutDayProps {
-  timelineKey: string;
+  timelineKeys: string[];
   timeSpecification: TimeSpecification;
   feature: Feature;
   setCurrentTimeKey: (timeKey?: string) => void;
@@ -107,7 +107,7 @@ const nbHoursInAngle = (nbHours: number): number => {
 };
 
 export const DonutDay: FC<DonutDayProps> = ({
-  timelineKey,
+  timelineKeys,
   timeSpecification,
   feature,
   setCurrentTimeKey,
@@ -125,7 +125,7 @@ export const DonutDay: FC<DonutDayProps> = ({
     : [];
   const segments: DonutSegment[] = timelineHoursKeys
     .map((k) => {
-      const hoursKey = `${timelineKey}|${k}`;
+      const hoursKey = [...timelineKeys, k].join("|");
       const hoursLabel = timeSpecification.hoursLabels && timeSpecification.hoursLabels[k];
 
       const hoursValue = feature.properties && feature.properties[hoursKey] && feature.properties[hoursKey][variable];
