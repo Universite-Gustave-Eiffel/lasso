@@ -77,9 +77,13 @@ export async function checkGeoJsonSource(source: LassoSource, projectFolderPath:
                   }
                   if (source.timeSeries?.hoursLabels) {
                     const hours = featureDate.getHours();
-                    const hourlabel = toPairs(source.timeSeries.hoursLabels).find(
-                      ([, hl]) => hl.hours[0] <= hours && hours <= hl.hours[1],
-                    );
+                    const hourlabel = toPairs(source.timeSeries.hoursLabels).find(([, hl]) => {
+                      const start = hl.hours[0];
+                      const end = hl.hours[1];
+                      if (start < end) return start <= hours && hours <= end;
+                      // crosses midnight
+                      else return start <= hours || hours <= end;
+                    });
                     if (hourlabel) labelsKeys.push(hourlabel[0]);
                   }
                   if (labelsKeys.length > 0) {
