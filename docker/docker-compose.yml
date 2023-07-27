@@ -21,6 +21,7 @@ services:
       - ${PROJECT_PATH}/package-lock.json:/project/package-lock.json
       - ${PROJECT_PATH}/tsconfig.base.json:/project/tsconfig.base.json
       - ${PROJECT_PATH}/tsconfig.json:/project/tsconfig.json
+      - ${PROJECT_PATH}/packages/client/public/data:/var/www/public/data
     environment:
       - MODE=${MODE}
       - DATAPREP_IMPORT_FOLDER=${DATAPREP_IMPORT_FOLDER}
