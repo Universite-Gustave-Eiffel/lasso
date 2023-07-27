@@ -32,9 +32,10 @@ export const EmotionScatterPlot: FC<EmotionScatterPlotProps> = ({ value, pleasan
           {!isNil(pleasantValue) && !isNil(evenfulValue) && (
             <div
               className="point"
-              title={`${t("variable.emotion-pleasant")}: ${(pleasantValue * 10 - 5).toFixed(2)} ${t(
-                "variable.emotion-eventful",
-              )}: ${(evenfulValue * 10 - 5).toFixed(2)}`}
+              title={`${t("variable.pleasant")}: ${(pleasantValue * 10 - 5).toFixed(2)} ${t("variable.eventful")}: ${(
+                evenfulValue * 10 -
+                5
+              ).toFixed(2)}`}
               style={{
                 left: `${SQUARE_SIZE * pleasantValue + 5}px`, // +5 is for the margin
                 bottom: `${SQUARE_SIZE * evenfulValue + 5}px`,

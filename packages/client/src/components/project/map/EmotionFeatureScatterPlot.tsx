@@ -64,7 +64,7 @@ export const EmotionFeatureScatterPlot: FC<EmotionFeatureScatterPlotProps> = ({
     <>
       {value.eventful !== undefined && value.pleasant !== undefined && (
         <div>
-          <h6>{t("viz-panel.emotions")}</h6>
+          <h6>{t("Emotions plot")}</h6>
           <EmotionScatterPlot
             evenfulAxis={{
               arrow: true,

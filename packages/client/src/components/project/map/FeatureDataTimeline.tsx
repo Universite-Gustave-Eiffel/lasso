@@ -40,7 +40,7 @@ export const FeatureDataTimeline: FC<FeatureDataTimelineProps> = ({
 
   return (
     <div className="timelines-panel">
-      <h6>{t("viz-panel.time")}</h6>
+      <h6>{t("Over time")}</h6>
       <div className="timelines">
         {/* TODO: handle cases where no monthsLabel */}
         {toPairs(timeSpecification.monthsLabels || DEFAULT_MONTHS).map(([monthKey, monthLabel]) => {
