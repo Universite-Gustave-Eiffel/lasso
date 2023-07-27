@@ -19,10 +19,6 @@
       "data": "./layers/GeoAllInterp4326.geojson",
       "variables": {
         "acoustic_birds": "Birds"
-      },
-      "images": {
-        "csv":  "./layers/GeoAllInterp4326_images.csv",
-        "field":"fid"
       }
     },
     "GeoAll": {

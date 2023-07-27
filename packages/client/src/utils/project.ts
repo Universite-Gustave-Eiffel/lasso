@@ -55,14 +55,26 @@ export function getProjectVariables(
 }
 
 export function getMapProjectVariable(project: LoadedProject, map: IProjectMap): ProjectLayerVariable | null {
-  const projectVariables = getProjectVariables(project, map);
-
-  // Find the first layer id that match an available variable
   for (const layer of map.layers) {
-    const variable = projectVariables[layer.id];
-    if (variable) return variable;
+    // layer id should match a variable name of a source
+    const layerId = layer.id;
+    if (layer.type !== "background") {
+      const sourceId = layer.source;
+      const source = project.sources[sourceId];
+      if (source && source.type === "geojson" && source.variables) {
+        const variable = source.variables[layerId as SOUNDSCAPE_VARIABLES_TYPES];
+        if (variable) {
+          return {
+            variable: layerId as SOUNDSCAPE_VARIABLES_TYPES,
+            propertyName: isString(variable) ? variable : variable.propertyName,
+            minimumValue: isString(variable) ? 0 : variable.minimumValue,
+            maximumValue: isString(variable) ? 10 : variable.maximumValue,
+            featureExample: (source.data as any).features[0],
+          };
+        }
+      }
+    }
   }
-
   return null;
 }
 

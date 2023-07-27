@@ -211,9 +211,9 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
         compact
         customAttribution={
           project.data.pages.dataset
-            ? `<a href="#/project/${project.data.id}/dataset/" title="${t("page.dataset")}">
+            ? `<a href="#/project/${project.data.id}/dataset/" title="${t("Dataset")}">
                       <span style="font-size:.8em;">&#9432;</span>
-                      ${t("page.dataset")}
+                      ${t("Dataset")}
                     </a>`
             : undefined
         }

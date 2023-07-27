@@ -22,8 +22,7 @@
     "LdenMap": {
       "attribution": "Lorient Agglomeration - PPBE 2017",
       "type": "geojson",
-      "data": "./layers/Lden_4326.geojson",
-      "variables": {}
+      "data": "./layers/Lden_4326.geojson"
     }
   },
   "maps": [
@@ -37,7 +36,7 @@
           "source": "LdenMap",
           "beforeId": "building",
           "metadata": {
-            "interactive": true
+            "interactive": false
           },
           "type": "fill",
           "paint": {
@@ -48,7 +47,7 @@
               ],
               [
                 "get",
-                "low_lden"
+                "DB_Low"
               ],
               50,
               [
