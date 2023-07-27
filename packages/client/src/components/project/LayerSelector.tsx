@@ -19,8 +19,6 @@ const ProjectMapOption: FC<{ map: IProjectMap }> = ({ map }) => {
     [mapVariable, project],
   );
 
-  console.log(mapVariable);
-
   return (
     <div className="d-flex justify-content-between align-items-center">
       <div>{getI18NText(locale, map.name)}</div>
