@@ -13,10 +13,13 @@ export const LanguagePicker: FC = () => {
 
   useEffect(() => {
     setOptions(
-      languages.map((lang: { code: string; localized_name: string }) => ({
-        value: lang.code,
-        label: `${localeEmoji(lang.code)} ${lang.localized_name}`,
-      })),
+      languages
+        .map((lang: { code: string; localized_name: string }) => ({
+          value: lang.code,
+          label: `${localeEmoji(lang.code)} ${lang.localized_name}`,
+        }))
+        // en locale is only for dev
+        .filter((l: { value: string }) => l.value !== "en"),
     );
   }, [languages]);
 
