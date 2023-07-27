@@ -16,7 +16,9 @@ export const I18N: FC<PropsWithChildren> = ({ children }) => {
   const locale = useLocale();
 
   const getInitialLocal = useCallback(() => {
-    const availableLocales: string[] = languages.map((l: { code: string }) => l.code);
+    const availableLocales: string[] = languages
+      .filter((l: { code: string }) => l.code !== "en")
+      .map((l: { code: string }) => l.code);
 
     // taking locale strored in localstorage
     const localeInLS = localStorage.getItem("locale");
