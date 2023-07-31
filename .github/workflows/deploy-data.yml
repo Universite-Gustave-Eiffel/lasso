@@ -4,10 +4,10 @@ on:
   workflow_run:
     workflows: [CI-TEST]
     types: [completed]
-    branches: [main]
+    branches: [dev]
   push:
     branches:
-      - main
+      - dev
     paths:
       - "packages/dataprep/**"
       - "data/**"
