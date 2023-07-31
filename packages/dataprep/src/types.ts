@@ -1,7 +1,16 @@
-import { LayerSpecification, SourceSpecification } from "maplibre-gl";
+import {
+  LayerSpecification,
+  VectorSourceSpecification,
+  RasterSourceSpecification,
+  RasterDEMSourceSpecification,
+  GeoJSONSourceSpecification,
+} from "maplibre-gl";
 import { Style } from "mapbox-gl";
 
 export type BBOX = [[number, number], [number, number]];
+
+// can be a string (used for every locales) or an object with local/text
+export type StringI18n = string | { [key: string]: string };
 
 // TODO: featureIdentifier doesn't need to be a complex variable only a string.
 // also we might want to allow random variables on top of specific ones
@@ -29,15 +38,18 @@ export interface IProjectMap {
   /**
    * Name of the map
    */
-  name: string;
+  name: StringI18n;
   /**
    * Mapgl style specification to boostrap the map with
    */
   basemapStyle?: string | Style;
+
   /**
    * List of ordered layers IDS for the map
    * Layers will be drawn one of top oth the other folowwing the order (first = bottom).
    * If a style is provided the extra layers listed in this variable will be drawn on top of the style layers.
+   *
+   * @items { "type":"object", "additionalProperties": true, "properties": { "id": { "type":"string"  }, "beforeId": { "type":"string"  } }, "required":["id", "beforeId"] }
    */
   layers: Array<LayerSpecification & { beforeId: string }>;
 }
@@ -85,6 +97,9 @@ export interface TimeSeriesGeoJSONProperty {
 }
 [];
 
+/**
+ * @additionalProperties false
+ */
 export interface TimeSpecification {
   timestampPropertyName: string;
   hoursLabels?: Record<string, { label: { fr: string; en: string }; hours: [number, number] }>;
@@ -92,11 +107,25 @@ export interface TimeSpecification {
   monthsLabels?: Record<string, { label: { fr: string; en: string }; months: Month[] }>;
 }
 
-export type LassoSourceVariables = Partial<Record<SOUNDSCAPE_VARIABLES_TYPES, LayerVariable>>;
+/**
+ * @additionalProperties false
+ */
+export type LassoSourceVariables = Partial<Record<SOUNDSCAPE_VARIABLES_TYPES, LayerVariable | string>>;
+
+type SourceSpecification =
+  | Omit<GeoJSONSourceSpecification, "attribution">
+  | Omit<VectorSourceSpecification, "attribution">
+  | Omit<RasterSourceSpecification, "attribution">
+  | Omit<RasterDEMSourceSpecification, "attribution">;
 
 export type LassoSource = SourceSpecification & {
+  attribution?: StringI18n;
   variables?: LassoSourceVariables;
   timeSeries?: TimeSpecification;
+  images?: {
+    csv: string;
+    field: string;
+  };
 };
 
 interface IProject {
@@ -107,12 +136,12 @@ interface IProject {
   /**
    * Name of the project.
    */
-  name: string;
+  name: StringI18n;
   /**
    * A short description of the project in text only.
    * Will be used for the project's card.
    */
-  description?: Record<string, string>;
+  description?: StringI18n;
   /**
    * Image of the project that will be used to create the project card.
    * It's a relative path to the image.
@@ -143,7 +172,7 @@ interface IProject {
 }
 
 type IProjectFull = IProject & {
-  pages: { [key: string]: string };
+  pages: { [key: string]: StringI18n };
 };
 
 export type ImportProject = IProject;
@@ -153,4 +182,9 @@ export type Project = IProjectFull & { bbox: BBOX; color: string };
 export interface ExportedData {
   bbox: BBOX;
   projects: Array<Project>;
+}
+
+export interface LassoSourceImage {
+  path: string;
+  description?: StringI18n;
 }

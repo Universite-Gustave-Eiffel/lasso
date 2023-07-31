@@ -1,10 +1,10 @@
 import { FC } from "react";
 import cx from "classnames";
+import { useLocale, useT } from "@transifex/react";
+import { Link } from "react-router-dom";
 
 import { Project } from "@lasso/dataprep";
-import { useLocale, useT } from "@transifex/react";
-import { values } from "lodash";
-import { Link } from "react-router-dom";
+import { getI18NText } from "../../utils/i18n";
 
 interface AccordionProperties {
   projects: Array<Project>;
@@ -24,15 +24,19 @@ export const ProjectsAccordion: FC<AccordionProperties> = ({ projects, selected,
               type="button"
               onClick={() => setSelected(selected && selected.id === project.id ? null : project)}
             >
-              {project.name}
+              {getI18NText(locale, project.name)}
             </button>
           </h2>
           <div className={cx("accordion-collapse collapse", selected && selected.id === project.id && "show")}>
             <div className="accordion-body">
-              <p>{project.description && (project.description[locale] || values(project.description)[0])}</p>
+              <p>{project.description && getI18NText(locale, project.description)}</p>
               <div className="w-100 text-end">
-                <Link className="btn btn-primary" to={`/project/${project.id}`} title={project.name}>
-                  {t("Go to ")} {project.name}
+                <Link
+                  className="btn btn-primary"
+                  to={`/project/${project.id}`}
+                  title={getI18NText(locale, project.name)}
+                >
+                  {t("Go to ")} {getI18NText(locale, project.name)}
                 </Link>
               </div>
             </div>

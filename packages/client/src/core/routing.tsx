@@ -6,12 +6,14 @@ import { ErrorPage } from "../views/ErrorPage";
 import { NotFoundPage } from "../views/NotFoundPage";
 import { ProjectMapPage } from "../views/ProjectMapPage";
 import { ProjectContentPage } from "../views/ProjectContentPage";
+import { AboutPage } from "../views/AboutPage";
 
 export const Routing: FC = () => {
   return (
     <Routes>
       {/* Content pages */}
       <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutPage />} />
       <Route path="/project/:id" element={<ProjectMapPage />} />
       <Route path="/project/:id/:page" element={<ProjectContentPage />} />
 

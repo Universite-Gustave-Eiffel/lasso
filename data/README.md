@@ -195,6 +195,33 @@ A complete example of timeseries specification
 }
 ```
 
+#### Images
+
+You can add images to your geojson, by specifying a CSV file with those columns : `id, path, description`
+
+Where :
+
+- `id` : is the identifier in the geojson of the element
+- `path` : is the path to the image, relative to the project's `assets` folder
+- `description` (optional) : the description of the image
+
+You can define many rows with the same id, the application will do a gallery.
+If you want to localized the description, you can do it by adding column like `description_fr` for the french version.
+
+Then, you have to defined in the source the attributes `images` like that :
+
+```json
+"images": {
+  "csv":  "./layers/GeoAllInterp4326_images.csv",
+  "field": "fid"
+}
+```
+
+Where :
+
+- `csv` is the path to the CSV file, relative to the project's folder.
+- `field` : is the name of the field which is used to do the mapping with the `id` column of the CSV
+
 ### maps
 
 The maps section list the different maps a user can explore using lasso in your project.
@@ -228,3 +255,12 @@ When writing those specification it's important to keep in mind that:
 3. not to worry about time it will be handled automatically for you. Note that data value ranges must cover all time steps cases
 4. the `feature-state` will contain a `{"selected":true}` when selected
 5. the color scales your are defining in those specifications will be automatically reused to adapt the selected feature panel which acts as a legend.
+
+# I18N
+
+For markdown file (like project.md, dataset.md, ...) you can localize them by creating one file per locale, where the filename must follow this pattern : `filename.[locale].md` (ex: `project.en.md`, `project.fr.md`, ...)
+
+For label inside the `project.json` (like `description`, `name`, `attribution`), instead or just specify a string, you can create a map of key/value where keys are the locale and value the localized content.
+
+The application will take the content of the locale defined by the user.
+If the content does'nt exist, we take the english per default, and if there is no english version defined, we take the first one.

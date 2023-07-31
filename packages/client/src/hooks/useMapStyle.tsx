@@ -1,4 +1,5 @@
 import { Style } from "mapbox-gl";
+
 import { config } from "../config";
 import { useHttpGet } from "./useHttpGet";
 

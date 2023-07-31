@@ -1,28 +1,63 @@
-import { FC, useEffect, useState } from "react";
-
+import { FC, useEffect, useState, useCallback } from "react";
 import { useMap, MapRef } from "react-map-gl";
+import { useSearchParams } from "react-router-dom";
+import { debounce, toNumber } from "lodash";
+
+import { updateQueryParam } from "../../../utils/url";
 
 //TODO: simplify getting inspiration from https://github.com/visgl/react-map-gl/blob/7.0-release/examples/side-by-side/src/app.tsx
 
-function syncPosition(source: MapRef | undefined, target: MapRef | undefined) {
-  if (source && target) {
-    target.fitBounds(source.getBounds(), { animate: false, padding: 0 });
-    target.setPitch(source.getPitch(), { animate: false, padding: 0 });
-    target.setBearing(source.getBearing(), { animate: false, padding: 0 });
-    target.setCenter(source.getCenter(), { animate: false, padding: 0 });
-    target.setZoom(source.getZoom(), { animate: false, padding: 0 });
-    target.setPadding(source.getPadding(), { animate: false, padding: 0 });
-  }
-}
 export type SyncMapsModes = "single" | "side-by-side";
 type SyncMapsProps = {
   mode: SyncMapsModes;
 };
 
 export const SyncMaps: FC<SyncMapsProps> = ({ mode }) => {
-  //const [leftMap, setLocalMap] = useState<Map | null>(null);
+  const [searchParams, setSearchParam] = useSearchParams();
+  const debounceSetSearchParam = debounce(setSearchParam, 100);
   const [whoIsMoving, setWhoIsMoving] = useState<string | null>(null);
-  const { leftMap, rightMap } = useMap();
+  const { left, right } = useMap();
+
+  const syncPosition = useCallback(
+    (source: MapRef | undefined, target: MapRef | undefined) => {
+      if (source && target) {
+        target.fitBounds(source.getBounds(), { animate: false, padding: 0 });
+        target.setPitch(source.getPitch(), { animate: false, padding: 0 });
+        target.setBearing(source.getBearing(), { animate: false, padding: 0 });
+        target.setCenter(source.getCenter(), { animate: false, padding: 0 });
+        target.setZoom(source.getZoom(), { animate: false, padding: 0 });
+        target.setPadding(source.getPadding(), { animate: false, padding: 0 });
+      }
+
+      // Sync with URL
+      updateQueryParam(
+        debounceSetSearchParam,
+        searchParams,
+        "view",
+        `${source?.getCenter().lat}|${source?.getCenter().lng}|${source?.getZoom()}`,
+        true,
+      );
+    },
+    [debounceSetSearchParam, searchParams],
+  );
+
+  /**
+   * When url change, check the map's view state
+   */
+  useEffect(() => {
+    const viewString = searchParams.get("view");
+    if (right && viewString) {
+      const data = viewString.split("|").map((v) => toNumber(v));
+      if (data.length === 3) {
+        const mapCenter = right.getCenter();
+        const mapZoom = right.getZoom();
+        if (mapCenter.lat !== data[0] || mapCenter.lng !== data[1] || mapZoom !== data[2]) {
+          right.jumpTo({ center: { lat: data[0], lng: data[1] }, zoom: data[2] });
+          if (left) left.jumpTo({ center: { lat: data[0], lng: data[1] }, zoom: data[2] });
+        }
+      }
+    }
+  }, [searchParams, right, left]);
 
   /**
    * When mode change
@@ -31,22 +66,22 @@ export const SyncMaps: FC<SyncMapsProps> = ({ mode }) => {
    */
   useEffect(() => {
     if (mode === "single") {
-      if (rightMap && rightMap) rightMap.resize();
-      //if (leftMap) leftMap.resize();
+      if (right && right) right.resize();
+      //if (left) left.resize();
     } else {
-      if (rightMap && rightMap) rightMap.resize();
-      if (leftMap && leftMap) leftMap.resize();
+      if (right && right) right.resize();
+      if (left && left) left.resize();
     }
-  }, [mode, rightMap, leftMap]);
+  }, [mode, right, left]);
 
   /**
    * When maps are loaded fitBounds
    */
   useEffect(() => {
-    if (leftMap && rightMap) {
-      leftMap.fitBounds(rightMap.getBounds(), { duration: 1000 });
+    if (left && right) {
+      left.fitBounds(right.getBounds(), { duration: 1000 });
     }
-  }, [leftMap, rightMap]);
+  }, [left, right]);
 
   /**
    * Listen to movestart/moveend events to know who is moving.
@@ -57,25 +92,25 @@ export const SyncMaps: FC<SyncMapsProps> = ({ mode }) => {
     const fnLocalEnd = () => setWhoIsMoving((prev) => (prev === "local" ? null : prev));
     const fnSyncEnd = () => setWhoIsMoving((prev) => (prev === "sync" ? null : prev));
 
-    if (leftMap) {
-      leftMap.on("movestart", fnLocalStart);
-      leftMap.on("moveend", fnLocalEnd);
+    if (left) {
+      left.on("movestart", fnLocalStart);
+      left.on("moveend", fnLocalEnd);
     }
-    if (rightMap) {
-      rightMap.on("movestart", fnSyncStart);
-      rightMap.on("moveend", fnSyncEnd);
+    if (right) {
+      right.on("movestart", fnSyncStart);
+      right.on("moveend", fnSyncEnd);
     }
     return () => {
-      if (leftMap) {
-        leftMap.off("movestart", fnLocalStart);
-        leftMap.off("moveend", fnLocalEnd);
+      if (left) {
+        left.off("movestart", fnLocalStart);
+        left.off("moveend", fnLocalEnd);
       }
-      if (rightMap) {
-        rightMap.off("movestart", fnSyncStart);
-        rightMap.off("moveend", fnSyncEnd);
+      if (right) {
+        right.off("movestart", fnSyncStart);
+        right.off("moveend", fnSyncEnd);
       }
     };
-  }, [leftMap, rightMap]);
+  }, [left, right]);
 
   /**
    * Listen on the provided map move event
@@ -83,19 +118,19 @@ export const SyncMaps: FC<SyncMapsProps> = ({ mode }) => {
    */
   useEffect(() => {
     const syncLocal = () => {
-      if (whoIsMoving === "sync") syncPosition(rightMap, leftMap);
+      if (whoIsMoving === "sync") syncPosition(right, left);
     };
     const syncMap = () => {
-      if (whoIsMoving === "local") syncPosition(leftMap, rightMap);
+      if (whoIsMoving === "local") syncPosition(left, right);
     };
 
-    if (rightMap) rightMap.on("move", syncLocal);
-    if (leftMap) leftMap.on("move", syncMap);
+    if (right) right.on("move", syncLocal);
+    if (left) left.on("move", syncMap);
     return () => {
-      if (rightMap) rightMap.off("move", syncLocal);
-      if (leftMap) leftMap.off("move", syncMap);
+      if (right) right.off("move", syncLocal);
+      if (left) left.off("move", syncMap);
     };
-  }, [rightMap, leftMap, whoIsMoving]);
+  }, [right, left, whoIsMoving, syncPosition]);
 
-  return <></>;
+  return null;
 };

@@ -3,7 +3,8 @@ name: I18N
 on:
   push:
     branches:
-      - dev
+      - main
+
     paths:
       - "packages/client/**"
 

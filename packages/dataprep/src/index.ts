@@ -1,4 +1,5 @@
 import { sortBy } from "lodash";
+import * as path from "path";
 
 import { config } from "./config";
 import * as fsu from "./utils/files";
@@ -14,19 +15,33 @@ export {
   TimeSpecification,
   SOUNDSCAPE_VARIABLES_TYPES,
   LassoSourceVariables,
+  LayerVariable,
+  LassoSourceImage,
 } from "./types";
 
 async function run(): Promise<void> {
+  // Export/copy about markdown files
+  const mdFiles = await fsu.listFolder(config.importPath, { extension: ".md" });
+  await Promise.all(
+    mdFiles.map(async (file) => {
+      const filename = path.basename(file);
+      await fsu.copy(file, path.resolve(config.exportPath, filename));
+    }),
+  );
+
   // List project folders in the import folder
   const folders = await fsu.listFolder(config.importPath, {
     onlyFolder: true,
   });
 
-  // For all projects sorted by their name, we parse them
-  const projects = await Promise.all(sortBy(folders).map((p) => importProjectFromPath(p)));
-
-  // Export each project
-  const projectsExport = await Promise.all(projects.map((p) => exportProject(p)));
+  const projectsExport = await Promise.all(
+    sortBy(folders).map(async (folder) => {
+      // parse the project
+      const project = await importProjectFromPath(folder);
+      // export it
+      return await exportProject(project, folder);
+    }),
+  );
 
   const exportObj: ExportedData = {
     bbox: metaBbox(projectsExport.map((p) => p.bbox)),
@@ -39,5 +54,8 @@ async function run(): Promise<void> {
 
 console.log("Starting dataprep");
 run()
-  .then(() => console.log("Success", config.exportPath))
+  .then(() => {
+    console.log(`Success !`);
+    console.log(`Files have been generated in ${config.exportPath}`);
+  })
   .catch((e) => console.log("Error", e));

@@ -1,37 +1,50 @@
 import * as path from "path";
-import { GeoJSON } from "geojson";
+import { groupBy, toPairs, isString, fromPairs, values } from "lodash";
+import shortHash from "shorthash2";
+import { Feature, GeoJSON, GeoJsonProperties, Geometry } from "geojson";
 
 import { config } from "../config";
-import { ImportProject, InternalProject, LassoSource, Project } from "../types";
+import { ImportProject, InternalProject, LassoSource, Project, LassoSourceImage } from "../types";
 import * as schema from "../json-schema.json";
 import * as fsu from "./files";
-import { outerBbox, checkGeoJsonSource } from "./geojson";
+import { outerBbox, readGeoJsonFile } from "./geojson";
 import { readMarkdownFile } from "./markdown";
 import { getRandomHexColor } from "./color";
-import { fromPairs, toPairs, values } from "lodash";
 
 /**
  * Given a folder, do the job to import internally the project.
  */
 export async function importProjectFromPath(projectFolderPath: string): Promise<InternalProject> {
   // Read the index.json file and validate it
-  const project = await fsu.readJson<ImportProject>(`${projectFolderPath}/index.json`, {
-    ...schema,
-    ["$ref"]: "#/definitions/ImportProject",
-  });
+  const project = await fsu.readJson<ImportProject>(`${projectFolderPath}/index.json`, schema);
 
   // List md files for static pages
   const markdownFiles = await fsu.listFolder(projectFolderPath, { extension: ".md" });
-  if (!markdownFiles.find((p) => p.endsWith("/project.md")))
-    throw new Error(`Project page is missing for ${project.name}`);
+  const filenameRegex = /([^.]*)(\.([a-zA-Z]{2}))?/;
   const pages = (
     await Promise.all(
-      markdownFiles.map(async (f) => ({
-        name: fsu.getFilenameFromPath(f),
-        content: await readMarkdownFile(f),
-      })),
+      markdownFiles.map(async (f) => {
+        const filename = fsu.getFilenameFromPath(f);
+        const content = await readMarkdownFile(f);
+
+        const groups = filename.match(filenameRegex);
+        if (groups) {
+          const name = groups?.length > 3 ? groups[1] : filename;
+          const locale = groups?.length > 3 && groups[3] ? groups[3] : "default";
+          return { name, content, locale };
+        }
+        return { name: filename, content, locale: "default" };
+      }),
     )
-  ).reduce((acc, curr) => ({ ...acc, [curr.name]: curr.content }), {} as { [key: string]: string });
+  ).reduce((acc, curr) => {
+    return {
+      ...acc,
+      [curr.name]: {
+        ...(acc[curr.name] || {}),
+        [curr.locale]: curr.content,
+      },
+    };
+  }, {} as { [key: string]: { [key: string]: string } });
 
   // change relative local map style path to absolute path
   const maps = await Promise.all(
@@ -61,31 +74,24 @@ export async function importProjectFromPath(projectFolderPath: string): Promise<
     sources: fromPairs(
       await Promise.all(
         toPairs(project.sources).map(async ([id, source]): Promise<[id: string, source: LassoSource]> => {
-          if (source.type === "geojson" && source.data) {
-            const geojsonData = await checkGeoJsonSource(source, projectFolderPath);
-
-            return [id, { ...source, data: geojsonData } as LassoSource];
-          }
-          return [id, source];
+          return [id, await transformLassoSource(source, projectFolderPath)];
         }),
       ),
     ),
-
     pages,
   };
 }
 
-export async function exportProject(project: InternalProject): Promise<Project> {
+export async function exportProject(project: InternalProject, sourceFolder: string): Promise<Project> {
   // Create the  folder
   // ~~~~~~~~~~~~~~~~~~
   const projectFolder = path.resolve(config.exportPath, project.id);
   await fsu.createFolder(projectFolder);
   const projectUrl = path.join(process.env.PUBLIC_URL || "", "/", path.basename(config.exportPath), project.id);
-  //`${projectFolder.replace(path.resolve(config.exportPath), ".")}/`
 
   // Copy asset folder if needed
-  if (await fsu.checkExists(path.resolve(config.importPath, "assets"))) {
-    await fsu.copy(path.resolve(config.importPath, "assets"), path.resolve(projectFolder, "assets"));
+  if (await fsu.checkExists(path.resolve(sourceFolder, "assets"))) {
+    await fsu.copy(path.resolve(sourceFolder, "assets"), path.resolve(projectFolder, "assets"));
   }
 
   // Project's image
@@ -99,25 +105,29 @@ export async function exportProject(project: InternalProject): Promise<Project> 
 
   // Create markdown files
   // ~~~~~~~~~~~~~~~~~~~~~
-  // TODO: change urls to images
-  const pages = { project: `${projectUrl}project.md` } as Project["pages"];
-  await fsu.writeFile(path.resolve(projectFolder, "project.md"), project.pages.project);
-  
-  if (project.pages.dataset) {
-    await fsu.writeFile(path.resolve(projectFolder, "dataset.md"), project.pages.dataset);
-    pages.dataset = `${projectUrl}dataset.md`;
-  }
+  const pages: Project["pages"] = {};
 
-  if (project.pages.sponsors) {
-    await fsu.writeFile(path.resolve(projectFolder, "sponsors.md"), project.pages.sponsors);
-    pages.sponsors = `${projectUrl}sponsors.md`;
-  }
+  await Promise.all(
+    ["project", "dataset", "sponsors", "bibliography"].map(async (name: string) => {
+      const page = project.pages[name];
 
-  if (project.pages.bibliography) {
-    await fsu.writeFile(path.resolve(projectFolder, "bibliography.md"), project.pages.bibliography);
-    pages.bibliography = `${projectUrl}bibliography.md`;
-  }
-  
+      if (page) {
+        if (isString(page)) {
+          await fsu.writeFile(path.resolve(projectFolder, `${name}.md`), page);
+          pages[name] = { default: `${name}.md` };
+        } else {
+          pages[name] = (
+            await Promise.all(
+              Object.keys(page).map(async (locale) => {
+                await fsu.writeFile(path.resolve(projectFolder, `${name}.${locale}.md`), page[locale]);
+                return { locale, url: `${name}.${locale}.md` };
+              }),
+            )
+          ).reduce((acc, current) => ({ ...acc, [current.locale]: current.url }), {} as { [key: string]: string });
+        }
+      }
+    }),
+  );
 
   // Create geojson files if needed
   // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -168,7 +178,7 @@ export async function exportProject(project: InternalProject): Promise<Project> 
     }),
   );
 
-  // Calculate BBOx from GeoJson
+  // Calculate BBOX from GeoJson
   const bbox =
     project.bbox ||
     outerBbox(
@@ -186,4 +196,179 @@ export async function exportProject(project: InternalProject): Promise<Project> 
     maps,
     pages,
   };
+}
+
+/**
+ * Transform a lasso source to source that can be exported.
+ * - if file is specified, takes its value
+ * - do the time aggregation
+ * - add lasso variables to the geojson properties
+ */
+async function transformLassoSource(source: LassoSource, projectFolderPath: string): Promise<LassoSource> {
+  if (source.type !== "geojson") return source;
+
+  const geojson =
+    typeof source.data === "string"
+      ? await readGeoJsonFile(`${projectFolderPath}/${source.data}`)
+      : (source.data as GeoJSON);
+
+  const validGeoJson = { ...geojson };
+
+  // if geojson is a feature collection with lasso variables
+  if (validGeoJson.type === "FeatureCollection" && source.variables !== undefined) {
+    // compute the image index of the source
+    const imagesIndex = await getSourceImageIndex(source, projectFolderPath);
+
+    // inner function to compute feature properties
+    const filterTransformProperties = (
+      properties: Record<string, unknown>,
+      withImage?: boolean,
+    ): Record<string, unknown> => {
+      const newProperties: Record<string, unknown> = {};
+      // add image
+      if (withImage && source.images && properties[source.images.field]) {
+        const images = imagesIndex[`${properties[source.images.field]}`];
+        newProperties.images = images;
+      }
+      // map lasso variables
+      toPairs(source.variables).forEach(([variableName, v]) => {
+        const featureName = typeof v === "string" ? v : v.propertyName;
+        if (properties && properties[featureName] !== undefined) newProperties[variableName] = properties[featureName];
+      });
+      return newProperties;
+    };
+
+    const nbFeaturesByVariables: { [key: string]: number } = {};
+
+    validGeoJson.features = toPairs(groupBy(validGeoJson.features, (f) => shortHash(JSON.stringify(f.geometry)))).map(
+      ([key, features]) => {
+        // check variables
+        features.forEach((f) =>
+          toPairs(source.variables).forEach(([variableName, v]) => {
+            const featureName = typeof v === "string" ? v : v.propertyName;
+            if (f.properties && f.properties[featureName] !== undefined)
+              nbFeaturesByVariables[variableName] = (nbFeaturesByVariables[variableName] || 0) + 1;
+          }),
+        );
+
+        const aggregatedFeature: Feature<Geometry, GeoJsonProperties> = {
+          id: key,
+          type: features[0].type,
+          geometry: features[0].geometry,
+          properties: { id: key },
+        };
+
+        if (source.timeSeries !== undefined) {
+          const propertiesInTime: Record<string, Record<string, unknown>> = {};
+          const timestampPropertyName = source.timeSeries.timestampPropertyName;
+          features.forEach((f) => {
+            let timeKey = "default";
+            if (f.properties) {
+              if (f.properties[timestampPropertyName]) {
+                const featureDate = new Date(f.properties[timestampPropertyName]);
+                const labelsKeys = [];
+                if (source.timeSeries?.monthsLabels) {
+                  const month = featureDate.getMonth();
+                  const monthLabel = toPairs(source.timeSeries.monthsLabels).find(([, ml]) =>
+                    ml.months.includes(month),
+                  );
+                  if (monthLabel) labelsKeys.push(monthLabel[0]);
+                }
+                if (source.timeSeries?.daysLabels) {
+                  const day = featureDate.getDay() + 1; //0-inded day in JS, we use 1-indexed list in types
+                  const dayLabel = toPairs(source.timeSeries.daysLabels).find(([, hl]) => hl.weekDays.includes(day));
+                  if (dayLabel) labelsKeys.push(dayLabel[0]);
+                }
+                if (source.timeSeries?.hoursLabels) {
+                  const hours = featureDate.getHours();
+                  const hourlabel = toPairs(source.timeSeries.hoursLabels).find(([, hl]) => {
+                    const start = hl.hours[0];
+                    const end = hl.hours[1];
+                    if (start < end) return start <= hours && hours <= end;
+                    // crosses midnight
+                    else return start <= hours || hours <= end;
+                  });
+                  if (hourlabel) labelsKeys.push(hourlabel[0]);
+                }
+                if (labelsKeys.length > 0) {
+                  // tag with the proper timeSeries keys
+                  //TODO: share timekey generation method with client
+                  timeKey = labelsKeys.join("|");
+                }
+              } else {
+                // case of a static features for which there is no time key
+                // Use it as default value
+                timeKey = "static";
+              }
+
+              //finally index features values with appropriate time key
+              propertiesInTime[timeKey] = filterTransformProperties(
+                f.properties,
+                timeKey === "static" || timeKey === "default",
+              );
+            }
+            // no properties => ignore it
+          });
+          // END FOREACH FEATURES
+          aggregatedFeature.properties = {
+            // use static as default values
+            id: key,
+            ...filterTransformProperties(propertiesInTime["static"] || features[0].properties, true),
+            ...propertiesInTime,
+          };
+        } else {
+          aggregatedFeature.properties = { id: key, ...filterTransformProperties(features[0].properties || {}, true) };
+        }
+
+        return aggregatedFeature;
+      },
+    );
+
+    //check variables presence in features
+    toPairs(source.variables).map(([variableName, v]) => {
+      const featureName = typeof v === "string" ? v : v.propertyName;
+      if (!nbFeaturesByVariables[variableName])
+        throw new Error(`The ${featureName} GeoJson property does not exist. Required for ${variableName} variable.`);
+      else if (nbFeaturesByVariables[variableName] <= 5)
+        console.warn(
+          `The ${featureName} GeoJson is only set in ${nbFeaturesByVariables[variableName]} features. Needed for ${variableName} variable.`,
+        );
+    });
+  }
+  return { ...source, data: validGeoJson };
+}
+
+async function getSourceImageIndex(
+  source: LassoSource,
+  projectFolderPath: string,
+): Promise<{ [key: string]: LassoSourceImage[] }> {
+  if (source.images) {
+    const csvContent = await fsu.readCsv<LassoSourceImage & { id: string } & { [key: string]: string }>(
+      `${projectFolderPath}/${source.images.csv}`,
+    );
+
+    return csvContent.reduce((acc, curr) => {
+      const id = curr.id;
+      const file = {
+        path: curr.path,
+        description:
+          curr.description ||
+          Object.keys(curr)
+            .filter((k) => k.startsWith("description_"))
+            .reduce((acc, value) => {
+              if (curr[value]) {
+                const locale = value.replace("description_", "");
+                acc[locale] = curr[value];
+              }
+              return acc;
+            }, {} as { [key: string]: string }),
+      };
+      return {
+        ...acc,
+        [id]: acc[id] ? [...acc[id], file] : [file],
+      };
+    }, {} as { [key: string]: LassoSourceImage[] });
+  }
+
+  return {};
 }

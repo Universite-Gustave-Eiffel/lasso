@@ -105,7 +105,6 @@
       "variables": {
         "emotion_pleasant": {
           "propertyName": "Agr_Mean",
-          "type": "quantitative",
           "minimumValue": 0,
           "maximumValue": 10
         },

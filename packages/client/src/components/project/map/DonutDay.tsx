@@ -1,18 +1,19 @@
-import { Dispatch, FC, Fragment, SetStateAction } from "react";
+import { FC, Fragment } from "react";
 import { Feature } from "geojson";
 import { keys, round, sortBy } from "lodash";
 
-import { SOUNDSCAPE_VARIABLES_TYPES, TimeSpecification } from "@lasso/dataprep";
+import { TimeSpecification } from "@lasso/dataprep";
 import withSize, { SizeState } from "../../WithSize";
-import { useCurrentProject } from "../../../hooks/useProject";
+import { ProjectLayerVariable } from "../../../utils/project";
+import { useCurrentProject } from "../../../hooks/useCurrentProject";
 
 export interface DonutDayProps {
-  timelineKey: string;
+  timelineKeys: string[];
   timeSpecification: TimeSpecification;
   feature: Feature;
-  setCurrentTimeKey: Dispatch<SetStateAction<string | null>>;
-  currentTimeKey: string | null;
-  layerId: string;
+  setCurrentTimeKey: (timeKey?: string) => void;
+  currentTimeKey?: string | null;
+  mapVariable: ProjectLayerVariable;
 }
 
 const PRECISION = 4;
@@ -48,12 +49,26 @@ export const DonutChart = withSize<{ segments: DonutSegment[]; onClick: (key: st
         <g transform={`translate(${height / 2} ${height / 2}) scale(-1 1)`}>
           {segments.map((segment) => (
             <Fragment key={segment.key}>
+              {segment.selected && (
+                <path
+                  style={{ cursor: "pointer" }}
+                  key={`${segment.key}-selected`}
+                  d={getCircleSlicePath(radius, segment.angleSize, segment.anglePosition)}
+                  stroke={"var(--bs-warning)"}
+                  strokeWidth={15}
+                  strokeLinejoin="miter"
+                  fill={"transparent"}
+                  onClick={() => onClick(segment.key)}
+                >
+                  <title>{segment.label}</title>
+                </path>
+              )}
               <path
                 style={{ cursor: "pointer" }}
                 key={segment.key}
                 d={getCircleSlicePath(radius, segment.angleSize, segment.anglePosition)}
                 stroke={segment.color}
-                strokeWidth={segment.selected ? 15 : 8}
+                strokeWidth={8}
                 fill={"transparent"}
                 onClick={() => onClick(segment.key)}
               >
@@ -92,14 +107,15 @@ const nbHoursInAngle = (nbHours: number): number => {
 };
 
 export const DonutDay: FC<DonutDayProps> = ({
-  timelineKey,
+  timelineKeys,
   timeSpecification,
   feature,
   setCurrentTimeKey,
   currentTimeKey,
-  layerId,
+  mapVariable,
 }) => {
-  const project = useCurrentProject();
+  const { project } = useCurrentProject();
+  const variable = mapVariable.variable;
 
   const timelineHoursKeys = timeSpecification.hoursLabels
     ? sortBy(
@@ -109,16 +125,16 @@ export const DonutDay: FC<DonutDayProps> = ({
     : [];
   const segments: DonutSegment[] = timelineHoursKeys
     .map((k) => {
-      const hoursKey = `${timelineKey}|${k}`;
+      const hoursKey = [...timelineKeys, k].join("|");
       const hoursLabel = timeSpecification.hoursLabels && timeSpecification.hoursLabels[k];
 
-      const hoursValue = feature.properties && feature.properties[hoursKey] && feature.properties[hoursKey][layerId];
+      const hoursValue = feature.properties && feature.properties[hoursKey] && feature.properties[hoursKey][variable];
       const color =
         project &&
-        project.legendSpecs &&
-        project.legendSpecs[layerId as SOUNDSCAPE_VARIABLES_TYPES]?.colorStyleExpression?.evaluate(
+        project.data.legendSpecs &&
+        project.data.legendSpecs[variable]?.colorStyleExpression?.evaluate(
           { zoom: 14 },
-          { type: feature.type, geometry: feature.geometry, properties: { [layerId]: hoursValue } },
+          { type: feature.type, geometry: feature.geometry, properties: { [variable]: hoursValue } },
         );
 
       if (hoursLabel) {
@@ -144,7 +160,7 @@ export const DonutDay: FC<DonutDayProps> = ({
         wrapperClassName="donut-chart"
         segments={segments}
         onClick={(hoursKey: string) => {
-          setCurrentTimeKey((prev) => (prev === hoursKey ? null : hoursKey));
+          setCurrentTimeKey(currentTimeKey === hoursKey ? undefined : hoursKey);
         }}
       />
     </div>

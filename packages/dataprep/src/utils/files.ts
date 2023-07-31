@@ -2,6 +2,8 @@ import Ajv, { Schema } from "ajv";
 import { promises as fsp } from "fs";
 import * as fs from "fs";
 import * as path from "path";
+import { decodeStream } from "iconv-lite";
+import papa from "papaparse";
 
 /**
  * Create a folder at the specified location.
@@ -79,6 +81,10 @@ export async function readFile(file: string): Promise<string> {
  */
 export async function readJson<T>(file: string, schema?: Schema, stopOnErrors?: boolean): Promise<T> {
   try {
+    // remove old validation error file if it exists
+    const validationErrorFile = `${path.dirname(file)}/validation_errors.json`;
+    await remove(validationErrorFile);
+
     const data = await readFile(file);
     const json = JSON.parse(data);
     if (schema) {
@@ -86,15 +92,13 @@ export async function readJson<T>(file: string, schema?: Schema, stopOnErrors?: 
       const validateJson = await ajv.compile(schema);
       if (!validateJson(json)) {
         if (validateJson.errors) {
-          const errorsAsString = `Validation fails with errors:
-          ${validateJson.errors.map((e) => JSON.stringify(e, null, 2)).join("\n")}`;
-
+          const errorsAsString = validateJson.errors.map((e) => JSON.stringify(e, null, 2)).join("\n");
+          await writeFile(validationErrorFile, errorsAsString);
           if (stopOnErrors) throw new Error(errorsAsString);
           else {
             console.log(
               `/!\\ ${file}: ${validateJson.errors.length} validation errors wrote in validation_errors.json`,
             );
-            //TODO: write errors in log file to be ignored by watch await writeFile(`${path.basename(file).split('.')[0]}_validation_errors.json", errorsAsString);
           }
         } else if (stopOnErrors) throw new Error("Validation fails");
       }
@@ -105,12 +109,42 @@ export async function readJson<T>(file: string, schema?: Schema, stopOnErrors?: 
   }
 }
 
+export async function readCsv<T>(file: string, delimiter = ","): Promise<Array<T>> {
+  if (!(await checkExists(file))) throw new Error(`File ${file} is missing, can't read it`);
+  return new Promise((resolve, reject) => {
+    // ensure decoding see https://github.com/mholt/PapaParse/issues/908
+    const streamDecoder = decodeStream("UTF8");
+    const fileStream = fs.createReadStream(path.resolve(file)).pipe(streamDecoder);
+    papa.parse<T>(fileStream, {
+      delimiter,
+      header: true,
+      encoding: "utf-8",
+      skipEmptyLines: true,
+      error: (e) => reject(e),
+      complete: (results) => {
+        if (results.errors && results.errors.length > 0) {
+          reject(`Failed to parse CSV file ${file} : ${results.errors.map((e) => e.message).join(", ")}`);
+        }
+        resolve(results.data);
+      },
+    });
+  });
+}
+
 export async function copy(source: string, target: string): Promise<void> {
-  await fsp.copyFile(source, target);
+  if (fs.lstatSync(source).isDirectory()) await fsp.cp(source, target, { recursive: true });
+  else await fsp.copyFile(source, target);
 }
 
 export function getFilenameFromPath(filePath: string): string {
   const name1 = path.basename(filePath);
   const ext1 = path.extname(filePath);
   return path.basename(name1, ext1);
+}
+
+/**
+ * Remove a file if it exists
+ */
+export async function remove(file: string): Promise<void> {
+  if (fs.existsSync(file)) await fs.promises.rm(file);
 }

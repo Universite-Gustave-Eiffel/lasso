@@ -9,7 +9,7 @@ fi
 echo "(i) Npm version is $(npm -v)"
 echo "(i) Node version is $(node -v)"
 env
-chmod -R 777 /var/www/public
+sudo chmod -R 777 /var/www/public
 
 echo
 echo " ~"
@@ -25,7 +25,7 @@ if [ "$MODE" = "dev" ]; then
   echo " ~ Start the web server"
   echo " ~"
   echo
-  nginx -c /etc/nginx/nginx.conf
+  sudo nginx -c /etc/nginx/nginx.conf
 
   echo
   echo " ~"
@@ -54,5 +54,5 @@ else
   echo " ~ Run nginx"
   echo " ~"
   echo
-  nginx -g 'daemon off;'
+  sudo nginx -g 'daemon off;'
 fi

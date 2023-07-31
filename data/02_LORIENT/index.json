@@ -12,16 +12,8 @@
       "type": "geojson",
       "data": "./layers/resultGrid2.geojson",
       "variables": {
-        "emotion_pleasant": {
-          "propertyName": "meanAgr",
-          "type": "quantitative",
-          "origin": "model"
-        },
-        "emotion_eventful": {
-          "propertyName": "meanAni",
-          "type": "quantitative",
-          "origin": "model"
-        },
+        "emotion_pleasant": "meanAgr",
+        "emotion_eventful": "meanAni",
         "acoustic_trafic": "meanTra",
         "acoustic_birds": "meanBrd",
         "acoustic_voices": "meanCaV"
@@ -30,11 +22,7 @@
     "LdenMap": {
       "attribution": "Lorient Agglomeration - PPBE 2017",
       "type": "geojson",
-      "data": "./layers/Lden_4326.geojson",
-      "variables": {
-        "low_lden": "DB_LO",
-        "high_lden": "DB_HI"
-      }
+      "data": "./layers/Lden_4326.geojson"
     }
   },
   "maps": [
@@ -48,7 +36,7 @@
           "source": "LdenMap",
           "beforeId": "building",
           "metadata": {
-            "interactive": true
+            "interactive": false
           },
           "type": "fill",
           "paint": {
@@ -59,7 +47,7 @@
               ],
               [
                 "get",
-                "low_lden"
+                "DB_LO"
               ],
               50,
               [

@@ -3,9 +3,15 @@
   "page.sponsors": "Sponsors",
   "page.dataset": "Dataset",
   "page.bibliography": "Bibliography",
-  "variable.acoustic-birds": "Birds",
-  "variable.acoustic-voices": "Voices",
-  "variable.acoustic-trafic": "Trafic",
-  "variable.acoustic-soundLevel": "Sound level",
-  "variable.acoustic-soundlevel": "Sound level"
+  "variable.acoustic_birds": "Birds",
+  "variable.acoustic_voices": "Voices",
+  "variable.acoustic_trafic": "Trafic",
+  "variable.acoustic_soundlevel": "Sound level",
+  "variable.eventful": "Eventful",
+  "variable.calm": "Calm",
+  "variable.pleasant": "Pleasant",
+  "variable.unpleasant": "Unpleasant",
+  "time.selector.monthsLabels":"Month",
+  "time.selector.daysLabels":"Day",
+  "time.selector.hoursLabels":"Time"
 }
