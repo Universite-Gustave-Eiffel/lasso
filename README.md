@@ -30,6 +30,27 @@ docker compose -p Lasso -f docker-compose.yml up
 
 ## Development
 
+### with node
+
+First you need node and npm. We recommend using [`nvm`](https://github.com/nvm-sh/nvm#install--update-script) to handle node/npm versions.
+Once nvm is installed, set up the dev environnement:
+```
+nvm install 16
+nvm use 16
+npm i
+```
+
+Start the project:
+```
+npm run start
+```
+
+This command starts the dataprep and the client in watch mode. The project is automatically rebuilt/restarted at each file modification.
+
+Once started the project is available at [http://localhost:3000](http://localhost:3000)
+
+### docker
+
 For enhancing the code, one can also use docker to run the stack locally:
 
 ```bash
