@@ -20,6 +20,9 @@ export {
 } from "./types";
 
 async function run(): Promise<void> {
+  // make sure destination exists
+  await fsu.createFolder(config.exportPath);
+  
   // Export/copy about markdown files
   const mdFiles = await fsu.listFolder(config.importPath, { extension: ".md" });
   await Promise.all(
