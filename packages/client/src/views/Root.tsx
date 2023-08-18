@@ -7,7 +7,7 @@ import { I18N } from "../core/i18n";
 
 const Root: FC = () => {
   return (
-    <HashRouter basename={process.env.PUBLIC_URL}>
+    <HashRouter>
       <I18N>
         <AppContextProvider>
           <Routing />
