@@ -6,6 +6,7 @@ import { Routing } from "../core/routing";
 import { I18N } from "../core/i18n";
 
 const Root: FC = () => {
+  console.log(process.env.PUBLIC_URL);
   return (
     <HashRouter basename={process.env.PUBLIC_URL}>
       <I18N>

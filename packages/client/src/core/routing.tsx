@@ -12,7 +12,6 @@ export const Routing: FC = () => {
   return (
     <Routes>
       {/* Content pages */}
-      <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/project/:id" element={<ProjectMapPage />} />
       <Route path="/project/:id/:page" element={<ProjectContentPage />} />
@@ -20,6 +19,9 @@ export const Routing: FC = () => {
       {/* Error pages: */}
       <Route path="/error" element={<ErrorPage />} />
       <Route path="/404" element={<NotFoundPage />} />
+
+      <Route path="/" element={<HomePage />} />
+
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
