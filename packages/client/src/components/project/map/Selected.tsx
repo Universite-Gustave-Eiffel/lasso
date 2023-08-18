@@ -3,7 +3,7 @@ import { Marker, Popup } from "react-map-gl";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { useLocale, useT } from "@transifex/react";
 
-import { LassoSourceImage } from "@lasso/dataprep";
+import { LassoSourceAsset } from "@lasso/dataprep";
 import { getI18NText } from "../../../utils/i18n";
 import { useCurrentProject } from "../../../hooks/useCurrentProject";
 import { FeatureDataPanel } from "./FeatureDataPanel";
@@ -12,10 +12,12 @@ export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
   const locale = useLocale();
   const t = useT();
   const { project, setProjectMapSelection } = useCurrentProject();
-  const selected = useMemo(() => project.maps[mapId].selected, [project, mapId]);
-  const [images, setImages] = useState<Array<LassoSourceImage>>([]);
+
+  const [images, setImages] = useState<Array<LassoSourceAsset>>([]);
   const [opened, setOpened] = useState<boolean>(true);
   const [imageIndex, setImageIndex] = useState<number>(0);
+
+  const selected = useMemo(() => project.maps[mapId].selected, [project, mapId]);
 
   const removeSelection = useCallback(() => {
     setProjectMapSelection(mapId, undefined);
@@ -23,6 +25,8 @@ export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
 
   useEffect(() => {
     setOpened(true);
+
+    // handle image
     if (selected && selected.feature.properties) {
       setImages(selected.feature.properties["images"] || []);
     } else {
@@ -51,7 +55,7 @@ export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
               maxWidth={"50%"}
             >
               <div className="d-flex flex-column">
-                {images.length > 0 && (
+                {images.length > 1 && (
                   <div className="d-flex justify-content-center mb-3">
                     <button
                       className="btn btn-primary mx-1"
@@ -82,7 +86,7 @@ export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
                 <div>
                   <img
                     className="img-fluid"
-                    src={`/data/${project.data.id}/assets/${images[imageIndex].path}`}
+                    src={`./data/${project.data.id}/assets/${images[imageIndex].path}`}
                     alt={getI18NText(locale, images[imageIndex].description)}
                   />
                   {images[imageIndex].description && (

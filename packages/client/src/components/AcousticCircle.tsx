@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { IconType } from "react-icons";
 import cx from "classnames";
+import { isNil } from "lodash";
 import { useT } from "@transifex/react";
 
 interface AcousticCircleProps {
@@ -16,7 +17,7 @@ export const AcousticCircle: FC<AcousticCircleProps> = ({ icon, color, label, ma
   const percent = value ? (value / max) * 100 : 0;
 
   return (
-    <div className={cx("d-flex align-items-center p-1", !value && "opacity-25")}>
+    <div className={cx("d-flex align-items-center p-1", isNil(value) && "opacity-25")}>
       <div
         className={`acoustic-circle`}
         style={{
@@ -28,7 +29,7 @@ export const AcousticCircle: FC<AcousticCircleProps> = ({ icon, color, label, ma
       </div>
       <label className="d-flex flex-column ms-1">
         <div>{label}</div>
-        <div>{value ? value.toFixed(2) : "?"}</div>
+        <div>{!isNil(value) ? value.toFixed(2) : "?"}</div>
       </label>
     </div>
   );

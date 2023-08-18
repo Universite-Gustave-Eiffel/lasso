@@ -159,6 +159,7 @@ export const useLoadProject = (id?: string): { project: LoadedProject | null; lo
                   map: map,
                   timeSpecification: getMapProjectTimeSpec(project, map),
                   lassoVariable: getMapProjectVariable(project, map),
+                  muted: false,
                 },
               };
             })

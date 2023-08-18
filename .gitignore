@@ -6,3 +6,4 @@ tsconfig.tsbuildinfo
 coverage
 *.swp
 packages/client/public/data
+.vscode/

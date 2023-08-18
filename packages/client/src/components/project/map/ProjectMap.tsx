@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import Map, {
   NavigationControl,
   LngLatBoundsLike,
@@ -10,7 +10,7 @@ import Map, {
 } from "react-map-gl";
 import maplibregl from "maplibre-gl";
 import { mapValues, omit, omitBy, toPairs } from "lodash";
-import { AnyLayer } from "mapbox-gl";
+import { AnyLayer, MapLayerMouseEvent } from "mapbox-gl";
 import { FeatureCollection } from "geojson";
 import { useLocale, useT } from "@transifex/react";
 import { useSearchParams } from "react-router-dom";
@@ -20,6 +20,7 @@ import { getI18NText } from "../../../utils/i18n";
 import { ResetControl } from "./ResetControl";
 import { ProjectMapBoundingBox } from "./ProjectMapBoundingBox";
 import { TimeSelectorControl } from "./TimeSelectorControl";
+import { SoundControl } from "./SoundControl";
 import { Selected } from "./Selected";
 
 export interface ProjectMapProps {
@@ -134,7 +135,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
           type={source.type}
           {...({
             // removing Lasso specific properties
-            ...omit(source, ["variables", "timeSeries", "type", "attribution", "images"]),
+            ...omit(source, ["variables", "timeSeries", "type", "attribution", "images", "sounds"]),
             attribution: source.attribution ? getI18NText(locale, source.attribution) : "",
             // data used are in priority the time-aware ones or the original ones
             ...(source.type === "geojson" ? { data: timedSourcesData[sourceId] || source.data } : {}),
@@ -144,10 +145,36 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
     });
   }, [project.data.sources, timedSourcesData, locale]);
 
-  // render layout
+  /*
+   * render layout
+   */
   const layers = useMemo(() => {
     return project.maps[mapId].map.layers.map((l) => <Layer key={`${locale}-${l.id}`} {...(l as AnyLayer)} />);
   }, [project.maps, mapId, locale]);
+
+  const getFeatureOnMouseEvent = useCallback(
+    (e: MapLayerMouseEvent) => {
+      if (e.features?.length) {
+        const selectedFeature = e.features[0];
+        if (
+          selectedFeature.layer.source &&
+          typeof selectedFeature.layer.source === "string" &&
+          selectedFeature.properties &&
+          selectedFeature.properties.id
+        ) {
+          // get the feature in the index by its id
+          const f = project.data.featureIndex[`${selectedFeature.properties.id}`];
+          if (f)
+            return {
+              source: selectedFeature.layer.source,
+              feature: f,
+            };
+        }
+      }
+      return null;
+    },
+    [project.data.featureIndex],
+  );
 
   return (
     <Map
@@ -159,26 +186,15 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
         setMapLoaded(true);
       }}
       onClick={(e) => {
-        if (e.features?.length) {
-          const selectedFeature = e.features[0];
-          if (
-            selectedFeature.layer.source &&
-            typeof selectedFeature.layer.source === "string" &&
-            selectedFeature.properties &&
-            selectedFeature.properties.id
-          ) {
-            // get the feature in the index by its id
-            const f = project.data.featureIndex[`${selectedFeature.properties.id}`];
-            if (f)
-              setProjectMapSelection(mapId, {
-                clickedAt: e.lngLat,
-                source: selectedFeature.layer.source,
-                feature: f,
-              });
-            return;
-          }
+        const data = getFeatureOnMouseEvent(e);
+        if (data) {
+          setProjectMapSelection(mapId, {
+            clickedAt: e.lngLat,
+            ...data,
+          });
+        } else {
+          setProjectMapSelection(mapId, undefined);
         }
-        setProjectMapSelection(mapId, undefined);
       }}
       onMouseEnter={(e) => {
         // Change the cursor style as a UI indicator.
@@ -192,18 +208,16 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
     >
       {/* Display the bouning box of the project */}
       <ProjectMapBoundingBox project={project.data} type="border" />
-
       {/* Include all the project sources */}
       {sources}
-
       {/* Include all the map's project layers */}
       {layers}
-
       {/* Add map controllers */}
       <NavigationControl visualizePitch={true} showZoom={true} showCompass={true} />
       <FullscreenControl />
       <ResetControl point={projectMap.selected ? projectMap.selected.clickedAt : undefined} />
       <TimeSelectorControl mapId={mapId} />
+      <SoundControl mapId={mapId} />
 
       {/* Add map attribution */}
       <AttributionControl
@@ -218,7 +232,6 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
             : undefined
         }
       />
-
       {/* Selected feature : display a marker and the data panel */}
       <Selected mapId={mapId} />
     </Map>

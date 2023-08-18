@@ -39,11 +39,35 @@ export const useCurrentProject = () => {
           : undefined,
       }));
 
-      updateQueryParam(setSearchParam, searchParam, `${mapId[0]}-layer`, map.id);
       updateQueryParam(setSearchParam, searchParam, `${mapId[0]}-select`, undefined, true);
       updateQueryParam(setSearchParam, searchParam, `${mapId[0]}-time`, undefined, true);
+      updateQueryParam(setSearchParam, searchParam, `${mapId[0]}-layer`, map.id);
     },
     [setContext, setSearchParam, searchParam],
+  );
+
+  /**
+   * Function to update the map sound state.
+   */
+  const setProjectMapSound = useCallback(
+    (mapId: string, muted: boolean) => {
+      setContext((prev) => ({
+        ...prev,
+        current: prev.current
+          ? {
+              ...prev.current,
+              maps: {
+                ...prev.current.maps,
+                [mapId]: {
+                  ...prev.current.maps[mapId],
+                  muted,
+                },
+              },
+            }
+          : undefined,
+      }));
+    },
+    [setContext],
   );
 
   /**
@@ -175,6 +199,7 @@ export const useCurrentProject = () => {
     project: context.current,
     setProjectMap,
     setProjectMapTime,
+    setProjectMapSound,
     setProjectMapSelection,
   };
 };

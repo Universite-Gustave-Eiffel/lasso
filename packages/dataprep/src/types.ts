@@ -118,14 +118,15 @@ type SourceSpecification =
   | Omit<RasterSourceSpecification, "attribution">
   | Omit<RasterDEMSourceSpecification, "attribution">;
 
+export interface LassoSourceAssetSpecification {
+  csv: string;
+  field: string;
+}
 export type LassoSource = SourceSpecification & {
   attribution?: StringI18n;
   variables?: LassoSourceVariables;
   timeSeries?: TimeSpecification;
-  images?: {
-    csv: string;
-    field: string;
-  };
+  images?: LassoSourceAssetSpecification;
 };
 
 interface IProject {
@@ -184,7 +185,7 @@ export interface ExportedData {
   projects: Array<Project>;
 }
 
-export interface LassoSourceImage {
+export interface LassoSourceAsset {
   path: string;
   description?: StringI18n;
 }

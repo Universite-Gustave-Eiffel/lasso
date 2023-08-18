@@ -34,6 +34,7 @@ export interface AppContextType {
           source: string;
           clickedAt: { lng: number; lat: number };
         };
+        muted: boolean;
       };
     };
   };

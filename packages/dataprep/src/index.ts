@@ -6,6 +6,7 @@ import * as fsu from "./utils/files";
 import { metaBbox } from "./utils/geojson";
 import { importProjectFromPath, exportProject } from "./utils/project";
 import { ExportedData } from "./types";
+import { parseSoundData } from "./utils/sound";
 
 export {
   ExportedData,
@@ -16,13 +17,13 @@ export {
   SOUNDSCAPE_VARIABLES_TYPES,
   LassoSourceVariables,
   LayerVariable,
-  LassoSourceImage,
+  LassoSourceAsset,
 } from "./types";
 
 async function run(): Promise<void> {
   // make sure destination exists
   await fsu.createFolder(config.exportPath);
-  
+
   // Export/copy about markdown files
   const mdFiles = await fsu.listFolder(config.importPath, { extension: ".md" });
   await Promise.all(
@@ -33,14 +34,15 @@ async function run(): Promise<void> {
   );
 
   // List project folders in the import folder
-  const folders = await fsu.listFolder(config.importPath, {
-    onlyFolder: true,
-  });
+  const folders = await fsu.listFolder(config.importPath, { onlyFolder: true });
+
+  // Parse sounds CSV file
+  const sounds = await parseSoundData();
 
   const projectsExport = await Promise.all(
     sortBy(folders).map(async (folder) => {
       // parse the project
-      const project = await importProjectFromPath(folder);
+      const project = await importProjectFromPath(folder, sounds);
       // export it
       return await exportProject(project, folder);
     }),

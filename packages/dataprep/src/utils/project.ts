@@ -1,20 +1,28 @@
 import * as path from "path";
-import { groupBy, toPairs, isString, fromPairs, values } from "lodash";
+import { groupBy, toPairs, isString, fromPairs, values, isNumber } from "lodash";
 import shortHash from "shorthash2";
 import { Feature, GeoJSON, GeoJsonProperties, Geometry } from "geojson";
 
 import { config } from "../config";
-import { ImportProject, InternalProject, LassoSource, Project, LassoSourceImage } from "../types";
+import {
+  ImportProject,
+  InternalProject,
+  LassoSource,
+  Project,
+  LassoSourceAsset,
+  LassoSourceAssetSpecification,
+} from "../types";
 import * as schema from "../json-schema.json";
 import * as fsu from "./files";
 import { outerBbox, readGeoJsonFile } from "./geojson";
 import { readMarkdownFile } from "./markdown";
 import { getRandomHexColor } from "./color";
+import { SoundData, getSoundFile } from "./sound";
 
 /**
  * Given a folder, do the job to import internally the project.
  */
-export async function importProjectFromPath(projectFolderPath: string): Promise<InternalProject> {
+export async function importProjectFromPath(projectFolderPath: string, sounds: SoundData): Promise<InternalProject> {
   // Read the index.json file and validate it
   const project = await fsu.readJson<ImportProject>(`${projectFolderPath}/index.json`, schema);
 
@@ -74,7 +82,7 @@ export async function importProjectFromPath(projectFolderPath: string): Promise<
     sources: fromPairs(
       await Promise.all(
         toPairs(project.sources).map(async ([id, source]): Promise<[id: string, source: LassoSource]> => {
-          return [id, await transformLassoSource(source, projectFolderPath)];
+          return [id, await transformLassoSource(source, projectFolderPath, sounds)];
         }),
       ),
     ),
@@ -204,7 +212,11 @@ export async function exportProject(project: InternalProject, sourceFolder: stri
  * - do the time aggregation
  * - add lasso variables to the geojson properties
  */
-async function transformLassoSource(source: LassoSource, projectFolderPath: string): Promise<LassoSource> {
+async function transformLassoSource(
+  source: LassoSource,
+  projectFolderPath: string,
+  sounds: SoundData,
+): Promise<LassoSource> {
   if (source.type !== "geojson") return source;
 
   const geojson =
@@ -217,24 +229,49 @@ async function transformLassoSource(source: LassoSource, projectFolderPath: stri
   // if geojson is a feature collection with lasso variables
   if (validGeoJson.type === "FeatureCollection" && source.variables !== undefined) {
     // compute the image index of the source
-    const imagesIndex = await getSourceImageIndex(source, projectFolderPath);
+    const imagesIndex = await getSourceAssetIndex(source, projectFolderPath);
 
     // inner function to compute feature properties
     const filterTransformProperties = (
       properties: Record<string, unknown>,
-      withImage?: boolean,
+      withAssets?: boolean,
     ): Record<string, unknown> => {
       const newProperties: Record<string, unknown> = {};
+
       // add image
-      if (withImage && source.images && properties[source.images.field]) {
+      if (withAssets && source.images && properties[source.images.field]) {
         const images = imagesIndex[`${properties[source.images.field]}`];
         newProperties.images = images;
       }
+
       // map lasso variables
       toPairs(source.variables).forEach(([variableName, v]) => {
         const featureName = typeof v === "string" ? v : v.propertyName;
         if (properties && properties[featureName] !== undefined) newProperties[variableName] = properties[featureName];
       });
+
+      // add sounds
+      if (
+        source.variables?.acoustic_birds &&
+        isNumber(newProperties["acoustic_birds"]) &&
+        source.variables?.acoustic_trafic &&
+        isNumber(newProperties["acoustic_trafic"]) &&
+        source.variables?.acoustic_voices &&
+        isNumber(newProperties["acoustic_voices"])
+      ) {
+        const varNormalized = {
+          acoustic_birds:
+            newProperties["acoustic_birds"] /
+            (isString(source.variables.acoustic_birds) ? 10 : source.variables.acoustic_birds.maximumValue),
+          acoustic_trafic:
+            newProperties["acoustic_trafic"] /
+            (isString(source.variables.acoustic_trafic) ? 10 : source.variables.acoustic_trafic.maximumValue),
+          acoustic_voices:
+            newProperties["acoustic_voices"] /
+            (isString(source.variables.acoustic_voices) ? 10 : source.variables.acoustic_voices.maximumValue),
+        };
+        newProperties.sound = getSoundFile(sounds, varNormalized);
+      }
       return newProperties;
     };
 
@@ -324,7 +361,7 @@ async function transformLassoSource(source: LassoSource, projectFolderPath: stri
       },
     );
 
-    //check variables presence in features
+    // check variables presence in features
     toPairs(source.variables).map(([variableName, v]) => {
       const featureName = typeof v === "string" ? v : v.propertyName;
       if (!nbFeaturesByVariables[variableName])
@@ -338,13 +375,13 @@ async function transformLassoSource(source: LassoSource, projectFolderPath: stri
   return { ...source, data: validGeoJson };
 }
 
-async function getSourceImageIndex(
+async function getSourceAssetIndex(
   source: LassoSource,
   projectFolderPath: string,
-): Promise<{ [key: string]: LassoSourceImage[] }> {
+): Promise<{ [key: string]: LassoSourceAsset[] }> {
   if (source.images) {
-    const csvContent = await fsu.readCsv<LassoSourceImage & { id: string } & { [key: string]: string }>(
-      `${projectFolderPath}/${source.images.csv}`,
+    const csvContent = await fsu.readCsv<LassoSourceAsset & { id: string } & { [key: string]: string }>(
+      `${projectFolderPath}/${(source.images as LassoSourceAssetSpecification).csv}`,
     );
 
     return csvContent.reduce((acc, curr) => {
@@ -367,7 +404,7 @@ async function getSourceImageIndex(
         ...acc,
         [id]: acc[id] ? [...acc[id], file] : [file],
       };
-    }, {} as { [key: string]: LassoSourceImage[] });
+    }, {} as { [key: string]: LassoSourceAsset[] });
   }
 
   return {};

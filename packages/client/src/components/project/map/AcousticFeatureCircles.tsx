@@ -1,11 +1,12 @@
 import { FC } from "react";
-import { toNumber } from "lodash";
+import { toNumber, isNil } from "lodash";
 import { Feature } from "geojson";
 import { useT } from "@transifex/react";
 
 import { getVariableColor } from "../../../utils/project";
 import { useCurrentProject } from "../../../hooks/useCurrentProject";
 import { AcousticCircle } from "../../AcousticCircle";
+import { SoundFeature } from "./SoundFeature";
 
 export const AcousticFeatureCircles: FC<{ feature: Feature; currentTimeKey?: string | null }> = ({
   feature,
@@ -23,12 +24,12 @@ export const AcousticFeatureCircles: FC<{ feature: Feature; currentTimeKey?: str
       let value = undefined;
       if (feature.properties) {
         // default is the generic value
-        if (feature.properties[variable.variable]) value = toNumber(feature.properties[variable.variable]);
+        if (!isNil(feature.properties[variable.variable])) value = toNumber(feature.properties[variable.variable]);
         // if time is specified, we try to get it
         if (
           currentTimeKey &&
           feature.properties[currentTimeKey] &&
-          feature.properties[currentTimeKey][variable.variable]
+          !isNil(feature.properties[currentTimeKey][variable.variable])
         )
           value = toNumber(feature.properties[currentTimeKey][variable.variable]);
       }
@@ -46,6 +47,7 @@ export const AcousticFeatureCircles: FC<{ feature: Feature; currentTimeKey?: str
   return (
     <div className="acoustic-panel">
       <h6>{t("Perceiced Sound Sources")}</h6>
+      <SoundFeature feature={feature} mapId={"left"} />
       <div className="acoustic-circles">
         {circlesData.map((data, index) => (
           <AcousticCircle key={index} {...data} />
