@@ -45,7 +45,8 @@ export const I18N: FC<PropsWithChildren> = ({ children }) => {
    */
   useEffect(() => {
     if (ready) {
-      transifex.setCurrentLocale(getInitialLocal());
+      const initLocal = getInitialLocal();
+      transifex.setCurrentLocale(initLocal);
     }
   }, [ready, transifex, getInitialLocal]);
 
