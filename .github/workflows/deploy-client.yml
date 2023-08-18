@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: false
-      PUBLIC_URL: "/lasso"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
