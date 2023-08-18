@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/Universite-Gustave-Eiffel/lasso/static/css/main.727ca6d2.css",
-    "main.js": "/Universite-Gustave-Eiffel/lasso/static/js/main.f059ad24.js",
-    "static/js/227.7943aa31.chunk.js": "/Universite-Gustave-Eiffel/lasso/static/js/227.7943aa31.chunk.js",
-    "static/js/727.34a44604.chunk.js": "/Universite-Gustave-Eiffel/lasso/static/js/727.34a44604.chunk.js",
-    "static/js/750.849a32c0.chunk.js": "/Universite-Gustave-Eiffel/lasso/static/js/750.849a32c0.chunk.js",
-    "index.html": "/Universite-Gustave-Eiffel/lasso/index.html",
-    "main.727ca6d2.css.map": "/Universite-Gustave-Eiffel/lasso/static/css/main.727ca6d2.css.map",
-    "main.f059ad24.js.map": "/Universite-Gustave-Eiffel/lasso/static/js/main.f059ad24.js.map",
-    "227.7943aa31.chunk.js.map": "/Universite-Gustave-Eiffel/lasso/static/js/227.7943aa31.chunk.js.map",
-    "727.34a44604.chunk.js.map": "/Universite-Gustave-Eiffel/lasso/static/js/727.34a44604.chunk.js.map",
-    "750.849a32c0.chunk.js.map": "/Universite-Gustave-Eiffel/lasso/static/js/750.849a32c0.chunk.js.map"
+    "main.css": "/lasso/static/css/main.727ca6d2.css",
+    "main.js": "/lasso/static/js/main.1698d4bb.js",
+    "static/js/227.7943aa31.chunk.js": "/lasso/static/js/227.7943aa31.chunk.js",
+    "static/js/727.34a44604.chunk.js": "/lasso/static/js/727.34a44604.chunk.js",
+    "static/js/750.849a32c0.chunk.js": "/lasso/static/js/750.849a32c0.chunk.js",
+    "index.html": "/lasso/index.html",
+    "main.727ca6d2.css.map": "/lasso/static/css/main.727ca6d2.css.map",
+    "main.1698d4bb.js.map": "/lasso/static/js/main.1698d4bb.js.map",
+    "227.7943aa31.chunk.js.map": "/lasso/static/js/227.7943aa31.chunk.js.map",
+    "727.34a44604.chunk.js.map": "/lasso/static/js/727.34a44604.chunk.js.map",
+    "750.849a32c0.chunk.js.map": "/lasso/static/js/750.849a32c0.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.727ca6d2.css",
-    "static/js/main.f059ad24.js"
+    "static/js/main.1698d4bb.js"
   ]
 }
