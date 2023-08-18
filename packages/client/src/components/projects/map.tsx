@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import Map, { Source, Layer, MapRef } from "react-map-gl";
-import maplibregl from "maplibre-gl";
+import Map, { Source, Layer, MapRef } from "react-map-gl/maplibre";
 
 import { ExportedData, Project } from "@lasso/dataprep";
 import { ProjectMapBoundingBox } from "../project/map/ProjectMapBoundingBox";
@@ -43,7 +42,7 @@ export const ProjectsMap: FC<MapProperties> = ({ bbox, projects, setSelected, se
   }, [selected, map, bbox]);
 
   return (
-    <Map mapLib={maplibregl} ref={setMap}>
+    <Map ref={setMap}>
       <Source id="osm" type="raster" tiles={["https://tile.openstreetmap.org/{z}/{x}/{y}.png"]}>
         <Layer id="basemap" type="raster" source="osm" />
       </Source>

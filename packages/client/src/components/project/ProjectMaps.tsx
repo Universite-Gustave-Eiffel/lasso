@@ -2,7 +2,7 @@ import { FC, CSSProperties, useState } from "react";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import cx from "classnames";
 import { useT } from "@transifex/react";
-import { MapProvider } from "react-map-gl";
+import { MapProvider } from "react-map-gl/maplibre";
 
 import { ProjectMap } from "./map/ProjectMap";
 import { SyncMaps } from "./map/SyncMaps";

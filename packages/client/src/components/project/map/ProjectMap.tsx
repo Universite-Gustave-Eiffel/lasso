@@ -7,10 +7,10 @@ import Map, {
   useMap,
   Source,
   Layer,
-} from "react-map-gl";
-import maplibregl from "maplibre-gl";
+  MapLayerMouseEvent,
+  AnyLayer,
+} from "react-map-gl/maplibre";
 import { mapValues, omit, omitBy, toPairs } from "lodash";
-import { AnyLayer, MapLayerMouseEvent } from "mapbox-gl";
 import { FeatureCollection } from "geojson";
 import { useLocale, useT } from "@transifex/react";
 import { useSearchParams } from "react-router-dom";
@@ -179,8 +179,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
   return (
     <Map
       id={mapId}
-      mapLib={maplibregl}
-      mapStyle={projectMap.map.basemapStyle}
+      mapStyle={projectMap.map.basemapStyle as any}
       interactiveLayerIds={interactiveLayerIds}
       onLoad={() => {
         setMapLoaded(true);
