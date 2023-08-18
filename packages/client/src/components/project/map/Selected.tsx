@@ -8,6 +8,7 @@ import { config } from "../../../config";
 import { getI18NText } from "../../../utils/i18n";
 import { useCurrentProject } from "../../../hooks/useCurrentProject";
 import { FeatureDataPanel } from "./FeatureDataPanel";
+import { SoundFeature } from "./SoundFeature";
 
 export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
   const locale = useLocale();
@@ -40,6 +41,7 @@ export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
     <>
       {selected && (
         <>
+          <SoundFeature feature={selected.feature} mapId={mapId} />
           <FeatureDataPanel
             mapId={mapId}
             feature={selected.feature}

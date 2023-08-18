@@ -6,7 +6,6 @@ import { useT } from "@transifex/react";
 import { getVariableColor } from "../../../utils/project";
 import { useCurrentProject } from "../../../hooks/useCurrentProject";
 import { AcousticCircle } from "../../AcousticCircle";
-import { SoundFeature } from "./SoundFeature";
 
 export const AcousticFeatureCircles: FC<{ feature: Feature; currentTimeKey?: string | null }> = ({
   feature,
@@ -47,7 +46,6 @@ export const AcousticFeatureCircles: FC<{ feature: Feature; currentTimeKey?: str
   return (
     <div className="acoustic-panel">
       <h6>{t("Perceiced Sound Sources")}</h6>
-      <SoundFeature feature={feature} mapId={"left"} />
       <div className="acoustic-circles">
         {circlesData.map((data, index) => (
           <AcousticCircle key={index} {...data} />
