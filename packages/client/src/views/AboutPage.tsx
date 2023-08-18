@@ -23,11 +23,11 @@ export const AboutPage: FC = () => {
    */
   useEffect(() => {
     fetch({
-      pathParams: { page: `about.${locale}.md` },
+      pathParams: { page: `about.${`${locale}`.substring(0, 2)}.md` },
     }).catch((e) => {
       if (e instanceof AxiosError && e.code === "ERR_BAD_REQUEST" && locale !== config.defaultLocale) {
         fetch({
-          pathParams: { page: `about.${config.defaultLocale}.md` },
+          pathParams: { page: `about.${config.defaultLocale.substring(0, 2)}.md` },
         });
       }
     });

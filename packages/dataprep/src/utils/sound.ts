@@ -34,7 +34,7 @@ export function getSoundFile(data: SoundData, values: Omit<SoundData[0], "filena
     ),
   );
 
-  return closest ? `./sounds/${closest?.row.filename}.mp3` : undefined;
+  return closest ? `${process.env.PUBLIC_URL}/sounds/${closest?.row.filename}.mp3` : undefined;
 }
 
 function distance(pt1: SoundData[0], pt2: Omit<SoundData[0], "filename">): number {

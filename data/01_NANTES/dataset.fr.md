@@ -1,3 +1,3 @@
-# A proposdu jeux de données
+# A propos du jeux de données
 
 blalbalblba

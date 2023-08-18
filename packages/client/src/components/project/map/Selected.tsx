@@ -4,6 +4,7 @@ import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { useLocale, useT } from "@transifex/react";
 
 import { LassoSourceAsset } from "@lasso/dataprep";
+import { config } from "../../../config";
 import { getI18NText } from "../../../utils/i18n";
 import { useCurrentProject } from "../../../hooks/useCurrentProject";
 import { FeatureDataPanel } from "./FeatureDataPanel";
@@ -86,7 +87,7 @@ export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
                 <div>
                   <img
                     className="img-fluid"
-                    src={`./data/${project.data.id}/assets/${images[imageIndex].path}`}
+                    src={`${config.data_path}/${project.data.id}/assets/${images[imageIndex].path}`}
                     alt={getI18NText(locale, images[imageIndex].description)}
                   />
                   {images[imageIndex].description && (
