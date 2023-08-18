@@ -1,7 +1,7 @@
 {
   "name": "@lasso/client",
   "version": "1.0.0",
-  "homepage": "https://github.com/Universite-Gustave-Eiffel/lasso",
+  "homepage": "https://universite-gustave-eiffel.github.io/lasso/",
   "dependencies": {
     "@lasso/dataprep": "*",
     "@mapbox/mapbox-gl-style-spec": "^13.28.0",
