@@ -3,10 +3,10 @@ on:
   workflow_run:
     workflows: [CI-TEST]
     types: [completed]
-    branches: [main]
+    branches: [dev]
   push:
     branches:
-      - main
+      - dev
     paths:
       - "packages/client/**"
 
@@ -20,16 +20,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Fix node version
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
       - name: Cache node_modules
         uses: actions/cache@v3
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Fix node version
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
 
       - name: Install
         run: npm install

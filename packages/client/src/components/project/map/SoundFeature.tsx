@@ -18,7 +18,7 @@ export const SoundFeature: FC<{ feature?: Feature; mapId: string }> = ({ mapId, 
 
       if (properties.sound) {
         const volume = feature.properties.acoustic_soundlevel
-          ? 10 ** (((50 * (feature.properties.acoustic_soundlevel - noiseVariable.minimumValue)) / (noiseVariable.maximumValue - noiseVariable.minimumValue)) - 50) / 20
+          ? feature.properties.acoustic_soundlevel / noiseVariable.maximumValue
           : 1;
         howler = new Howl({
           src: [feature.properties.sound],
