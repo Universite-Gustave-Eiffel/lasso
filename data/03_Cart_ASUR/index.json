@@ -102,6 +102,10 @@
           }
         }
       },
+      "images": {
+        "csv":  "./layers/imagesPath.csv",
+        "field": "objective_id"
+      },
       "variables": {
         "emotion_pleasant": {
           "propertyName": "Agr_Mean",
