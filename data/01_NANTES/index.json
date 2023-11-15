@@ -1,7 +1,7 @@
 {
   "id": "nantes",
   "name": {
-    "en": "Nantes noise landscape",
+    "en": "Soundscape of Nantes",
     "fr": "Paysages Sonores Nantais"
   },
   "description": {
@@ -12,21 +12,22 @@
   "sources": {
     "GeoAllInterp": {
       "attribution": {
-        "fr": "Pierre Aumond, Projet ANR CENSE",
-        "en": "Pierre Aumond, ANR CENSE Project"
+        "fr": "Aumond, Guiu, Allès, Can, 2019-2020",
+        "en": "Aumond, Guiu, Allès, Can, 2019-2020"
       },
       "type": "geojson",
-      "data": "./layers/GeoAllInterp4326.geojson",
+      "data": "./layers/resultGrid3857.geojson",
       "variables": {
-        "acoustic_birds": "Birds"
-      },
-      "images": {
-        "csv": "./layers/GeoAllInterp4326_images.csv",
-        "field": "fid"
+        "emotion_pleasant": "meanagr",
+        "emotion_eventful": "meanani",
+        "acoustic_trafic": "meantra",
+        "acoustic_birds": "meanbrd",
+        "acoustic_voices": "meancav",
+        "acoustic_soundlevel": "meannoi"
       }
     },
     "GeoAll": {
-      "attribution": "Pierre",
+      "attribution": "Aumond, Guiu, Allès, Can, 2019-2020",
       "type": "geojson",
       "data": "./layers/GeoAll.geojson",
       "variables": {
@@ -42,21 +43,14 @@
       "attribution": "Nantes Agglomeration - PPBE 2017",
       "type": "geojson",
       "data": "./layers/DEN4326.geojson"
-    },
-    "Grid3857": {
-      "type": "geojson",
-      "data": "./layers/resultGrid3857.geojson",
-      "variables": {
-        "emotion_pleasant": "meanagr"
-      }
     }
   },
   "maps": [
     {
       "id": "Lden",
       "name": {
-        "fr": "LDEN - dB(A) - Carte de bruit standard  - Beate ColorScheme",
-        "en": "LDEN - dB(A) - Standard Noise Map - Beate ColorScheme"
+        "fr": "LDEN - dB(A) - Carte de bruit standard",
+        "en": "LDEN - dB(A) - Standard Noise Map"
       },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
@@ -93,40 +87,28 @@
       ]
     },
     {
-      "id": "birdsinterp",
-      "name": "Birds - Perceived time presence - Interpolated Questionnaires - light to dark Green",
+      "id": "questionnaire",
+      "name": "Questionnaires",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
-          "id": "acoustic_birds",
-          "source": "GeoAllInterp",
-          "beforeId": "building",
-          "metadata": {
-            "interactive": true
-          },
-          "type": "fill",
-          "paint": {
-            "fill-color": [
-              "interpolate",
-              ["linear"],
-              ["get", "acoustic_birds"],
-              0,
-              ["to-color", "#E7F4E4"],
-              10,
-              ["to-color", "#004529"]
-            ]
-          }
+          "id": "loc",
+          "source": "GeoAll",
+          "beforeId": "bati",
+          "type": "circle",
+            "circle-stroke-color": "grey",
+            "circle-color": "grey"
         }
       ]
     },
     {
       "id": "pleasant",
-      "name": "Pleasant",
+      "name": "Pleasant - Interpolated Questionnaires",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "emotion_pleasant",
-          "source": "GeoAll",
+          "source": "GeoAllInterp",
           "beforeId": "bati",
           "metadata": {
             "interactive": true
@@ -165,12 +147,12 @@
     },
     {
       "id": "eventful",
-      "name": "EventFul",
+      "name": "EventFull - Interpolated Questionnaires",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "emotion_eventful",
-          "source": "GeoAll",
+          "source": "GeoAllInterp",
           "beforeId": "bati",
           "metadata": {
             "interactive": true
@@ -209,12 +191,12 @@
     },
     {
       "id": "birds",
-      "name": "Birds",
+      "name": "Birds - Perceived time presence - Interpolated Questionnaires",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_birds",
-          "source": "GeoAll",
+          "source": "GeoAllInterp",
           "beforeId": "bati",
           "metadata": {
             "interactive": true
@@ -251,12 +233,12 @@
     },
     {
       "id": "trafic",
-      "name": "Trafic",
+      "name": "Traffic - Perceived time presence - Interpolated Questionnaires",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_trafic",
-          "source": "GeoAll",
+          "source": "GeoAllInterp",
           "beforeId": "bati",
           "metadata": {
             "interactive": true
@@ -293,12 +275,12 @@
     },
     {
       "id": "voices",
-      "name": "Voices",
+      "name": "Voices - Perceived time presence - Interpolated Questionnaires",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_voices",
-          "source": "GeoAll",
+          "source": "GeoAllInterp",
           "beforeId": "bati",
           "metadata": {
             "interactive": true
@@ -335,12 +317,12 @@
     },
     {
       "id": "soundlevel",
-      "name": "Sound Level",
+      "name": "Perceived Sound Level - Interpolated Questionnaires",
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
           "id": "acoustic_soundlevel",
-          "source": "GeoAll",
+          "source": "GeoAllInterp",
           "beforeId": "bati",
           "metadata": {
             "interactive": true

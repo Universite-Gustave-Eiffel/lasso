@@ -9,4 +9,3 @@ We hope this platform will inspire further work on the mapping of urban sound en
 ![alt text](https://www.etis-lab.fr/wp-content/uploads/2022/01/etis_lo_SLOGAN_H_RVB.svg)
 ![alt text](https://www.etis-lab.fr/wp-content/uploads/2021/12/CNRS-150x150.png)
 ![alt text](https://www.etis-lab.fr/wp-content/uploads/2021/12/ensea-150x150.png)
-![alt text](https://www.etis-lab.fr/wp-content/uploads/2021/12/CY_CERGY_PARIS.png)
