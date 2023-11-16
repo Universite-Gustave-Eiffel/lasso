@@ -42,14 +42,14 @@
     "LdenMap": {
       "attribution": "Nantes Agglomeration - PPBE 2017",
       "type": "geojson",
-      "data": "./layers/DEN4326.geojson"
+      "data": "./layers/DEN4326_2.geojson"
     }
   },
   "maps": [
     {
       "id": "Lden",
       "name": {
-        "fr": "LDEN - dB(A) - Carte de bruit standard",
+        "fr": "LDEN - dB(A) - Carte de bruit stratégique",
         "en": "LDEN - dB(A) - Standard Noise Map"
       },
       "basemapStyle": "../bright_matter_PA.json",
@@ -94,7 +94,7 @@
         {
           "id": "loc",
           "source": "GeoAll",
-          "beforeId": "bati",
+          "beforeId": "building",
           "type": "circle",
             "circle-stroke-color": "grey",
             "circle-color": "grey"
@@ -109,37 +109,36 @@
         {
           "id": "emotion_pleasant",
           "source": "GeoAllInterp",
-          "beforeId": "bati",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
-          "type": "circle",
+          "type": "fill",
           "paint": {
-            "circle-radius": ["interpolate", ["exponential", 2], ["zoom"], 2, 1, 21, 750],
-            "circle-stroke-width": [
-              "case",
-              ["==", ["feature-state", "selected"], null],
-              0,
-              ["boolean", ["feature-state", "selected"], true],
-              5,
-              0
-            ],
-            "circle-stroke-color": "grey",
-            "circle-color": [
-              "case",
-              ["==", ["get", "emotion_pleasant"], null],
-              ["to-color", "#DDD"],
-              [
-                "interpolate",
-                ["linear"],
-                ["get", "emotion_pleasant"],
+            "fill-color": [
+              "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "emotion_pleasant"
+                ],
                 0,
-                ["to-color", "#d4322c"],
+                [
+                  "to-color",
+                  "#d4322c"
+                ],
                 5,
-                ["to-color", "#f2f0eb"],
+                [
+                  "to-color",
+                  "#f2f0eb"
+                ],
                 10,
-                ["to-color", "#22964f"]
-              ]
+                [
+                  "to-color",
+                  "#22964f"
+                ]
             ]
           }
         }
@@ -153,37 +152,36 @@
         {
           "id": "emotion_eventful",
           "source": "GeoAllInterp",
-          "beforeId": "bati",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
-          "type": "circle",
+          "type": "fill",
           "paint": {
-            "circle-radius": ["interpolate", ["exponential", 2], ["zoom"], 2, 1, 21, 750],
-            "circle-stroke-width": [
-              "case",
-              ["==", ["feature-state", "selected"], null],
-              0,
-              ["boolean", ["feature-state", "selected"], true],
-              5,
-              0
-            ],
-            "circle-stroke-color": "grey",
-            "circle-color": [
-              "case",
-              ["==", ["get", "emotion_eventful"], null],
-              ["to-color", "#DDD"],
-              [
-                "interpolate",
-                ["linear"],
-                ["get", "emotion_eventful"],
+            "fill-color": [
+              "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "emotion_eventful"
+                ],
                 0,
-                ["to-color", "#151aaf"],
+                [
+                  "to-color",
+                  "#151aaf"
+                ],
                 5,
-                ["to-color", "#f2f0eb"],
+                [
+                  "to-color",
+                  "#f2f0eb"
+                ],
                 10,
-                ["to-color", "#dee401"]
-              ]
+                [
+                  "to-color",
+                  "#dee401"
+                ]
             ]
           }
         }
@@ -197,35 +195,31 @@
         {
           "id": "acoustic_birds",
           "source": "GeoAllInterp",
-          "beforeId": "bati",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
-          "type": "circle",
+          "type": "fill",
           "paint": {
-            "circle-radius": ["interpolate", ["exponential", 2], ["zoom"], 2, 1, 21, 750],
-            "circle-stroke-width": [
-              "case",
-              ["==", ["feature-state", "selected"], null],
-              0,
-              ["boolean", ["feature-state", "selected"], true],
-              5,
-              0
-            ],
-            "circle-stroke-color": "grey",
-            "circle-color": [
-              "case",
-              ["==", ["get", "acoustic_birds"], null],
-              ["to-color", "#DDD"],
-              [
-                "interpolate",
-                ["linear"],
-                ["get", "acoustic_birds"],
-                1,
-                ["to-color", "#E7F4E4"],
-                11,
-                ["to-color", "#004529"]
-              ]
+            "fill-color": [
+              "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_birds"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#E7F4E4"
+                ],
+                10,
+                [
+                  "to-color",
+                  "#004529"
+                ]
             ]
           }
         }
@@ -239,35 +233,31 @@
         {
           "id": "acoustic_trafic",
           "source": "GeoAllInterp",
-          "beforeId": "bati",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
-          "type": "circle",
+          "type": "fill",
           "paint": {
-            "circle-radius": ["interpolate", ["exponential", 2], ["zoom"], 2, 1, 21, 750],
-            "circle-stroke-width": [
-              "case",
-              ["==", ["feature-state", "selected"], null],
-              0,
-              ["boolean", ["feature-state", "selected"], true],
-              5,
-              0
-            ],
-            "circle-stroke-color": "grey",
-            "circle-color": [
-              "case",
-              ["==", ["get", "acoustic_trafic"], null],
-              ["to-color", "#DDD"],
-              [
-                "interpolate",
-                ["linear"],
-                ["get", "acoustic_trafic"],
-                1,
-                ["to-color", "#F2EFE9"],
-                11,
-                ["to-color", "#0B0B0B"]
-              ]
+            "fill-color": [
+              "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_trafic"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#F2EFE9"
+                ],
+                10,
+                [
+                  "to-color",
+                  "#0B0B0B"
+                ]
             ]
           }
         }
@@ -281,35 +271,31 @@
         {
           "id": "acoustic_voices",
           "source": "GeoAllInterp",
-          "beforeId": "bati",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
-          "type": "circle",
+          "type": "fill",
           "paint": {
-            "circle-radius": ["interpolate", ["exponential", 2], ["zoom"], 2, 1, 21, 750],
-            "circle-stroke-width": [
-              "case",
-              ["==", ["feature-state", "selected"], null],
-              0,
-              ["boolean", ["feature-state", "selected"], true],
-              5,
-              0
-            ],
-            "circle-stroke-color": "grey",
-            "circle-color": [
-              "case",
-              ["==", ["get", "acoustic_voices"], null],
-              ["to-color", "#DDD"],
-              [
-                "interpolate-hcl",
-                ["linear"],
-                ["get", "acoustic_voices"],
-                1,
-                ["to-color", "#FFF8DC"],
-                11,
-                ["to-color", "#8B4513"]
-              ]
+            "fill-color": [
+              "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_voices"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#FFF8DC"
+                ],
+                10,
+                [
+                  "to-color",
+                  "#8B4513"
+                ]
             ]
           }
         }
@@ -323,35 +309,31 @@
         {
           "id": "acoustic_soundlevel",
           "source": "GeoAllInterp",
-          "beforeId": "bati",
+          "beforeId": "building",
           "metadata": {
             "interactive": true
           },
-          "type": "circle",
+          "type": "fill",
           "paint": {
-            "circle-radius": ["interpolate", ["exponential", 2], ["zoom"], 2, 1, 21, 750],
-            "circle-stroke-width": [
-              "case",
-              ["==", ["feature-state", "selected"], null],
-              0,
-              ["boolean", ["feature-state", "selected"], true],
-              5,
-              0
-            ],
-            "circle-stroke-color": "grey",
-            "circle-color": [
-              "case",
-              ["==", ["get", "acoustic_soundlevel"], null],
-              ["to-color", "#DDD"],
-              [
-                "interpolate",
-                ["linear"],
-                ["get", "acoustic_soundlevel"],
-                1,
-                ["to-color", "#32a852"],
-                11,
-                ["to-color", "#ba0010"]
-              ]
+            "fill-color": [
+              "interpolate",
+                [
+                  "linear"
+                ],
+                [
+                  "get",
+                  "acoustic_soundlevel"
+                ],
+                0,
+                [
+                  "to-color",
+                  "#F2EFE9"
+                ],
+                10,
+                [
+                  "to-color",
+                  "#0B0B0B"
+                ]
             ]
           }
         }
