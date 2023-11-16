@@ -3,10 +3,10 @@ on:
   workflow_run:
     workflows: [CI-TEST]
     types: [completed]
-    branches: [dev]
+    branches: [main]
   push:
     branches:
-      - dev
+      - main
     paths:
       - "packages/client/**"
 
@@ -29,7 +29,7 @@ jobs:
       - name: Fix node version
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
 
       - name: Install
         run: npm install

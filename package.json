@@ -1,6 +1,9 @@
 {
   "name": "@lasso/root",
   "version": "1.0.0",
+  "engines": {
+    "node": "18.18.2"
+  },
   "description": "Project LASSO",
   "homepage": "https://github.com/Universite-Gustave-Eiffel/lasso",
   "bugs": "https://github.com/Universite-Gustave-Eiffel/lasso/issues",
