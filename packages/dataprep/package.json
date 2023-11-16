@@ -20,7 +20,7 @@
     "@types/papaparse": "^5.3.7"
   },
   "scripts": {
-    "clean": "rimraf lib/",
+    "clean": "rimraf lib/ tsconfig.tsbuildinfo",
     "lint": "esw --ext .ts ./src",
     "compile": "tsc -b",
     "generate:jsonschema": "typescript-json-schema --refs --required --skipLibCheck ./src/types.ts ImportProject --out ./src/json-schema.json",

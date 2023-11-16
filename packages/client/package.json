@@ -39,6 +39,7 @@
     "web-vitals": "^3.4.0"
   },
   "scripts": {
+    "clean": "rimraf build/ tsconfig.tsbuildinfo",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false --passWithNoTests",
