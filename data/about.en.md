@@ -5,8 +5,8 @@ Tous les auteurs souhaitent remercier les sources de financement.
 Nous espérons que cette plateforme inspirera d'autres travaux sur la cartographie des environnements sonores urbains !
 
 
-![alt text](https://www.umrae.fr/fileadmin/contributeurs/UMRAE/UMRAE-logo.png){:height="100px"}
-![alt text](https://www.univ-gustave-eiffel.fr/fileadmin/logo_univ_gustave_eiffel_rvb.svg){:height="100px"}
-![alt text](https://www.etis-lab.fr/wp-content/uploads/2022/01/etis_lo_SLOGAN_H_RVB.svg){:height="100px"}
-![alt text](https://www.etis-lab.fr/wp-content/uploads/2021/12/CNRS-150x150.png){:height="100px"}
-![alt text](https://www.etis-lab.fr/wp-content/uploads/2021/12/ensea-150x150.png){:height="100px"}
+<img style="border:10px solid transparent;" src="https://www.umrae.fr/fileadmin/contributeurs/UMRAE/UMRAE-logo.png" alt="image" height="50">
+<img style="border:10px solid transparent;" src="https://www.univ-gustave-eiffel.fr/fileadmin/logo_univ_gustave_eiffel_rvb.svg" alt="image" height="50">
+<img style="border:10px solid transparent;" src="https://www.etis-lab.fr/wp-content/uploads/2022/01/etis_lo_SLOGAN_H_RVB.svg" alt="image" height="50">
+<img style="border:10px solid transparent;" src="https://www.etis-lab.fr/wp-content/uploads/2021/12/CNRS-150x150.png" alt="image" height="50">
+<img style="border:10px solid transparent;" src="https://www.etis-lab.fr/wp-content/uploads/2021/12/ensea-150x150.png" alt="image" height="50">
