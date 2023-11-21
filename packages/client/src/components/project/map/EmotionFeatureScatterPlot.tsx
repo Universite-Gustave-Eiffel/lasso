@@ -59,12 +59,12 @@ export const EmotionFeatureScatterPlot: FC<EmotionFeatureScatterPlotProps> = ({
     }
     return data;
   }, [feature, currentTimeKey]);
-
+//<h6>{t("Emotions plot")}</h6> 
   return (
     <>
       {value.eventful !== undefined && value.pleasant !== undefined && (
         <div>
-          <h6>{t("Emotions plot")}</h6>
+          <h6>{t("Emotions plot")}</h6> 
           <EmotionScatterPlot
             evenfulAxis={{
               arrow: true,

@@ -8,7 +8,7 @@
   "variable.acoustic_trafic": "Trafic",
   "variable.acoustic_soundlevel": "Sound level",
   "variable.eventful": "Eventful",
-  "variable.calm": "Calm",
+  "variable.uneventful": "Uneventful",
   "variable.pleasant": "Pleasant",
   "variable.unpleasant": "Unpleasant",
   "time.selector.monthsLabels":"Month",

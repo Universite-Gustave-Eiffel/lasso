@@ -45,7 +45,7 @@ export const AcousticFeatureCircles: FC<{ feature: Feature; currentTimeKey?: str
 
   return (
     <div className="acoustic-panel">
-      <h6>{t("Perceiced Sound Sources")}</h6>
+      <h6>{t("Perceiced Presence Time")}</h6>
       <div className="acoustic-circles">
         {circlesData.map((data, index) => (
           <AcousticCircle key={index} {...data} />

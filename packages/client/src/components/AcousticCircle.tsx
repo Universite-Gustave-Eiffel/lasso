@@ -12,6 +12,8 @@ interface AcousticCircleProps {
   max: number;
   value?: number;
 }
+//<div>{label}</div>
+// <div>{!isNil(value) ? value.toFixed(0) +"/" + max.toFixed(0) : "?"}</div>
 export const AcousticCircle: FC<AcousticCircleProps> = ({ icon, color, label, max, value }) => {
   const t = useT();
   const percent = value ? (value / max) * 100 : 0;
@@ -23,13 +25,12 @@ export const AcousticCircle: FC<AcousticCircleProps> = ({ icon, color, label, ma
         style={{
           backgroundImage: `linear-gradient(0deg, ${color} 0%, ${color} ${percent}%, rgba(255,255,255,0) ${percent}%)`,
         }}
-        title={`${label} : ${value || t("no data")}`}
+        title={`${label} : ${ percent.toFixed(0) +"%" || t("no data")}`}
       >
         {icon ? icon({ className: "icon", size: "2em" }) : null}
       </div>
       <label className="d-flex flex-column ms-1">
-        <div>{label}</div>
-        <div>{!isNil(value) ? value.toFixed(2) : "?"}</div>
+        
       </label>
     </div>
   );

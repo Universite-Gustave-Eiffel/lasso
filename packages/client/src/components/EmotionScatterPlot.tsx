@@ -49,7 +49,7 @@ export const EmotionScatterPlot: FC<EmotionScatterPlotProps> = ({ value, pleasan
             <ColorAxis {...evenfulAxis} />
           </div>
         </div>
-        <label>{t("variable.calm")}</label>
+        <label>{t("variable.uneventful")}</label>
       </div>
       <label className="max-x-label">{t("variable.pleasant")}</label>
     </div>
