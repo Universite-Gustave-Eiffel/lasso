@@ -3,7 +3,7 @@
   "name": "ANR CENSE",
   "description": {
     "en": "The CENSE project aims to propose a new methodology for the production of more realistic noise maps, based on the assimilation of simulated and measured data through a dense network of low-cost sensors. Beyond the production of physical indicators, the project also focuses on the perceptual characterization of sound environments. The soundscape maps present the results of a survey of the inhabitants of the study area (Lorient city centre).",
-    "fr": "Les cartes de paysages sonores présentent les résultats d'une enquête réalisée auprès d'habitants du centre ville de Lorient."
+    "fr": "Le projet CENSE vise à proposer une nouvelle méthodologie pour la production de cartes de bruit plus réalistes, basée sur l'assimilation de données simulées et mesurées à travers un réseau dense de capteurs à faible coût. Au-delà de la production d'indicateurs physiques, le projet se concentre également sur la caractérisation perceptuelle des environnements sonores. Les cartes du paysage sonore présentent les résultats d'une enquête menée auprès des habitants de la zone d'étude (centre ville de Lorient)."
   },
   "image": "logo.jpeg",
   "sources": {
@@ -28,7 +28,10 @@
   "maps": [
     {
       "id": "Lden",
-      "name": "LDEN - dB(A) - Standard Noise Map - Beate ColorScheme",
+      "name": {
+        "fr": "LDEN - dB(A) - Carte de bruit stratégique",
+        "en": "LDEN - dB(A) - Standard Noise Map"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -91,7 +94,10 @@
     },
     {
       "id": "pleasant",
-      "name": "Pleasant",
+      "name": {
+        "fr": "Agréable - Questionnaires interpolés",
+        "en": "Pleasant - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -134,7 +140,10 @@
     },
     {
       "id": "eventful",
-      "name": "EventFul",
+      "name": {
+        "fr": "Animé - Questionnaires interpolés",
+        "en": "EventFull - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -177,7 +186,10 @@
     },
     {
       "id": "birds",
-      "name": "Birds - Perceived time presence - Interpolated Questionnaires - light to dark Green",
+      "name": {
+        "fr": "Chants d'oiseaux - Questionnaires interpolés",
+        "en": "Birds - Perceived time presence - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -215,7 +227,10 @@
     },
     {
       "id": "trafic",
-      "name": "Traffic - Perceived time presence - Interpolated Questionnaires - light to dark Black",
+      "name": {
+        "fr": "Trafic routier - Questionnaires interpolés",
+        "en": "Road traffic - Perceived time presence - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -253,7 +268,10 @@
     },
     {
       "id": "voices",
-      "name": "Voices - Perceived time presence - Interpolated Questionnaires - Beige to Orange",
+      "name": {
+        "fr": "Voix - Questionnaires interpolés",
+        "en": "Voices - Perceived time presence - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {

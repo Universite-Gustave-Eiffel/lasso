@@ -127,7 +127,10 @@
   "maps": [
     {
       "id": "pleasant",
-      "name": "Pleasant",
+      "name": {
+        "fr": "Agréable - Questionnaires interpolés",
+        "en": "Pleasant - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -215,7 +218,10 @@
     },
     {
       "id": "eventful",
-      "name": "EventFul",
+      "name": {
+        "fr": "Animé - Questionnaires interpolés",
+        "en": "EventFull - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -303,7 +309,10 @@
     },
     {
       "id": "birds",
-      "name": "Birds",
+      "name": {
+        "fr": "Chants d'oiseaux - Questionnaires interpolés",
+        "en": "Birds - Perceived time presence - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -386,7 +395,10 @@
     },
     {
       "id": "trafic",
-      "name": "Trafic",
+      "name": {
+        "fr": "Trafic routier - Questionnaires interpolés",
+        "en": "Road traffic - Perceived time presence - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -469,7 +481,10 @@
     },
     {
       "id": "voices",
-      "name": "Voices",
+      "name": {
+        "fr": "Voix - Questionnaires interpolés",
+        "en": "Voices - Perceived time presence - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -552,7 +567,10 @@
     },
     {
       "id": "soundlevel",
-      "name": "Sound Level",
+      "name": {
+        "fr": "Niveau sonore perçu - Questionnaires interpolés",
+        "en": "Perceived Sound Level  - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
