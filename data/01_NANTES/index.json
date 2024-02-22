@@ -103,7 +103,10 @@
     },
     {
       "id": "pleasant",
-      "name": "Pleasant - Interpolated Questionnaires",
+      "name": {
+        "fr": "Agréable - Questionnaires interpolés",
+        "en": "Pleasant - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -146,7 +149,10 @@
     },
     {
       "id": "eventful",
-      "name": "EventFull - Interpolated Questionnaires",
+      "name": {
+        "fr": "Animé - Questionnaires interpolés",
+        "en": "EventFull - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -189,7 +195,10 @@
     },
     {
       "id": "birds",
-      "name": "Birds - Perceived time presence - Interpolated Questionnaires",
+      "name": {
+        "fr": "Chants d'oiseaux - Questionnaires interpolés",
+        "en": "Birds - Perceived time presence - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -227,7 +236,10 @@
     },
     {
       "id": "trafic",
-      "name": "Traffic - Perceived time presence - Interpolated Questionnaires",
+      "name": {
+        "fr": "Trafic routier - Questionnaires interpolés",
+        "en": "Road traffic - Perceived time presence - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -265,7 +277,10 @@
     },
     {
       "id": "voices",
-      "name": "Voices - Perceived time presence - Interpolated Questionnaires",
+      "name": {
+        "fr": "Voix - Questionnaires interpolés",
+        "en": "Voices - Perceived time presence - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
@@ -303,7 +318,10 @@
     },
     {
       "id": "soundlevel",
-      "name": "Perceived Sound Level - Interpolated Questionnaires",
+      "name": {
+        "fr": "Niveau sonore perçu - Questionnaires interpolés",
+        "en": "Perceived Sound Level  - Interpolated Questionnaires"
+      },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
         {
