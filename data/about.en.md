@@ -17,5 +17,5 @@ We hope that this platform will inspire further work on the mapping of urban sou
 <img style="border:10px solid transparent;" src="https://www.umrae.fr/fileadmin/contributeurs/UMRAE/UMRAE-logo.png" alt="image" height="50">
 <img style="border:10px solid transparent;" src="https://www.univ-gustave-eiffel.fr/fileadmin/logo_univ_gustave_eiffel_rvb.svg" alt="image" height="50">
 <img style="border:10px solid transparent;" src="https://www.cerema.fr/themes/custom/uas_base/images/LogoCerema_horizontal.svg" alt="image" height="50">
-<img style="border:10px solid transparent;" src="%PUBLIC_URL%/logo/CYU.png" alt="image" height="50">
-<img style="border:10px solid transparent;" src="%PUBLIC_URL%/logo/ETIS.png" alt="image" height="50">
+<img style="border:10px solid transparent;" src="%PUBLIC_URL%/CYU.png" alt="image" height="50">
+<img style="border:10px solid transparent;" src="%PUBLIC_URL%/ETIS.png" alt="image" height="50">
