@@ -51,7 +51,7 @@ export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
           <Marker longitude={selected.clickedAt.lng} latitude={selected.clickedAt.lat} />
           {opened && images.length > 0 && (
             <Popup
-              anchor="top"
+              anchor="bottom"
               longitude={selected.clickedAt.lng}
               latitude={selected.clickedAt.lat}
               onClose={() => setOpened(false)}
