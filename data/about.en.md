@@ -18,7 +18,7 @@ We hope that this platform will inspire further work on the mapping of urban sou
 <img style="border:10px solid transparent;" src="https://universite-gustave-eiffel.github.io/lasso/logo/UGE.png" alt="image" height="50">
 <img style="border:10px solid transparent;" src="https://universite-gustave-eiffel.github.io/lasso/logo/CEREMA.svg" alt="image" height="50">
 <img style="border:10px solid transparent;" src="https://universite-gustave-eiffel.github.io/lasso/logo/CNRS.svg" alt="image" height="50">
-
-
+<img style="border:10px solid transparent;" src="https://universite-gustave-eiffel.github.io/lasso/logo/IGN.svg" alt="image" height="50">
+<img style="border:10px solid transparent;" src="https://universite-gustave-eiffel.github.io/lasso/logo/LASTIG.svg" alt="image" height="50">
 <img style="border:10px solid transparent;" src="https://universite-gustave-eiffel.github.io/lasso/logo/CYU.png" alt="image" height="50">
 <img style="border:10px solid transparent;" src="https://universite-gustave-eiffel.github.io/lasso/logo/ETIS.png" alt="image" height="50">
