@@ -22,7 +22,7 @@
             },
             "hours": [
               8,
-              18
+              19
             ]
           },
           "evening": {
@@ -42,7 +42,7 @@
             },
             "hours": [
               0,
-              7
+              8
             ]
           }
         },
@@ -128,8 +128,8 @@
     {
       "id": "pleasant",
       "name": {
-        "fr": "Agréable - Questionnaires interpolés",
-        "en": "Pleasant - Interpolated Questionnaires"
+        "fr": "Agréable - Questionnaires",
+        "en": "Pleasant - Questionnaires"
       },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
@@ -219,8 +219,8 @@
     {
       "id": "eventful",
       "name": {
-        "fr": "Animé - Questionnaires interpolés",
-        "en": "EventFull - Interpolated Questionnaires"
+        "fr": "Animé - Questionnaires",
+        "en": "EventFull - Questionnaires"
       },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
@@ -310,8 +310,8 @@
     {
       "id": "birds",
       "name": {
-        "fr": "Chants d'oiseaux - Questionnaires interpolés",
-        "en": "Birds - Perceived time presence - Interpolated Questionnaires"
+        "fr": "Chants d'oiseaux - Questionnaires",
+        "en": "Birds - Perceived time presence - Questionnaires"
       },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
@@ -396,8 +396,8 @@
     {
       "id": "trafic",
       "name": {
-        "fr": "Trafic routier - Questionnaires interpolés",
-        "en": "Road traffic - Perceived time presence - Interpolated Questionnaires"
+        "fr": "Trafic routier - Questionnaires",
+        "en": "Road traffic - Perceived time presence - Questionnaires"
       },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
@@ -482,8 +482,8 @@
     {
       "id": "voices",
       "name": {
-        "fr": "Voix - Questionnaires interpolés",
-        "en": "Voices - Perceived time presence - Interpolated Questionnaires"
+        "fr": "Voix - Questionnaires",
+        "en": "Voices - Perceived time presence - Questionnaires"
       },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
@@ -568,8 +568,8 @@
     {
       "id": "soundlevel",
       "name": {
-        "fr": "Niveau sonore perçu - Questionnaires interpolés",
-        "en": "Perceived Sound Level  - Interpolated Questionnaires"
+        "fr": "Niveau sonore perçu - Questionnaires",
+        "en": "Perceived Sound Level  - Questionnaires"
       },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
