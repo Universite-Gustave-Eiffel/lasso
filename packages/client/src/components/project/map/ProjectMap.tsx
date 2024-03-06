@@ -85,8 +85,10 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
                       // for each decalred variable we pick the value index at the time selected key
                       variable &&
                       f.properties &&
-                      (projectMap.timeKey && f.properties[projectMap.timeKey]
-                        ? f.properties[projectMap.timeKey][variable]
+                      (projectMap.timeKey
+                        ? f.properties[projectMap.timeKey]
+                          ? f.properties[projectMap.timeKey][variable]
+                          : null
                         : f.properties[variable]),
                   ),
                 },
@@ -128,6 +130,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
   // render sources
   const sources = useMemo(() => {
     return toPairs(project.data.sources).map(([sourceId, source]) => {
+      console.log(sourceId, timedSourcesData);
       return (
         <Source
           key={`${locale}-${sourceId}`}
@@ -186,6 +189,7 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
       }}
       onClick={(e) => {
         const data = getFeatureOnMouseEvent(e);
+        console.log(data);
         if (data) {
           setProjectMapSelection(mapId, {
             clickedAt: e.lngLat,
