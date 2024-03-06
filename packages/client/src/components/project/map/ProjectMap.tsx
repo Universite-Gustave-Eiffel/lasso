@@ -130,7 +130,6 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
   // render sources
   const sources = useMemo(() => {
     return toPairs(project.data.sources).map(([sourceId, source]) => {
-      console.log(sourceId, timedSourcesData);
       return (
         <Source
           key={`${locale}-${sourceId}`}
@@ -189,7 +188,6 @@ export const ProjectMap: FC<ProjectMapProps> = ({ mapId }) => {
       }}
       onClick={(e) => {
         const data = getFeatureOnMouseEvent(e);
-        console.log(data);
         if (data) {
           setProjectMapSelection(mapId, {
             clickedAt: e.lngLat,

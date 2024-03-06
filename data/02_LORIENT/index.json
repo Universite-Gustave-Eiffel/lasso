@@ -111,28 +111,28 @@
           "paint": {
             "fill-color": [
               "interpolate",
-                [
-                  "linear"
-                ],
-                [
-                  "get",
-                  "emotion_pleasant"
-                ],
-                0,
-                [
-                  "to-color",
-                  "#d4322c"
-                ],
-                3.5,
-                [
-                  "to-color",
-                  "#f2f0eb"
-                ],
-                7,
-                [
-                  "to-color",
-                  "#22964f"
-                ]
+              [
+                "linear"
+              ],
+              [
+                "get",
+                "emotion_pleasant"
+              ],
+              0,
+              [
+                "to-color",
+                "#d4322c"
+              ],
+              3.5,
+              [
+                "to-color",
+                "#f2f0eb"
+              ],
+              7,
+              [
+                "to-color",
+                "#22964f"
+              ]
             ]
           }
         }
@@ -157,28 +157,28 @@
           "paint": {
             "fill-color": [
               "interpolate",
-                [
-                  "linear"
-                ],
-                [
-                  "get",
-                  "emotion_eventful"
-                ],
-                0,
-                [
-                  "to-color",
-                  "#151aaf"
-                ],
-                3.5,
-                [
-                  "to-color",
-                  "#f2f0eb"
-                ],
-                7,
-                [
-                  "to-color",
-                  "#dee401"
-                ]
+              [
+                "linear"
+              ],
+              [
+                "get",
+                "emotion_eventful"
+              ],
+              0,
+              [
+                "to-color",
+                "#151aaf"
+              ],
+              3.5,
+              [
+                "to-color",
+                "#f2f0eb"
+              ],
+              7,
+              [
+                "to-color",
+                "#dee401"
+              ]
             ]
           }
         }
@@ -203,23 +203,23 @@
           "paint": {
             "fill-color": [
               "interpolate",
-                [
-                  "linear"
-                ],
-                [
-                  "get",
-                  "acoustic_birds"
-                ],
-                0,
-                [
-                  "to-color",
-                  "#E7F4E4"
-                ],
-                7,
-                [
-                  "to-color",
-                  "#004529"
-                ]
+              [
+                "linear"
+              ],
+              [
+                "get",
+                "acoustic_birds"
+              ],
+              0,
+              [
+                "to-color",
+                "#E7F4E4"
+              ],
+              7,
+              [
+                "to-color",
+                "#004529"
+              ]
             ]
           }
         }
@@ -244,23 +244,23 @@
           "paint": {
             "fill-color": [
               "interpolate",
-                [
-                  "linear"
-                ],
-                [
-                  "get",
-                  "acoustic_trafic"
-                ],
-                0,
-                [
-                  "to-color",
-                  "#F2EFE9"
-                ],
-                7,
-                [
-                  "to-color",
-                  "#0B0B0B"
-                ]
+              [
+                "linear"
+              ],
+              [
+                "get",
+                "acoustic_trafic"
+              ],
+              0,
+              [
+                "to-color",
+                "#F2EFE9"
+              ],
+              7,
+              [
+                "to-color",
+                "#0B0B0B"
+              ]
             ]
           }
         }
@@ -285,23 +285,23 @@
           "paint": {
             "fill-color": [
               "interpolate",
-                [
-                  "linear"
-                ],
-                [
-                  "get",
-                  "acoustic_voices"
-                ],
-                0,
-                [
-                  "to-color",
-                  "#FFF8DC"
-                ],
-                7,
-                [
-                  "to-color",
-                  "#8B4513"
-                ]
+              [
+                "linear"
+              ],
+              [
+                "get",
+                "acoustic_voices"
+              ],
+              0,
+              [
+                "to-color",
+                "#FFF8DC"
+              ],
+              7,
+              [
+                "to-color",
+                "#8B4513"
+              ]
             ]
           }
         }
