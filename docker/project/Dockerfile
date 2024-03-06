@@ -6,8 +6,7 @@ ARG GROUP_ID
 # Installing node & npm
 RUN apt-get update && apt-get -y install npm curl nginx sudo
 RUN npm install -g n
-RUN n 16
-RUN npm i npm@next-7 -g
+RUN n 18
 RUN mkdir /var/www/public
 
 # Create user / group

@@ -34,13 +34,15 @@ docker compose -p Lasso -f docker-compose.yml up
 
 First you need node and npm. We recommend using [`nvm`](https://github.com/nvm-sh/nvm#install--update-script) to handle node/npm versions.
 Once nvm is installed, set up the dev environnement:
+
 ```
-nvm install 16
-nvm use 16
+nvm install 18
+nvm use 18
 npm i
 ```
 
 Start the project:
+
 ```
 npm run start
 ```

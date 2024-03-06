@@ -2,7 +2,7 @@
   "name": "@lasso/root",
   "version": "1.0.0",
   "engines": {
-    "node": "18.18.2"
+    "node": ">=18"
   },
   "description": "Project LASSO",
   "homepage": "https://github.com/Universite-Gustave-Eiffel/lasso",
@@ -20,7 +20,7 @@
     "compile": "tsc -b --preserveWatchOutput",
     "dataprep": "npm run exec --workspace=@lasso/dataprep",
     "build": "npm run clean && npm run lint && npm run compile -- --force && npm run build --workspace=@lasso/client",
-    "start": "npm run compile && concurrently -n lint,compile,dataprep,client \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"npm run start --workspace=@lasso/dataprep\" \"npm run start --workspace=@lasso/client\"",
+    "start": "export PUBLIC_URL=/lasso && npm run compile && concurrently -n lint,compile,dataprep,client \"npm run lint -- --watch\" \"npm run compile -- --watch\" \"npm run start --workspace=@lasso/dataprep\" \"npm run start --workspace=@lasso/client\"",
     "test": "npm run test --workspaces --if-present"
   },
   "devDependencies": {
