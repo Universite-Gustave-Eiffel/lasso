@@ -45,8 +45,10 @@ export const FeatureDataTimeline: FC<FeatureDataTimelineProps> = ({
         {/* TODO: handle cases where no monthsLabel */}
         {toPairs(timeSpecification.monthsLabels || DEFAULT_MONTHS).map(([monthKey, monthLabel]) => {
           return (
-            <div className="season" key={monthKey}>
-              {monthKey !== "default" && <label>{getI18NText(locale, monthLabel.label)}</label>}
+            <div className="season d-flex justify-content-center flex-column" key={monthKey}>
+              {monthKey !== "default" && (
+                <label className="text-center my-2">{getI18NText(locale, monthLabel.label)}</label>
+              )}
               <div className="d-flex">
                 {toPairs(timeSpecification.daysLabels || DEFAULT_DAYS).map(([dayKey, dayLabel]) => {
                   return (
