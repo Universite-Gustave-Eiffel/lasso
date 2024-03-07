@@ -2334,6 +2334,42 @@
             ],
             "type": "object"
         },
+        "GeoJSON.Feature<GeoJSON.Geometry,{[name:string]:any;}>_1": {
+            "description": "A feature object which contains a geometry and associated properties.\nhttps://tools.ietf.org/html/rfc7946#section-3.2",
+            "properties": {
+                "bbox": {
+                    "$ref": "#/definitions/GeoJSON.BBox",
+                    "description": "Bounding box of the coordinate range of the object's Geometries, Features, or Feature Collections.\nThe value of the bbox member is an array of length 2*n where n is the number of dimensions\nrepresented in the contained geometries, with all axes of the most southwesterly point\nfollowed by all axes of the more northeasterly point.\nThe axes order of a bbox follows the axes order of geometries.\nhttps://tools.ietf.org/html/rfc7946#section-5"
+                },
+                "geometry": {
+                    "$ref": "#/definitions/GeoJSON.Geometry",
+                    "description": "The feature's geometry"
+                },
+                "id": {
+                    "description": "A value that uniquely identifies this feature in a\nhttps://tools.ietf.org/html/rfc7946#section-3.2.",
+                    "type": [
+                        "string",
+                        "number"
+                    ]
+                },
+                "properties": {
+                    "additionalProperties": {},
+                    "description": "Properties associated with this feature.",
+                    "type": "object"
+                },
+                "type": {
+                    "const": "Feature",
+                    "description": "Specifies the type of GeoJSON object.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "geometry",
+                "properties",
+                "type"
+            ],
+            "type": "object"
+        },
         "GeoJSON.FeatureCollection<GeoJSON.Geometry,{[name:string]:any;}>": {
             "description": "A collection of feature objects.\n https://tools.ietf.org/html/rfc7946#section-3.3",
             "properties": {
@@ -2343,7 +2379,32 @@
                 },
                 "features": {
                     "items": {
-                        "$ref": "#/definitions/GeoJSON.Feature<GeoJSON.Geometry,{[name:string]:any;}>"
+                        "$ref": "#/definitions/GeoJSON.Feature<GeoJSON.Geometry,{[name:string]:any;}>_1"
+                    },
+                    "type": "array"
+                },
+                "type": {
+                    "const": "FeatureCollection",
+                    "description": "Specifies the type of GeoJSON object.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "features",
+                "type"
+            ],
+            "type": "object"
+        },
+        "GeoJSON.FeatureCollection<GeoJSON.Geometry,{[name:string]:any;}>_1": {
+            "description": "A collection of feature objects.\n https://tools.ietf.org/html/rfc7946#section-3.3",
+            "properties": {
+                "bbox": {
+                    "$ref": "#/definitions/GeoJSON.BBox",
+                    "description": "Bounding box of the coordinate range of the object's Geometries, Features, or Feature Collections.\nThe value of the bbox member is an array of length 2*n where n is the number of dimensions\nrepresented in the contained geometries, with all axes of the most southwesterly point\nfollowed by all axes of the more northeasterly point.\nThe axes order of a bbox follows the axes order of geometries.\nhttps://tools.ietf.org/html/rfc7946#section-5"
+                },
+                "features": {
+                    "items": {
+                        "$ref": "#/definitions/GeoJSON.Feature<GeoJSON.Geometry,{[name:string]:any;}>_1"
                     },
                     "type": "array"
                 },
@@ -11475,19 +11536,7 @@
                                     "$ref": "#/definitions/StringI18n"
                                 },
                                 "images": {
-                                    "properties": {
-                                        "csv": {
-                                            "type": "string"
-                                        },
-                                        "field": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "required": [
-                                        "csv",
-                                        "field"
-                                    ],
-                                    "type": "object"
+                                    "$ref": "#/definitions/LassoSourceAssetSpecification"
                                 },
                                 "timeSeries": {
                                     "$ref": "#/definitions/TimeSpecification"
@@ -11511,19 +11560,7 @@
                                     "$ref": "#/definitions/StringI18n"
                                 },
                                 "images": {
-                                    "properties": {
-                                        "csv": {
-                                            "type": "string"
-                                        },
-                                        "field": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "required": [
-                                        "csv",
-                                        "field"
-                                    ],
-                                    "type": "object"
+                                    "$ref": "#/definitions/LassoSourceAssetSpecification"
                                 },
                                 "timeSeries": {
                                     "$ref": "#/definitions/TimeSpecification"
@@ -11547,19 +11584,7 @@
                                     "$ref": "#/definitions/StringI18n"
                                 },
                                 "images": {
-                                    "properties": {
-                                        "csv": {
-                                            "type": "string"
-                                        },
-                                        "field": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "required": [
-                                        "csv",
-                                        "field"
-                                    ],
-                                    "type": "object"
+                                    "$ref": "#/definitions/LassoSourceAssetSpecification"
                                 },
                                 "timeSeries": {
                                     "$ref": "#/definitions/TimeSpecification"
@@ -11583,19 +11608,7 @@
                                     "$ref": "#/definitions/StringI18n"
                                 },
                                 "images": {
-                                    "properties": {
-                                        "csv": {
-                                            "type": "string"
-                                        },
-                                        "field": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "required": [
-                                        "csv",
-                                        "field"
-                                    ],
-                                    "type": "object"
+                                    "$ref": "#/definitions/LassoSourceAssetSpecification"
                                 },
                                 "timeSeries": {
                                     "$ref": "#/definitions/TimeSpecification"
@@ -11609,6 +11622,21 @@
                     ]
                 }
             ]
+        },
+        "LassoSourceAssetSpecification": {
+            "properties": {
+                "csv": {
+                    "type": "string"
+                },
+                "field": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "csv",
+                "field"
+            ],
+            "type": "object"
         },
         "Location": {
             "properties": {
@@ -11991,7 +12019,40 @@
                 "clusterRadius": {
                     "type": "number"
                 },
-                "data": {},
+                "data": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/GeoJSON.Point"
+                        },
+                        {
+                            "$ref": "#/definitions/GeoJSON.MultiPoint"
+                        },
+                        {
+                            "$ref": "#/definitions/GeoJSON.LineString"
+                        },
+                        {
+                            "$ref": "#/definitions/GeoJSON.MultiLineString"
+                        },
+                        {
+                            "$ref": "#/definitions/GeoJSON.Polygon"
+                        },
+                        {
+                            "$ref": "#/definitions/GeoJSON.MultiPolygon"
+                        },
+                        {
+                            "$ref": "#/definitions/GeoJSON.GeometryCollection<GeoJSON.Geometry>"
+                        },
+                        {
+                            "$ref": "#/definitions/GeoJSON.Feature<GeoJSON.Geometry,{[name:string]:any;}>"
+                        },
+                        {
+                            "$ref": "#/definitions/GeoJSON.FeatureCollection<GeoJSON.Geometry,{[name:string]:any;}>"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
                 "filter": {},
                 "generateId": {
                     "type": "boolean"
@@ -12014,12 +12075,19 @@
                 }
             },
             "required": [
+                "data",
                 "type"
             ],
             "type": "object"
         },
         "Omit<maplibregl.RasterDEMSourceSpecification,\"attribution\">": {
             "properties": {
+                "baseShift": {
+                    "type": "number"
+                },
+                "blueFactor": {
+                    "type": "number"
+                },
                 "bounds": {
                     "items": [
                         {
@@ -12041,15 +12109,22 @@
                 },
                 "encoding": {
                     "enum": [
+                        "custom",
                         "mapbox",
                         "terrarium"
                     ],
                     "type": "string"
                 },
+                "greenFactor": {
+                    "type": "number"
+                },
                 "maxzoom": {
                     "type": "number"
                 },
                 "minzoom": {
+                    "type": "number"
+                },
+                "redFactor": {
                     "type": "number"
                 },
                 "tileSize": {
@@ -12845,23 +12920,23 @@
         },
         "Promise<FontFaceSet>": {
             "properties": {
-                "__@toStringTag@8499": {
+                "__@toStringTag@8987": {
                     "type": "string"
                 }
             },
             "required": [
-                "__@toStringTag@8499"
+                "__@toStringTag@8987"
             ],
             "type": "object"
         },
         "Promise<ServiceWorkerRegistration>": {
             "properties": {
-                "__@toStringTag@8499": {
+                "__@toStringTag@8987": {
                     "type": "string"
                 }
             },
             "required": [
-                "__@toStringTag@8499"
+                "__@toStringTag@8987"
             ],
             "type": "object"
         },
@@ -16233,6 +16308,21 @@
                 "daysLabels": {
                     "$ref": "#/definitions/Record<string,{label:{fr:string;en:string;};weekDays:WeekDay[];}>"
                 },
+                "defaultValueTitle": {
+                    "properties": {
+                        "en": {
+                            "type": "string"
+                        },
+                        "fr": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "en",
+                        "fr"
+                    ],
+                    "type": "object"
+                },
                 "hoursLabels": {
                     "$ref": "#/definitions/Record<string,{label:{fr:string;en:string;};hours:[number,number];}>"
                 },
@@ -16244,6 +16334,7 @@
                 }
             },
             "required": [
+                "defaultValueTitle",
                 "timestampPropertyName"
             ],
             "type": "object"
@@ -17853,10 +17944,10 @@
                             "$ref": "#/definitions/GeoJSON.GeometryCollection<GeoJSON.Geometry>"
                         },
                         {
-                            "$ref": "#/definitions/GeoJSON.Feature<GeoJSON.Geometry,{[name:string]:any;}>"
+                            "$ref": "#/definitions/GeoJSON.Feature<GeoJSON.Geometry,{[name:string]:any;}>_1"
                         },
                         {
-                            "$ref": "#/definitions/GeoJSON.FeatureCollection<GeoJSON.Geometry,{[name:string]:any;}>"
+                            "$ref": "#/definitions/GeoJSON.FeatureCollection<GeoJSON.Geometry,{[name:string]:any;}>_1"
                         },
                         {
                             "type": "string"

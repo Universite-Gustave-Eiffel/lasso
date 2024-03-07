@@ -102,6 +102,7 @@ export interface TimeSeriesGeoJSONProperty {
  */
 export interface TimeSpecification {
   timestampPropertyName: string;
+  defaultValueTitle: { fr: string; en: string };
   hoursLabels?: Record<string, { label: { fr: string; en: string }; hours: [number, number] }>;
   daysLabels?: Record<string, { label: { fr: string; en: string }; weekDays: WeekDay[] }>;
   monthsLabels?: Record<string, { label: { fr: string; en: string }; months: Month[] }>;

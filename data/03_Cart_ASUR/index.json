@@ -14,6 +14,10 @@
       "promoteId": "id",
       "timeSeries": {
         "timestampPropertyName": "timestamPP",
+        "defaultValueTitle": {
+          "fr": "moyenne journalière",
+          "en": "daily average"
+        },
         "hoursLabels": {
           "day": {
             "label": {

@@ -298,6 +298,7 @@ async function transformLassoSource(
         if (source.timeSeries !== undefined) {
           const propertiesInTime: Record<string, Record<string, unknown>> = {};
           const timestampPropertyName = source.timeSeries.timestampPropertyName;
+
           features.forEach((f) => {
             let timeKey = "default";
             if (f.properties) {
