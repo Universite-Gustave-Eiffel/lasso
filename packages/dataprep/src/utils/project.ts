@@ -305,7 +305,7 @@ async function transformLassoSource(
                 const featureDate = new Date(f.properties[timestampPropertyName]);
                 const labelsKeys = [];
                 if (source.timeSeries?.monthsLabels) {
-                  const month = featureDate.getMonth();
+                  const month = featureDate.getMonth() + 1; // January is à in JS
                   const monthLabel = toPairs(source.timeSeries.monthsLabels).find(([, ml]) =>
                     ml.months.includes(month),
                   );
