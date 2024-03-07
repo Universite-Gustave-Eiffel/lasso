@@ -1,6 +1,6 @@
 import { FC, Fragment } from "react";
 import { Feature } from "geojson";
-import { keys, round, sortBy } from "lodash";
+import { keys, round, sortBy, isNil } from "lodash";
 
 import { TimeSpecification } from "@lasso/dataprep";
 import withSize, { SizeState } from "../../WithSize";
@@ -147,7 +147,7 @@ export const DonutDay: FC<DonutDayProps> = ({
           angleSize: nbHoursInAngle(duration) - 0.1,
           selected: hoursKey === currentTimeKey,
           startHour: hoursLabel.hours[0],
-          label: `${hoursLabel.label.fr}: ${hoursValue || "N/A"}`,
+          label: `${hoursLabel.label.fr}: ${isNil(hoursValue) ? "N/A" : Math.round(hoursValue)}`,
         };
         return segment;
       } else return null;
