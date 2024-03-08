@@ -177,7 +177,7 @@
       "id": "eventful",
       "name": {
         "fr": "Animé - Questionnaires interpolés",
-        "en": "EventFull - Interpolated Questionnaires"
+        "en": "EventFul - Interpolated Questionnaires"
       },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [

@@ -125,7 +125,7 @@ Pour chaque calque, on décrit :
     * émotion:
 
         + agrément
-        + eventfull
+        + eventful
         + ...
 
 - unité des valeurs : 

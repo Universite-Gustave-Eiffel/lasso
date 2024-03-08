@@ -231,7 +231,7 @@
       "id": "eventful",
       "name": {
         "fr": "Animé - Questionnaires",
-        "en": "EventFull - Questionnaires"
+        "en": "EventFul - Questionnaires"
       },
       "basemapStyle": "../bright_matter_PA.json",
       "layers": [
