@@ -1,5 +1,7 @@
-# CENSE
+# ANR CENSE
 
-Reducing urban noise is a societal priority. In this context, the European Directive 2002/49/EC aims to produce strategic noise maps for large cities. However, nowadays, the relevance of these maps is questionable due to significant uncertainties that are not quantified. Conversely, the deployment of noise observatories provides a more realistic description of the sound environment, but at the cost of insufficient spatial details and significant expenses. Thus, the CENSE project aims to propose a new methodology for the production of more realistic noise maps, based on the assimilation of simulated and measured data through a dense network of low-cost sensors. Beyond the production of physical indicators, the project also focuses on the characterization of sound environments. The CENSE project is a decidedly multidisciplinary project, bringing together experts in environmental acoustics, data assimilation, statistics, GIS, sensor networks, signal processing, and soundscape.
+The CENSE project aimed to propose a new methodology for the production of more realistic noise maps, based on the assimilation of simulated and measured data through a dense network of low-cost sensors. Beyond the production of physical indicators, the project also focuses on the perceptual characterization of sound environments. The soundscape maps present the results of a survey of the inhabitants of the study area (Lorient city centre).
 
-Pour plus d'information sur ce projet, veuillez consulter le site dédié https://cense.ifsttar.fr/. 
+Le projet CENSE visait à proposer une nouvelle méthodologie pour la production de cartes de bruit plus réalistes, basée sur l'assimilation de données simulées et mesurées à travers un réseau dense de capteurs à faible coût. Au-delà de la production d'indicateurs physiques, le projet se concentre également sur la caractérisation perceptuelle des environnements sonores. Les cartes du paysage sonore présentent les résultats d'une enquête menée auprès des habitants de la zone d'étude (centre ville de Lorient).
+
+https://cense.ifsttar.fr/. 
