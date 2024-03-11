@@ -17,6 +17,11 @@ jobs:
     env:
       PUBLIC_URL: "/lasso"
     steps:
+      - name: Set timezone
+        uses: szenius/set-timezone@v1.2
+        with:
+          timezoneLinux: "Europe/Paris"
+
       - name: Checkout
         uses: actions/checkout@v2
 
