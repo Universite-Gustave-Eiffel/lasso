@@ -1,7 +1,7 @@
 import { FC, useCallback, useMemo } from "react";
 import { Feature } from "geojson";
 import { useT } from "@transifex/react";
-import { toNumber } from "lodash";
+import { isNil, toNumber } from "lodash";
 
 import { SOUNDSCAPE_VARIABLES_TYPES } from "@lasso/dataprep";
 import { useCurrentProject } from "../../../hooks/useCurrentProject";
@@ -21,6 +21,13 @@ export const EmotionFeatureScatterPlot: FC<EmotionFeatureScatterPlotProps> = ({
   const t = useT();
   const { project } = useCurrentProject();
 
+  const hasEmotionsData = useMemo(() => {
+    if (feature.properties) {
+      return !isNil(feature.properties.emotion_pleasant) || !isNil(feature.properties.emotion_eventful);
+    }
+    return false;
+  }, [feature]);
+
   const getColorFunctionForVariable = useCallback(
     (variable: SOUNDSCAPE_VARIABLES_TYPES) => {
       return (value: number) => {
@@ -39,32 +46,29 @@ export const EmotionFeatureScatterPlot: FC<EmotionFeatureScatterPlotProps> = ({
     let data: { pleasant?: number; eventful?: number } = { pleasant: undefined, eventful: undefined };
 
     if (feature.properties) {
-      // default value is the generic one
-      if (feature.properties.emotion_pleasant !== undefined && feature.properties.emotion_eventful !== undefined) {
+      if (currentTimeKey) {
+        if (feature.properties[currentTimeKey]) {
+          data = {
+            pleasant: feature.properties[currentTimeKey]["emotion_pleasant"]
+              ? toNumber(feature.properties[currentTimeKey]["emotion_pleasant"])
+              : undefined,
+            eventful: feature.properties[currentTimeKey]["emotion_eventful"]
+              ? toNumber(feature.properties[currentTimeKey]["emotion_eventful"])
+              : undefined,
+          };
+        }
+      } else {
         data = { pleasant: feature.properties.emotion_pleasant, eventful: feature.properties.emotion_eventful };
-      }
-
-      // if time is specified and data exist we take it
-      if (
-        currentTimeKey &&
-        feature.properties[currentTimeKey] &&
-        feature.properties[currentTimeKey]["emotion_pleasant"] &&
-        feature.properties[currentTimeKey]["emotion_eventful"]
-      ) {
-        data = {
-          pleasant: toNumber(feature.properties[currentTimeKey]["emotion_pleasant"]),
-          eventful: toNumber(feature.properties[currentTimeKey]["emotion_eventful"]),
-        };
       }
     }
     return data;
   }, [feature, currentTimeKey]);
-//<h6>{t("Emotions plot")}</h6> 
+
   return (
     <>
-      {value.eventful !== undefined && value.pleasant !== undefined && (
+      {hasEmotionsData && (
         <div>
-          <h6>{t("Emotions plot")}</h6> 
+          <h6>{t("Emotions plot")}</h6>
           <EmotionScatterPlot
             evenfulAxis={{
               arrow: true,

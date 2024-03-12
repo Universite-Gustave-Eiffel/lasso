@@ -22,15 +22,16 @@ export const AcousticFeatureCircles: FC<{ feature: Feature; currentTimeKey?: str
 
       let value = undefined;
       if (feature.properties) {
-        // default is the generic value
-        if (!isNil(feature.properties[variable.variable])) value = toNumber(feature.properties[variable.variable]);
         // if time is specified, we try to get it
-        if (
-          currentTimeKey &&
-          feature.properties[currentTimeKey] &&
-          !isNil(feature.properties[currentTimeKey][variable.variable])
-        )
-          value = toNumber(feature.properties[currentTimeKey][variable.variable]);
+        if (currentTimeKey) {
+          if (feature.properties[currentTimeKey] && !isNil(feature.properties[currentTimeKey][variable.variable])) {
+            value = toNumber(feature.properties[currentTimeKey][variable.variable]);
+          }
+        } else {
+          if (!isNil(feature.properties[variable.variable])) {
+            value = toNumber(feature.properties[variable.variable]);
+          }
+        }
       }
 
       return {
