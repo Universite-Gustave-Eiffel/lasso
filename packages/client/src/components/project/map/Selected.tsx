@@ -56,6 +56,7 @@ export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
               latitude={selected.clickedAt.lat}
               onClose={() => setOpened(false)}
               maxWidth={"50%"}
+              maxHeight={"50%"}
             >
               <div className="d-flex flex-column">
                 {images.length > 1 && (
