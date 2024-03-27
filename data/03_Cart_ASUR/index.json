@@ -15,8 +15,8 @@
       "timeSeries": {
         "timestampPropertyName": "timestamPP",
         "defaultValueTitle": {
-          "fr": "moyenne journalière",
-          "en": "daily average"
+          "fr": "moyenne des évaluations",
+          "en": "average rating"
         },
         "hoursLabels": {
           "day": {
