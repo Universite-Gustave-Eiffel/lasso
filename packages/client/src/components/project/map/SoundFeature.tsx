@@ -27,10 +27,17 @@ export const SoundFeature: FC<{ feature?: Feature; mapId: string; currentTimeKey
        const noiseVariable = project.lassoVariables[`acoustic_soundlevel`];
        if (properties.sound && feature.properties[currentTimeKey]) {
           
-          const volume = feature.properties[currentTimeKey].acoustic_soundlevel
+        const volume01 = - noiseVariable.minimumValue +  feature.properties[currentTimeKey].acoustic_soundlevel/ (noiseVariable.maximumValue - noiseVariable.minimumValue );
+        const volumedB = -30 + 30 * (volume01);
+        const volume = feature.properties[currentTimeKey].acoustic_soundlevel ? Math.pow(10, volumedB / 20)  : 1;
+
+         /* const volume =  feature.properties[currentTimeKey].acoustic_soundlevel
             ? feature.properties[currentTimeKey].acoustic_soundlevel / noiseVariable.maximumValue
-            : 1;
+            : 1;*/
+
+       
             
+
           howler = new Howl({
             src: [feature.properties[currentTimeKey].sound],
             autoplay: true,
@@ -52,9 +59,12 @@ export const SoundFeature: FC<{ feature?: Feature; mapId: string; currentTimeKey
 
         if (properties.sound) {
           
-          const volume = feature.properties.acoustic_soundlevel
-            ? feature.properties.acoustic_soundlevel / noiseVariable.maximumValue
-            : 1;
+
+
+          const volume01 = - noiseVariable.minimumValue +  feature.properties.acoustic_soundlevel/ (noiseVariable.maximumValue - noiseVariable.minimumValue );
+          const volumedB = -30 + 30 * (volume01);
+          const volume = feature.properties.acoustic_soundlevel ? Math.pow(10, volumedB / 20)  : 1;
+
           howler = new Howl({
             src: [feature.properties.sound],
             autoplay: true,
