@@ -6,6 +6,7 @@ import { FeatureDataTimeline } from "./FeatureDataTimeline";
 import { EmotionFeatureScatterPlot } from "./EmotionFeatureScatterPlot";
 import { AcousticFeatureCircles } from "./AcousticFeatureCircles";
 import { useCurrentProject } from "../../../hooks/useCurrentProject";
+import { SoundFeature } from "./SoundFeature";
 
 export const FeatureDataPanel: FC<{
   mapId: string;
@@ -19,10 +20,13 @@ export const FeatureDataPanel: FC<{
   const mapVariable = project.maps[mapId].lassoVariable;
 
   return (
+    
     <div className="map-point-data">
+      <SoundFeature feature={feature} mapId={mapId} currentTimeKey={project.maps[mapId].timeKey} />
       <button className="btn-close" onClick={() => onClose()}></button>
 
       <div className="map-point-data-content">
+        
         <AcousticFeatureCircles feature={feature} currentTimeKey={project.maps[mapId].timeKey} />
 
         {/* Display emotion plot only if variables are available in the project */}

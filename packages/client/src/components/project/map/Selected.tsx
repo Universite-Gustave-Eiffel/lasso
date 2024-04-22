@@ -8,7 +8,7 @@ import { config } from "../../../config";
 import { getI18NText } from "../../../utils/i18n";
 import { useCurrentProject } from "../../../hooks/useCurrentProject";
 import { FeatureDataPanel } from "./FeatureDataPanel";
-import { SoundFeature } from "./SoundFeature";
+
 
 export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
   const locale = useLocale();
@@ -41,7 +41,7 @@ export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
     <>
       {selected && (
         <>
-          <SoundFeature feature={selected.feature} mapId={mapId} />
+          
           <FeatureDataPanel
             mapId={mapId}
             feature={selected.feature}
@@ -58,6 +58,16 @@ export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
               maxWidth={"50%"}
             >
               <div className="d-flex flex-column">
+                <div>
+                  <img
+                    className="img-fluid"
+                    src={`${config.data_path}/${project.data.id}/assets/${images[imageIndex].path}`}
+                    alt={getI18NText(locale, images[imageIndex].description)}
+                  />
+                  {images[imageIndex].description && (
+                    <p className="text-center mb-0">{getI18NText(locale, images[imageIndex].description)}</p>
+                  )}
+                </div>
                 {images.length > 1 && (
                   <div className="d-flex justify-content-center mb-3">
                     <button
@@ -86,16 +96,7 @@ export const Selected: FC<{ mapId: "left" | "right" }> = ({ mapId }) => {
                     </button>
                   </div>
                 )}
-                <div>
-                  <img
-                    className="img-fluid"
-                    src={`${config.data_path}/${project.data.id}/assets/${images[imageIndex].path}`}
-                    alt={getI18NText(locale, images[imageIndex].description)}
-                  />
-                  {images[imageIndex].description && (
-                    <p className="text-center mb-0">{getI18NText(locale, images[imageIndex].description)}</p>
-                  )}
-                </div>
+                
               </div>
             </Popup>
           )}
